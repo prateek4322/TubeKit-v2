@@ -1,83 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<urlset
-xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-<url>
-<loc>https://tubekit.in/</loc>
-<priority>1.0</priority>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/</loc>
+    <priority>1.0</priority>
+  </url>
 
-<url>
-<loc>https://tubekit.in/about</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/about</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/contact</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/contact</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/faq</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/faq</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/privacy-policy</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/privacy-policy</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/terms</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/terms</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/disclaimer</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/disclaimer</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/cookie-policy</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/cookie-policy</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/title-generator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/title-generator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/description-generator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/description-generator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/tags-generator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/tags-generator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/script-generator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/script-generator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/money-calculator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/money-calculator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/monetization-checker</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/monetization-checker</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/cpm-calculator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/cpm-calculator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/rpm-calculator</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/rpm-calculator</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/channel-id-finder</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/channel-id-finder</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/video-id-extractor</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/video-id-extractor</loc>
+  </url>
 
-<url>
-<loc>https://tubekit.in/tools/thumbnail-downloader</loc>
-</url>
+  <url>
+    <loc>https://tubekitapp.in/tools/thumbnail-downloader</loc>
+  </url>
 
 </urlset>
