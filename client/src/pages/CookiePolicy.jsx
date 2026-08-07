@@ -1,3 +1,4 @@
+import SEO from "@/components/common/SEO";
 function CookiePolicy() {
   const lastUpdated = "August 2026";
 
@@ -96,6 +97,11 @@ function CookiePolicy() {
 
 function Section({ title, content }) {
   return (
+    <> <SEO
+title="Cookie Policy | TubeKit"
+description="TubeKit Cookie Policy."
+url="/cookie-policy"
+/>
     <section className="mt-12">
 
       <h2 className="text-2xl font-bold">
@@ -113,6 +119,7 @@ function Section({ title, content }) {
       </ul>
 
     </section>
+    </>
   );
 }
 

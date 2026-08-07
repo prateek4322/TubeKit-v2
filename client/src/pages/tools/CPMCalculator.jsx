@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -25,7 +25,12 @@ function CPMCalculator() {
     setCpm(null);
   };
 
-  return (
+  return ( 
+    <> <SEO
+title="YouTube CPM Calculator | TubeKit"
+description="Calculate YouTube CPM."
+url="/tools/cpm-calculator"
+/>
     <ToolLayout>
       <ToolHeader
         title="YouTube CPM Calculator"
@@ -99,6 +104,7 @@ function CPMCalculator() {
       )}
 
     </ToolLayout>
+    </>
   );
 }
 

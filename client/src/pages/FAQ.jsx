@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import SEO from "@/components/seo/SEO";
+import SEO from "@/components/common/SEO";
 const faqs = [
   {
     question: "Is TubeKit free to use?",
@@ -48,6 +48,11 @@ function FAQ() {
   const [open, setOpen] = useState(0);
 
   return (
+   <> <SEO
+title="FAQ | TubeKit"
+description="Frequently asked questions."
+url="/faq"
+/>
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-5xl px-6 py-20">
 
@@ -110,11 +115,8 @@ function FAQ() {
 
       </div>
     </main>
+    </>
   );
 }
-<SEO
-  title="FAQ | TubeKit"
-  description="Frequently asked questions about TubeKit."
-  url="https://tubekit.in/faq"
-/>
+
 export default FAQ;

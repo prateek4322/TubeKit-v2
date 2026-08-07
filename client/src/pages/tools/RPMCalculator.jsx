@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -27,6 +27,11 @@ function RPMCalculator() {
   };
 
   return (
+    <> <SEO
+title="YouTube RPM Calculator | TubeKit"
+description="Calculate YouTube RPM."
+url="/tools/rpm-calculator"
+/>
     <ToolLayout>
       <ToolHeader
         title="YouTube RPM Calculator"
@@ -99,6 +104,7 @@ function RPMCalculator() {
         </div>
       )}
     </ToolLayout>
+    </>
   );
 }
 

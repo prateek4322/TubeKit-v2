@@ -1,3 +1,4 @@
+import SEO from "@/components/common/SEO";
 function Disclaimer() {
   const lastUpdated = "August 2026";
 
@@ -90,7 +91,12 @@ function Disclaimer() {
 }
 
 function Section({ title, content }) {
-  return (
+  return ( 
+    <> <SEO
+title="Disclaimer | TubeKit"
+description="TubeKit Disclaimer."
+url="/disclaimer"
+/>
     <section className="mt-12">
 
       <h2 className="text-2xl font-bold">
@@ -108,6 +114,7 @@ function Section({ title, content }) {
       </ul>
 
     </section>
+    </>
   );
 }
 

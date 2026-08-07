@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -40,6 +40,11 @@ function MonetizationChecker() {
   };
 
   return (
+    <> <SEO
+title="YouTube Monetization Checker | TubeKit"
+description="Check YouTube monetization eligibility."
+url="/tools/monetization-checker"
+/>
     <ToolLayout>
       <ToolHeader
         title="YouTube Monetization Checker"
@@ -148,6 +153,7 @@ function MonetizationChecker() {
         </div>
       )}
     </ToolLayout>
+    </>
   );
 }
 
@@ -162,6 +168,7 @@ function InfoCard({ title, value }) {
         {value}
       </p>
     </div>
+    
   );
 }
 

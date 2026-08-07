@@ -3,7 +3,7 @@ import Mission from "@/components/about/Mission";
 import WhyTubeKit from "@/components/about/WhyTubeKit";
 import ToolHighlights from "@/components/about/ToolHighlights";
 import AboutCTA from "@/components/about/AboutCTA";
-import SEO from "@/components/seo/SEO";
+import SEO from "@/components/common/SEO";
 function About() {
   return (
     <main className="bg-slate-950 text-white">

@@ -5,7 +5,7 @@ import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 import ToolOutput from "@/components/tool-layout/ToolOutput";
-
+import SEO from "@/components/common/SEO";
 function ShortsGenerator() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -50,6 +50,11 @@ function ShortsGenerator() {
   };
 
   return (
+    <> <SEO
+  title="AI YouTube Shorts Generator | TubeKit"
+  description="Generate engaging YouTube Shorts ideas and scripts instantly with AI."
+  url="/tools/shorts-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Shorts Generator"
@@ -76,6 +81,7 @@ function ShortsGenerator() {
         onRegenerate={() => lastFormData && handleGenerate(lastFormData)}
       />
     </ToolLayout>
+    </>
   );
 }
 

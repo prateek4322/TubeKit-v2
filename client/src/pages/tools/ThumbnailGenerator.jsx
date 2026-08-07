@@ -1,12 +1,12 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 import ToolOutput from "@/components/tool-layout/ToolOutput";
 
-function KeywordGenerator() {
+function ThumbnailGenerator() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [lastFormData, setLastFormData] = useState(null);
@@ -56,6 +56,11 @@ setResults(ideas);
   };
 
   return (
+    <> <SEO
+  title="AI YouTube Thumbnail Generator | TubeKit"
+  description="Generate creative YouTube thumbnail ideas using AI to improve click-through rate."
+  url="/tools/thumbnail-generator"
+/>
     <ToolLayout>
       <ToolHeader
   title="Thumbnail Ideas Generator"
@@ -86,7 +91,8 @@ setResults(ideas);
         }}
       />
     </ToolLayout>
+    </>
   );
 }
 
-export default KeywordGenerator;
+export default ThumbnailGenerator;

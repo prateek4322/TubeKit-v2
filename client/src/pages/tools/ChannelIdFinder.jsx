@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -26,6 +26,11 @@ function ChannelIdFinder() {
   };
 
   return (
+    <> <SEO
+title="YouTube Channel ID Finder | TubeKit"
+description="Find YouTube Channel IDs."
+url="/tools/channel-id-finder"
+/>
     <ToolLayout>
       <ToolHeader
         title="Channel ID Finder"
@@ -83,6 +88,7 @@ function ChannelIdFinder() {
         </div>
       )}
     </ToolLayout>
+    </>
   );
 }
 

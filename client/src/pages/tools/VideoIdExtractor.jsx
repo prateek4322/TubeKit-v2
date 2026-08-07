@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -32,6 +32,11 @@ function VideoIdExtractor() {
   };
 
   return (
+    <> <SEO
+title="YouTube Video ID Extractor | TubeKit"
+description="Extract YouTube Video IDs."
+url="/tools/video-id-extractor"
+/>
     <ToolLayout>
       <ToolHeader
         title="Video ID Extractor"
@@ -97,6 +102,7 @@ function VideoIdExtractor() {
         </div>
       )}
     </ToolLayout>
+    </>
   );
 }
 

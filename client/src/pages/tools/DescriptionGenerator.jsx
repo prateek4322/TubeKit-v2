@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -41,6 +41,11 @@ function DescriptionGenerator() {
   };
 
   return (
+   <> <SEO
+title="AI YouTube Description Generator | TubeKit"
+description="Generate SEO friendly YouTube descriptions."
+url="/tools/description-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Description Generator"
@@ -70,6 +75,7 @@ function DescriptionGenerator() {
         }}
       />
     </ToolLayout>
+    </>
   );
 }
 

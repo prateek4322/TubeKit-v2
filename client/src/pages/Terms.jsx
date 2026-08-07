@@ -1,3 +1,4 @@
+import SEO from "@/components/common/SEO";
 function Terms() {
   const lastUpdated = "August 2026";
 
@@ -102,6 +103,11 @@ function Terms() {
 
 function Section({ title, content }) {
   return (
+    <> <SEO
+title="Terms & Conditions | TubeKit"
+description="TubeKit Terms & Conditions."
+url="/terms"
+/>
     <section className="mt-12">
 
       <h2 className="text-2xl font-bold">
@@ -117,6 +123,7 @@ function Section({ title, content }) {
       </ul>
 
     </section>
+    </>
   );
 }
 

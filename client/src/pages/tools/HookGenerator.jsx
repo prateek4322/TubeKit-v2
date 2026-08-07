@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -50,6 +50,11 @@ function HookGenerator() {
   };
 
   return (
+    <> <SEO
+  title="AI YouTube Hook Generator | TubeKit"
+  description="Create powerful video hooks that grab attention and increase audience retention."
+  url="/tools/hook-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Hook Generator"
@@ -76,6 +81,7 @@ function HookGenerator() {
         onRegenerate={() => lastFormData && handleGenerate(lastFormData)}
       />
     </ToolLayout>
+    </>
   );
 }
 

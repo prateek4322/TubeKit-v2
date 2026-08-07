@@ -5,7 +5,7 @@ import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 import ToolOutput from "@/components/tool-layout/ToolOutput";
-
+import SEO from "@/components/common/SEO";
 function KeywordGenerator() {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -56,6 +56,11 @@ function KeywordGenerator() {
   };
 
   return (
+    <> <SEO
+  title="AI YouTube Keyword Generator | TubeKit"
+  description="Discover high-ranking YouTube keywords to improve SEO and video visibility."
+  url="/tools/keyword-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Keyword Generator"
@@ -86,6 +91,7 @@ function KeywordGenerator() {
         }}
       />
     </ToolLayout>
+    </>
   );
 }
 

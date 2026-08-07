@@ -2,9 +2,14 @@ import ContactHero from "@/components/contact/ContactHero";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactFAQ from "@/components/contact/ContactFAQ";
-
+import SEO from "@/components/common/SEO";
 function Contact() {
-  return (
+  return ( 
+  <> <SEO
+title="Contact TubeKit"
+description="Contact TubeKit."
+url="/contact"
+/>
     <main className="bg-slate-950 text-white">
       <ContactHero />
 
@@ -15,6 +20,7 @@ function Contact() {
 
       <ContactFAQ />
     </main>
+    </>
   );
 }
 

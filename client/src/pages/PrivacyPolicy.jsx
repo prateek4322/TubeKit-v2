@@ -1,7 +1,12 @@
+import SEO from "@/components/common/SEO";
 function PrivacyPolicy() {
   const lastUpdated = "August 2026";
 
-  return (
+  return ( <> <SEO
+title="Privacy Policy | TubeKit"
+description="TubeKit Privacy Policy."
+url="/privacy-policy"
+/>
     <main className="min-h-screen bg-slate-950 text-white">
       <div className="mx-auto max-w-5xl px-6 py-16">
 
@@ -107,6 +112,7 @@ function PrivacyPolicy() {
 
       </div>
     </main>
+    </>
   );
 }
 

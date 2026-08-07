@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -56,6 +56,11 @@ function TagsGenerator() {
   };
 
   return (
+    <> <SEO
+title="AI YouTube Tags Generator | TubeKit"
+description="Generate high ranking YouTube tags."
+url="/tools/tags-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Tags Generator"
@@ -86,6 +91,7 @@ function TagsGenerator() {
         }}
       />
     </ToolLayout>
+    </>
   );
 }
 

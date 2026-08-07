@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -62,7 +62,14 @@ function TitleGenerator() {
     }
   };
 
-  return (
+ return (
+  <>
+    <SEO
+      title="AI YouTube Title Generator | TubeKit"
+      description="Generate SEO optimized YouTube titles instantly."
+      url="/tools/title-generator"
+    />
+
     <ToolLayout>
       <ToolHeader
         title="AI Title Generator"
@@ -91,7 +98,7 @@ function TitleGenerator() {
         }}
       />
     </ToolLayout>
-  );
+  </>
+);
 }
-
 export default TitleGenerator;

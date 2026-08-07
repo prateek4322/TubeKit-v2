@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -46,6 +46,11 @@ function ScriptGenerator() {
   };
 
   return (
+    <> <SEO
+title="AI YouTube Script Generator | TubeKit"
+description="Generate complete YouTube scripts using AI."
+url="/tools/script-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Script Writer"
@@ -75,6 +80,7 @@ function ScriptGenerator() {
         }}
       />
     </ToolLayout>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -45,7 +45,12 @@ function ThumbnailDownloader() {
     },
   ];
 
-  return (
+  return ( 
+    <> <SEO
+title="YouTube Thumbnail Downloader | TubeKit"
+description="Download HD YouTube thumbnails."
+url="/tools/thumbnail-downloader"
+/>
     <ToolLayout>
       <ToolHeader
         title="YouTube Thumbnail Downloader"
@@ -118,6 +123,7 @@ function ThumbnailDownloader() {
         </div>
       )}
     </ToolLayout>
+    </>
   );
 }
 

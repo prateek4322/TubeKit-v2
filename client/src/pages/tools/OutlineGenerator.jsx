@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -40,6 +40,11 @@ function OutlineGenerator() {
   };
 
   return (
+    <> <SEO
+  title="AI YouTube Outline Generator | TubeKit"
+  description="Generate structured outlines for YouTube videos with AI in seconds."
+  url="/tools/outline-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Outline Generator"
@@ -66,6 +71,7 @@ function OutlineGenerator() {
         onRegenerate={() => lastFormData && handleGenerate(lastFormData)}
       />
     </ToolLayout>
+    </>
   );
 }
 

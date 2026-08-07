@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "@/services/api";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
@@ -56,6 +56,11 @@ function HashtagGenerator() {
   };
 
   return (
+    <> <SEO
+  title="AI YouTube Hashtag Generator | TubeKit"
+  description="Generate trending and SEO-friendly YouTube hashtags instantly using AI."
+  url="/tools/hashtag-generator"
+/>
     <ToolLayout>
       <ToolHeader
         title="AI Hashtag Generator"
@@ -86,6 +91,7 @@ function HashtagGenerator() {
         }}
       />
     </ToolLayout>
+    </>
   );
 }
 

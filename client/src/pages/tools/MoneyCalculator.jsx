@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
@@ -36,6 +36,11 @@ function MoneyCalculator() {
   const symbol = currency === "USD" ? "$" : "₹";
 
   return (
+    <> <SEO
+title="YouTube Money Calculator | TubeKit"
+description="Estimate YouTube earnings."
+url="/tools/money-calculator"
+/>
     <ToolLayout>
       <ToolHeader
         title="YouTube Money Calculator"
@@ -131,6 +136,7 @@ function MoneyCalculator() {
         </div>
       )}
     </ToolLayout>
+    </>
   );
 }
 
