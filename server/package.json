@@ -1,0 +1,33 @@
+{
+  "name": "tubekit-server",
+  "version": "1.0.0",
+  "description": "Backend for TubeKit AI SaaS",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "tubekit",
+    "nodejs",
+    "express",
+    "mongodb",
+    "jwt"
+  ],
+  "author": "Prateek Kumar",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.15.0",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

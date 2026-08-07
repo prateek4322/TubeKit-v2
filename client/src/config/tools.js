@@ -1,0 +1,133 @@
+const tools = [
+  {
+    id: "title-generator",
+    name: "AI Title Generator",
+    icon: "🤖",
+    category: "AI",
+    featured: true,
+    popular: true,
+    route: "/tools/title-generator",
+    description: "Generate viral YouTube titles instantly.",
+  },
+
+  {
+    id: "description-generator",
+    name: "AI Description Generator",
+    icon: "📝",
+    category: "AI",
+    featured: true,
+    popular: true,
+    route: "/tools/description-generator",
+    description: "Create engaging YouTube descriptions.",
+  },
+
+  {
+    id: "tags-generator",
+    name: "AI Tags Generator",
+    icon: "🏷️",
+    category: "AI",
+    featured: true,
+    popular: true,
+    route: "/tools/tags-generator",
+    description: "Generate SEO-friendly YouTube tags.",
+  },
+
+  {
+    id: "hashtag-generator",
+    name: "AI Hashtag Generator",
+    icon: "#️⃣",
+    category: "AI",
+    featured: true,
+    popular: true,
+    route: "/tools/hashtag-generator",
+    description: "Generate trending YouTube hashtags.",
+  },
+
+  {
+    id: "keyword-generator",
+    name: "AI Keyword Generator",
+    icon: "🔍",
+    category: "AI",
+    featured: true,
+    popular: true,
+    route: "/tools/keyword-generator",
+    description: "Generate SEO keywords.",
+  },
+
+  {
+    id: "script-generator",
+    name: "AI Script Writer",
+    icon: "📜",
+    category: "AI",
+    featured: true,
+    popular: false,
+    route: "/tools/script-generator",
+    description: "Generate complete YouTube scripts.",
+  },
+
+  {
+    id: "thumbnail-generator",
+    name: "Thumbnail Ideas",
+    icon: "🎨",
+    category: "AI",
+    featured: true,
+    popular: false,
+    route: "/tools/thumbnail-generator",
+    description: "Generate thumbnail ideas.",
+  },
+
+  {
+    id: "hook-generator",
+    name: "Hook Generator",
+    icon: "🎯",
+    category: "AI",
+    featured: false,
+    popular: false,
+    route: "/tools/hook-generator",
+    description: "Generate engaging hooks.",
+  },
+
+  {
+    id: "outline-generator",
+    name: "Outline Generator",
+    icon: "📑",
+    category: "AI",
+    featured: false,
+    popular: false,
+    route: "/tools/outline-generator",
+    description: "Generate video outlines.",
+  },
+
+  {
+    id: "money-calculator",
+    name: "Money Calculator",
+    icon: "💰",
+    category: "Calculator",
+    featured: true,
+    popular: true,
+    route: "/tools/money-calculator",
+    description: "Estimate YouTube earnings.",
+  },
+{
+  id: "script-generator",
+  name: "AI Script Writer",
+  icon: "📜",
+  category: "AI",
+  featured: true,
+  popular: true,
+  route: "/tools/script-generator",
+  description: "Generate complete YouTube video scripts.",
+},
+  {
+    id: "monetization-checker",
+    name: "Monetization Checker",
+    icon: "📈",
+    category: "Calculator",
+    featured: true,
+    popular: true,
+    route: "/tools/monetization-checker",
+    description: "Check monetization eligibility.",
+  },
+];
+
+export default tools;

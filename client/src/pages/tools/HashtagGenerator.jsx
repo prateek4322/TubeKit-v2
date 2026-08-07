@@ -1,0 +1,92 @@
+import { useState } from "react";
+import api from "@/services/api";
+
+import ToolLayout from "@/components/tool-layout/ToolLayout";
+import ToolHeader from "@/components/tool-layout/ToolHeader";
+import ToolForm from "@/components/tool-layout/ToolForm";
+import ToolOutput from "@/components/tool-layout/ToolOutput";
+
+function HashtagGenerator() {
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
+  const [lastFormData, setLastFormData] = useState(null);
+
+  const handleGenerate = async (formData) => {
+    try {
+      setLoading(true);
+      setLastFormData(formData);
+
+      const response = await api.post("/generate", {
+        tool: "hashtag-generator",
+        ...formData,
+      });
+
+      if (response.data.success) {
+        const hashtags = response.data.data
+          .split("\n")
+          .map((item) => item.trim())
+          .filter(Boolean);
+
+        setResults(hashtags);
+      } else {
+        setResults([]);
+      }
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+          "Failed to generate hashtags"
+      );
+
+      setResults([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const copyHashtag = async (text) => {
+    await navigator.clipboard.writeText(text);
+    alert("Copied!");
+  };
+
+  const copyAll = async () => {
+    await navigator.clipboard.writeText(results.join("\n"));
+    alert("All hashtags copied!");
+  };
+
+  return (
+    <ToolLayout>
+      <ToolHeader
+        title="AI Hashtag Generator"
+        description="Generate trending YouTube hashtags instantly."
+      />
+
+      <ToolForm
+        onGenerate={handleGenerate}
+        loading={loading}
+        config={{
+          buttonText: "Generate Hashtags",
+          topicLabel: "Video Topic",
+          topicPlaceholder: "Example: React JS Tutorial",
+          showTone: false,
+          showCount: false,
+        }}
+      />
+
+      <ToolOutput
+        results={results}
+        loading={loading}
+        onCopy={copyHashtag}
+        onCopyAll={copyAll}
+        onRegenerate={() => {
+          if (lastFormData) {
+            handleGenerate(lastFormData);
+          }
+        }}
+      />
+    </ToolLayout>
+  );
+}
+
+export default HashtagGenerator;
