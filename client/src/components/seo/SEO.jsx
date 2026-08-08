@@ -9,7 +9,22 @@ function SEO({
 }) {
   return (
     <Helmet>
-
+<script type="application/ld+json">
+{JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "TubeKit",
+  url: "https://tubekitapp.in",
+  description:
+    "Free AI YouTube tools for creators.",
+  potentialAction: {
+    "@type": "SearchAction",
+    target:
+      "https://tubekitapp.in/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+})}
+</script>
       <title>{title}</title>
 
       <meta
