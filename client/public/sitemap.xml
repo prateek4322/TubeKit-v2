@@ -78,5 +78,63 @@
   <url>
     <loc>https://tubekitapp.in/tools/thumbnail-downloader</loc>
   </url>
+<url>
+  <loc>https://tubekitapp.in/blog/how-to-write-youtube-titles-that-get-more-clicks</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
 
+<url>
+  <loc>https://tubekitapp.in/blog/how-to-write-youtube-description-for-seo</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/best-youtube-seo-tools-for-creators</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/how-to-find-youtube-keywords</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/how-to-get-more-views-on-youtube</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/youtube-cpm-vs-rpm</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/how-youtube-monetization-works</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/how-to-create-better-youtube-thumbnails</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/youtube-shorts-ideas-for-beginners</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
+
+<url>
+  <loc>https://tubekitapp.in/blog/how-to-write-a-youtube-video-script</loc>
+  <changefreq>monthly</changefreq>
+  <priority>0.8</priority>
+</url>
 </urlset>
