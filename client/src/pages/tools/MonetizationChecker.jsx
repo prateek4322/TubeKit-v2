@@ -152,6 +152,138 @@ url="/tools/monetization-checker"
 
         </div>
       )}
+      <section className="mt-12 space-y-10">
+  <div>
+    <h2 className="text-2xl font-bold">
+      How to Use the YouTube Monetization Checker
+    </h2>
+
+    <p className="mt-3 text-muted-foreground">
+      TubeKit's YouTube Monetization Checker helps creators review
+      publicly available channel information and understand whether a
+      channel may meet common monetization requirements. Enter the
+      requested channel information and review the result.
+    </p>
+
+    <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
+      <li>Enter the requested YouTube channel information.</li>
+      <li>Click the Check Monetization button.</li>
+      <li>Wait for the tool to analyze the available information.</li>
+      <li>Review the result and any displayed requirements.</li>
+      <li>Check YouTube's official policies before making a monetization decision.</li>
+    </ol>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      What Is YouTube Monetization?
+    </h2>
+
+    <p className="mt-3 text-muted-foreground">
+      YouTube monetization allows eligible creators to earn revenue from
+      certain features and content on YouTube. Eligibility depends on
+      YouTube's current policies and requirements, which can change over
+      time.
+    </p>
+
+    <p className="mt-3 text-muted-foreground">
+      A third-party checker can provide an estimate or informational
+      assessment, but it cannot guarantee approval for the YouTube
+      Partner Program.
+    </p>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      Factors Related to YouTube Monetization
+    </h2>
+
+    <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
+      <li>Channel and content eligibility.</li>
+      <li>Compliance with YouTube's monetization policies.</li>
+      <li>Required subscriber and watch-time or Shorts-view thresholds.</li>
+      <li>Originality and value of published content.</li>
+      <li>Compliance with copyright and community guidelines.</li>
+      <li>Availability of monetization features in the creator's region.</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      YouTube Monetization Checker Features
+    </h2>
+
+    <ul className="mt-5 grid gap-3 sm:grid-cols-2 text-muted-foreground">
+      <li>✓ Channel eligibility assessment</li>
+      <li>✓ Easy-to-use checker</li>
+      <li>✓ Quick results</li>
+      <li>✓ Monetization information</li>
+      <li>✓ Useful for creators</li>
+      <li>✓ Free to use</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="mt-6 space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold">
+          Does the monetization checker guarantee YouTube approval?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          No. A third-party tool can only provide an informational
+          assessment. YouTube makes the final eligibility and approval
+          decisions.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          What is required for YouTube monetization?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          Requirements depend on the monetization feature and YouTube's
+          current Partner Program policies. Always verify the latest
+          requirements through YouTube's official resources.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          Can a channel be rejected even after meeting the thresholds?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          Meeting numerical thresholds does not by itself guarantee
+          approval. Channels must also satisfy applicable YouTube
+          policies and content requirements.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          Does YouTube monetization depend only on subscribers?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          No. Different monetization features have different eligibility
+          requirements, and policy compliance is also important.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          Is the TubeKit Monetization Checker free?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          TubeKit provides the Monetization Checker as a free tool for
+          creators.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
     </ToolLayout>
     </>
   );

@@ -135,6 +135,137 @@ url="/tools/money-calculator"
 
         </div>
       )}
+      <section className="mt-12 space-y-10">
+  <div>
+    <h2 className="text-2xl font-bold">
+      How to Use the YouTube Money Calculator
+    </h2>
+
+    <p className="mt-3 text-muted-foreground">
+      TubeKit's YouTube Money Calculator helps creators estimate potential
+      YouTube earnings using views and other available inputs. Enter the
+      required values, calculate the estimate, and use the result as a
+      general planning reference.
+    </p>
+
+    <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
+      <li>Enter your estimated YouTube views.</li>
+      <li>Enter the relevant earnings or rate information requested by the tool.</li>
+      <li>Click the Calculate button.</li>
+      <li>Review the estimated earnings.</li>
+      <li>Use the estimate for planning rather than as guaranteed income.</li>
+    </ol>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      How Does YouTube Revenue Work?
+    </h2>
+
+    <p className="mt-3 text-muted-foreground">
+      YouTube earnings can vary significantly between channels and videos.
+      Revenue may depend on factors such as monetized views, audience
+      location, advertiser demand, content category, ad formats, and
+      other monetization sources.
+    </p>
+
+    <p className="mt-3 text-muted-foreground">
+      Because these factors change over time, an online earnings
+      calculator can only provide an estimate. Actual revenue shown in
+      YouTube Analytics may be different.
+    </p>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      Factors That Can Affect YouTube Earnings
+    </h2>
+
+    <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
+      <li>Number of views and monetized playbacks.</li>
+      <li>Audience location and market.</li>
+      <li>Advertiser demand.</li>
+      <li>Video topic and audience.</li>
+      <li>Ad formats available for the content.</li>
+      <li>Seasonal changes in advertising demand.</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      YouTube Money Calculator Features
+    </h2>
+
+    <ul className="mt-5 grid gap-3 sm:grid-cols-2 text-muted-foreground">
+      <li>✓ Estimated YouTube earnings</li>
+      <li>✓ View-based calculations</li>
+      <li>✓ Simple calculator interface</li>
+      <li>✓ Quick results</li>
+      <li>✓ Useful for revenue planning</li>
+      <li>✓ Free to use</li>
+    </ul>
+  </div>
+
+  <div>
+    <h2 className="text-2xl font-bold">
+      Frequently Asked Questions
+    </h2>
+
+    <div className="mt-6 space-y-6">
+      <div>
+        <h3 className="text-lg font-semibold">
+          How much money can YouTube videos make?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          There is no fixed amount. Earnings vary depending on views,
+          monetized playbacks, audience, advertiser demand, content
+          category, and other factors.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          Does every YouTube view generate money?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          No. Not every view results in an ad impression or monetized
+          playback.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          Are the results from this calculator guaranteed?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          No. The calculator provides an estimate. Actual earnings can
+          differ because advertising and monetization conditions vary.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          What is the difference between CPM and RPM?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          CPM generally refers to the advertiser-side cost associated
+          with ad impressions, while RPM represents estimated revenue
+          per thousand views after applicable revenue-sharing factors.
+        </p>
+      </div>
+
+      <div>
+        <h3 className="text-lg font-semibold">
+          Is the TubeKit Money Calculator free?
+        </h3>
+        <p className="mt-2 text-muted-foreground">
+          TubeKit provides the Money Calculator as a free tool for
+          creators.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
     </ToolLayout>
     </>
   );
