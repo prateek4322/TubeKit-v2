@@ -5,7 +5,7 @@ import NotFound from "@/pages/NotFound";
 import Home from "@/pages/Home";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
-import Blog from "@/pages/Blog";
+import Blog from "@/pages/blog/Blog";
  import VideoIdExtractor from "@/pages/tools/VideoIdExtractor";
 import TitleGenerator from "@/pages/tools/TitleGenerator";
 import DescriptionGenerator from "@/pages/tools/DescriptionGenerator";
@@ -28,6 +28,8 @@ import Terms from "@/pages/Terms";
 import Disclaimer from "@/pages/Disclaimer";
 import CookiePolicy from "@/pages/CookiePolicy";
 import FAQ from "@/pages/FAQ";
+
+import BlogPost from "@/pages/blog/BlogPost";
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -38,6 +40,7 @@ function AppRoutes() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/faq" element={<FAQ />} />
+          
 <Route
   path="/tools/video-id-extractor"
   element={<VideoIdExtractor />}
@@ -45,6 +48,7 @@ function AppRoutes() {
   path="*"
   element={<NotFound />}
 />
+<Route path="/blog" element={<Blog />} />
 <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 <Route path="/terms" element={<Terms />} />
 <Route path="/disclaimer" element={<Disclaimer />} />
@@ -73,6 +77,7 @@ function AppRoutes() {
   path="/tools/thumbnail-generator"
   element={<ThumbnailGenerator />}
 />
+<Route path="/blog/:slug" element={<BlogPost />} />
 <Route
   path="/tools/cpm-calculator"
   element={<CPMCalculator />}
