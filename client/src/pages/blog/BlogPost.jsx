@@ -19,11 +19,12 @@ function BlogPost() {
   if (!post) {
     return (
       <>
-        <SEO
-          title="Blog Post Not Found | TubeKit"
-          description="The requested TubeKit blog article could not be found."
-          url={`/blog/${slug || ""}`}
-        />
+       <SEO
+  title={post.title}
+  description={post.description}
+  url={`/blog/${post.slug}`}
+  schema={articleSchema}
+/>
 
         <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6">
           <div className="text-center">
@@ -46,7 +47,32 @@ function BlogPost() {
       </>
     );
   }
-
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.title,
+  description: post.description,
+  image: post.image
+    ? `https://tubekitapp.in${post.image}`
+    : "https://tubekitapp.in/og-image.png",
+  url: `https://tubekitapp.in/blog/${post.slug}`,
+  datePublished: post.date,
+  dateModified: post.date,
+  author: {
+    "@type": "Organization",
+    name: "TubeKit",
+    url: "https://tubekitapp.in",
+  },
+  publisher: {
+    "@type": "Organization",
+    name: "TubeKit",
+    url: "https://tubekitapp.in",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://tubekitapp.in/og-image.png",
+    },
+  },
+};
   return (
     <>
       <SEO
