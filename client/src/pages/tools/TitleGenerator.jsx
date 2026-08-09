@@ -6,43 +6,46 @@ import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 import ToolOutput from "@/components/tool-layout/ToolOutput";
 
-function TitleGenerator() {
+function TitleGenerator({ query = "" }) {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [lastFormData, setLastFormData] = useState(null);
+const handleGenerate = async (formData) => {
+  try {
+    setLoading(true);
+    setLastFormData(formData);
 
-  const handleGenerate = async (formData) => {
-    try {
-      setLoading(true);
-      setLastFormData(formData);
+    const response = await api.post("/generate", {
+      tool: "title-generator",
+      ...formData,
+    });
 
-      const response = await api.post("/generate", {
-        tool: "title-generator",
-        ...formData,
-      });
+    if (response.data.success) {
+      const titles = response.data.data
+        .split("\n")
+        .map((item) => item.trim())
+        .filter(Boolean);
 
-      if (response.data.success) {
-        const titles = response.data.data
-          .split("\n")
-          .filter((item) => item.trim());
-
-        setResults(titles);
-      } else {
-        setResults([]);
-      }
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        error.response?.data?.message ||
-          "Failed to generate titles"
-      );
-
+      setResults(titles);
+    } else {
       setResults([]);
-    } finally {
-      setLoading(false);
     }
-  };
+  } catch (error) {
+    console.error("TITLE GENERATOR ERROR:", error);
+    console.error("RESPONSE:", error.response);
+    console.error("REQUEST:", error.request);
+
+    alert(
+      error.response?.data?.message ||
+        error.message ||
+        "Failed to generate titles"
+    );
+
+    setResults([]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const copyTitle = async (text) => {
     try {
@@ -76,15 +79,17 @@ function TitleGenerator() {
         description="Generate viral, clickable and SEO-optimized YouTube titles in seconds."
       />
 
-      <ToolForm
-        onGenerate={handleGenerate}
-        loading={loading}
-        config={{
-          buttonText: "Generate Titles",
-          topicLabel: "Video Topic",
-          topicPlaceholder: "Example: How to Grow on YouTube",
-        }}
-      />
+     <ToolForm
+  onGenerate={handleGenerate}
+  loading={loading}
+  config={{
+    buttonText: "Generate Titles",
+    topicLabel: "Video Topic",
+    topicPlaceholder: "Example: How to Grow on YouTube",
+    initialTopic: query,
+  }}
+/>
+  
 
       <ToolOutput
         results={results}

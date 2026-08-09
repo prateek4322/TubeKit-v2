@@ -6,7 +6,7 @@ import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 import ToolOutput from "@/components/tool-layout/ToolOutput";
 
-function TagsGenerator() {
+function TagsGenerator({ query = "" }) {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [lastFormData, setLastFormData] = useState(null);
@@ -32,11 +32,14 @@ function TagsGenerator() {
         setResults([]);
       }
     } catch (error) {
-      console.error(error);
+      console.error("TAGS GENERATOR ERROR:", error);
+      console.error("RESPONSE:", error.response);
+      console.error("REQUEST:", error.request);
 
       alert(
         error.response?.data?.message ||
-        "Failed to generate tags"
+          error.message ||
+          "Failed to generate tags"
       );
 
       setResults([]);
@@ -46,187 +49,212 @@ function TagsGenerator() {
   };
 
   const copyTag = async (text) => {
-    await navigator.clipboard.writeText(text);
-    alert("Copied!");
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("Copied!");
+    } catch (error) {
+      console.error("COPY ERROR:", error);
+    }
   };
 
   const copyAll = async () => {
-    await navigator.clipboard.writeText(results.join(", "));
-    alert("All tags copied!");
+    try {
+      await navigator.clipboard.writeText(results.join(", "));
+      alert("All tags copied!");
+    } catch (error) {
+      console.error("COPY ALL ERROR:", error);
+    }
   };
 
   return (
-    <> <SEO
-title="AI YouTube Tags Generator | TubeKit"
-description="Generate high ranking YouTube tags."
-url="/tools/tags-generator"
-/>
-    <ToolLayout>
-      <ToolHeader
-        title="AI Tags Generator"
-        description="Generate SEO-friendly YouTube tags instantly."
-      />
+    <>
+      <ToolLayout>
+        <ToolHeader
+          title="AI Tags Generator"
+          description="Generate relevant and SEO-friendly YouTube tags based on your video topic."
+        />
 
-      <ToolForm
-        onGenerate={handleGenerate}
-        loading={loading}
-        config={{
-          buttonText: "Generate Tags",
-          topicLabel: "Video Topic",
-          topicPlaceholder: "Example: React JS Tutorial",
-          showCount: false,
-          showTone: false,
-        }}
-      />
+        <ToolForm
+          onGenerate={handleGenerate}
+          loading={loading}
+          config={{
+            buttonText: "Generate Tags",
+            topicLabel: "Video Topic",
+            topicPlaceholder: "Example: React JS Tutorial",
+            initialTopic: query,
+            showCount: false,
+            showTone: false,
+          }}
+        />
 
-      <ToolOutput
-        results={results}
-        loading={loading}
-        onCopy={copyTag}
-        onCopyAll={copyAll}
-        onRegenerate={() => {
-          if (lastFormData) {
-            handleGenerate(lastFormData);
-          }
-        }}
-      />
-      <section className="mt-12 space-y-10">
-  {/* How to Use */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      How to Use the YouTube Tags Generator
-    </h2>
+        <ToolOutput
+          results={results}
+          loading={loading}
+          onCopy={copyTag}
+          onCopyAll={copyAll}
+          onRegenerate={() => {
+            if (lastFormData) {
+              handleGenerate(lastFormData);
+            }
+          }}
+        />
 
-    <p className="mt-3 text-muted-foreground">
-      TubeKit's AI YouTube Tags Generator helps creators find relevant tag
-      ideas based on their video topic. Enter your topic, generate tag
-      suggestions, review them, and select the ones that accurately
-      describe your video.
-    </p>
+        <section className="mt-12 space-y-10">
+          {/* How to Use */}
+          <div>
+            <h2 className="text-2xl font-bold">
+              How to Use the YouTube Tags Generator
+            </h2>
 
-    <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
-      <li>Enter your video's main topic.</li>
-      <li>Click the Generate Tags button.</li>
-      <li>Review the suggested tags.</li>
-      <li>Remove tags that are not relevant to your video.</li>
-      <li>Copy the useful tags and add them to your YouTube video.</li>
-    </ol>
-  </div>
+            <p className="mt-3 text-muted-foreground">
+              TubeKit's AI YouTube Tags Generator helps creators find
+              relevant tag ideas based on their video topic. Enter your
+              topic, generate tag suggestions, review them, and select
+              the ones that accurately describe your video.
+            </p>
 
-  {/* What Are YouTube Tags */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      What Are YouTube Tags?
-    </h2>
+            <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
+              <li>Enter your video's main topic.</li>
+              <li>Click the Generate Tags button.</li>
+              <li>Review the suggested tags.</li>
+              <li>Remove tags that are not relevant to your video.</li>
+              <li>
+                Copy the useful tags and add them to your YouTube video.
+              </li>
+            </ol>
+          </div>
 
-    <p className="mt-3 text-muted-foreground">
-      YouTube tags are words or phrases that can describe the topic of a
-      video. They can help provide additional context about your content,
-      although tags are only one part of YouTube's overall discovery
-      system.
-    </p>
+          {/* What Are YouTube Tags */}
+          <div>
+            <h2 className="text-2xl font-bold">
+              What Are YouTube Tags?
+            </h2>
 
-    <p className="mt-3 text-muted-foreground">
-      The most useful tags are closely related to the actual content of
-      the video. Avoid adding unrelated or misleading tags simply because
-      they appear popular.
-    </p>
-  </div>
+            <p className="mt-3 text-muted-foreground">
+              YouTube tags are words or phrases that can describe the
+              topic of a video. They can help provide additional context
+              about your content, although tags are only one part of
+              YouTube's overall discovery system.
+            </p>
 
-  {/* Features */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      YouTube Tags Generator Features
-    </h2>
+            <p className="mt-3 text-muted-foreground">
+              The most useful tags are closely related to the actual
+              content of the video. Avoid adding unrelated or misleading
+              tags simply because they appear popular.
+            </p>
+          </div>
 
-    <ul className="mt-5 grid gap-3 sm:grid-cols-2 text-muted-foreground">
-      <li>✓ AI-generated tag suggestions</li>
-      <li>✓ Topic-based tags</li>
-      <li>✓ Relevant keyword ideas</li>
-      <li>✓ Easy copy functionality</li>
-      <li>✓ Multiple tag variations</li>
-      <li>✓ Free to use</li>
-    </ul>
-  </div>
+          {/* Features */}
+          <div>
+            <h2 className="text-2xl font-bold">
+              Features
+            </h2>
 
-  {/* Tips */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      Tips for Choosing Better YouTube Tags
-    </h2>
+            <ul className="mt-5 grid gap-3 text-muted-foreground sm:grid-cols-2">
+              <li>✓ AI-generated tag suggestions</li>
+              <li>✓ Topic-based tags</li>
+              <li>✓ Relevant keyword ideas</li>
+              <li>✓ Easy copy functionality</li>
+              <li>✓ Multiple tag variations</li>
+              <li>✓ Free to use</li>
+            </ul>
+          </div>
 
-    <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
-      <li>Choose tags that accurately describe your video.</li>
-      <li>Include relevant variations of your main topic.</li>
-      <li>Use specific phrases when they match the video's subject.</li>
-      <li>Avoid unrelated keywords and misleading tags.</li>
-      <li>Focus on relevance rather than adding a large number of tags.</li>
-    </ul>
-  </div>
+          {/* Tips */}
+          <div>
+            <h2 className="text-2xl font-bold">
+              Tips for Better YouTube Tags
+            </h2>
 
-  {/* FAQ */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      Frequently Asked Questions
-    </h2>
+            <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
+              <li>
+                Choose tags that accurately describe your video.
+              </li>
+              <li>
+                Include relevant variations of your main topic.
+              </li>
+              <li>
+                Use specific phrases when they match the video's subject.
+              </li>
+              <li>
+                Avoid unrelated keywords and misleading tags.
+              </li>
+              <li>
+                Focus on relevance rather than adding a large number of
+                tags.
+              </li>
+            </ul>
+          </div>
 
-    <div className="mt-6 space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold">
-          What is a YouTube tags generator?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          It is a tool that generates tag ideas based on the topic of a
-          YouTube video.
-        </p>
-      </div>
+          {/* FAQ */}
+          <div>
+            <h2 className="text-2xl font-bold">
+              Frequently Asked Questions
+            </h2>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Do YouTube tags help videos rank?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          Tags can provide additional context about a video's content,
-          but they are only one part of YouTube's discovery system.
-          Relevance, content quality, viewer satisfaction, titles,
-          thumbnails and other factors also matter.
-        </p>
-      </div>
+            <div className="mt-6 space-y-6">
+              <div>
+                <h3 className="text-lg font-semibold">
+                  What is a YouTube tags generator?
+                </h3>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          How many YouTube tags should I use?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          There is no universal number that works for every video.
-          Choose relevant tags rather than adding unrelated keywords just
-          to increase the number of tags.
-        </p>
-      </div>
+                <p className="mt-2 text-muted-foreground">
+                  It is a tool that generates tag ideas based on the topic
+                  of a YouTube video.
+                </p>
+              </div>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Should YouTube tags match my video topic?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          Yes. Tags should be relevant to the actual subject and content
-          of your video.
-        </p>
-      </div>
+              <div>
+                <h3 className="text-lg font-semibold">
+                  Do YouTube tags help videos rank?
+                </h3>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Is the TubeKit YouTube Tags Generator free?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          TubeKit provides the YouTube Tags Generator as a free tool for
-          creators.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-    </ToolLayout>
+                <p className="mt-2 text-muted-foreground">
+                  Tags can provide additional context about a video's
+                  content, but they are only one part of YouTube's
+                  discovery system. Relevance, content quality, viewer
+                  satisfaction, titles, thumbnails and other factors also
+                  matter.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold">
+                  How many YouTube tags should I use?
+                </h3>
+
+                <p className="mt-2 text-muted-foreground">
+                  There is no universal number that works for every video.
+                  Choose relevant tags rather than adding unrelated
+                  keywords just to increase the number of tags.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold">
+                  Should YouTube tags match my video topic?
+                </h3>
+
+                <p className="mt-2 text-muted-foreground">
+                  Yes. Tags should be relevant to the actual subject and
+                  content of your video.
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold">
+                  Is the TubeKit YouTube Tags Generator free?
+                </h3>
+
+                <p className="mt-2 text-muted-foreground">
+                  TubeKit provides the YouTube Tags Generator as a free
+                  tool for creators.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </ToolLayout>
     </>
   );
 }

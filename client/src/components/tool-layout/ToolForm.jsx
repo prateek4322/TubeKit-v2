@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ToolForm({
   onGenerate,
@@ -9,15 +9,21 @@ function ToolForm({
     buttonText = "Generate",
     topicLabel = "Video Topic",
     topicPlaceholder = "Enter your topic...",
+    initialTopic = "",
     showTone = true,
     showLanguage = true,
     showCount = true,
   } = config;
 
-  const [topic, setTopic] = useState("");
+  const [topic, setTopic] = useState(initialTopic);
   const [language, setLanguage] = useState("English");
   const [tone, setTone] = useState("Professional");
   const [count, setCount] = useState(10);
+
+  // Hero se aayi query ko input mein set karega
+  useEffect(() => {
+    setTopic(initialTopic || "");
+  }, [initialTopic]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,11 +42,8 @@ function ToolForm({
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="rounded-3xl border border-slate-800 bg-slate-900 p-8"
-    >
-      <label className="mb-3 block font-semibold text-white">
+    <form onSubmit={handleSubmit}>
+      <label className="mb-2 block text-white">
         {topicLabel}
       </label>
 
@@ -53,7 +56,6 @@ function ToolForm({
       />
 
       <div className="grid gap-5 md:grid-cols-3">
-
         {showLanguage && (
           <div>
             <label className="mb-2 block text-white">
@@ -108,7 +110,6 @@ function ToolForm({
             </select>
           </div>
         )}
-
       </div>
 
       <button
