@@ -28,6 +28,8 @@ function ToolForm({
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (loading) return;
+
     if (!topic.trim()) {
       alert("Please enter a topic.");
       return;
@@ -43,6 +45,8 @@ function ToolForm({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
+
+      {/* Topic */}
       <div>
         <label className="mb-2 block text-white">
           {topicLabel}
@@ -58,7 +62,9 @@ function ToolForm({
         />
       </div>
 
+      {/* Options */}
       <div className="grid gap-5 md:grid-cols-3">
+
         {showLanguage && (
           <div>
             <label className="mb-2 block text-white">
@@ -128,23 +134,44 @@ function ToolForm({
       </button>
 
       {/* AI Loading Indicator */}
-      {loading && (
-        <div className="mt-4">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-sm text-slate-400">
-              AI is generating your results...
-            </span>
+     {loading && (
+  <div className="mt-4 overflow-hidden rounded-xl border border-slate-700/70 bg-slate-900/70 px-4 py-3 shadow-lg">
+    <div className="flex items-center gap-3">
+      
+      {/* Animated Loader */}
+      <div className="relative flex h-8 w-8 shrink-0 items-center justify-center">
+        <div className="absolute inset-0 animate-spin rounded-full border-2 border-slate-700 border-t-blue-400" />
 
-            <span className="text-xs text-slate-500">
-              Please wait
-            </span>
-          </div>
+        <div className="h-2 w-2 animate-pulse rounded-full bg-yellow-400" />
+      </div>
 
-          <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
-            <div className="h-full w-1/3 rounded-full bg-gradient-to-r from-red-500 via-yellow-400 via-green-500 to-blue-500 animate-[loading_1.5s_ease-in-out_infinite]" />
-          </div>
+      {/* Status Text */}
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-sm font-semibold text-white">
+            AI is generating your results
+            <span className="inline-flex w-5 overflow-hidden">
+              <span className="animate-pulse">...</span>
+            </span>
+          </p>
+
+          <span className="hidden text-xs text-slate-500 sm:block">
+            Please wait
+          </span>
         </div>
-      )}
+
+        <p className="mt-1 text-xs text-slate-400">
+          Analyzing your topic and creating the best results for you.
+        </p>
+      </div>
+    </div>
+
+    {/* Animated Progress Line */}
+    <div className="mt-3 h-1 overflow-hidden rounded-full bg-slate-800">
+      <div className="h-full w-1/3 animate-[loading_1.5s_ease-in-out_infinite] rounded-full bg-gradient-to-r from-red-500 via-yellow-400 via-green-500 to-blue-500" />
+    </div>
+  </div>
+)}
     </form>
   );
 }
