@@ -38,7 +38,7 @@ function Footer() {
 
               <li><Link to="/tools/tags-generator">Tags Generator</Link></li>
 
-              <li><Link to="/tools/script-writer">Script Writer</Link></li>
+              <li><Link to="/tools/hashtag-generator">Hashtag Generator</Link></li>
 
             </ul>
 
