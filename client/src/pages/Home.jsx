@@ -69,7 +69,12 @@ function Home() {
 
   return (
     <>
-      <SEO />
+      <SEO
+  title="TubeKit | Free AI Tools for YouTube Creators"
+  description="Free AI-powered YouTube tools for creators. Generate YouTube titles, descriptions, tags, hashtags, scripts, hooks, outlines and more with TubeKit."
+  keywords="TubeKit, YouTube AI tools, YouTube tools, YouTube SEO tools, AI YouTube tools"
+  canonical="/"
+/>
       <Schema />
 
       <Hero onToolSelect={handleToolSelect} />

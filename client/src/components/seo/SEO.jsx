@@ -2,29 +2,29 @@ import { Helmet } from "react-helmet-async";
 
 function SEO({
   title = "TubeKit | Free AI Tools for YouTube Creators",
-  description = "Free AI-powered YouTube tools including title generator, tags generator, script writer, monetization checker, thumbnail downloader and more.",
-  keywords = "TubeKit, YouTube AI Tools, YouTube SEO, AI Title Generator, Tags Generator, Script Writer",
+
+  description = "Free AI-powered YouTube tools for YouTube creators including title generator, description generator, tags generator, script writer, thumbnail tools and more.",
+
+  keywords = "TubeKit, YouTube AI Tools, YouTube SEO, AI Title Generator, YouTube Tags Generator",
+
   image = "/og-image.png",
-  url = "https://tubekit.in",
+
+  canonical = "/",
 }) {
+  const siteUrl = "https://tubekitapp.in";
+
+  const canonicalUrl = canonical.startsWith("http")
+    ? canonical
+    : `${siteUrl}${canonical}`;
+
+  const imageUrl = image.startsWith("http")
+    ? image
+    : `${siteUrl}${image}`;
+
   return (
     <Helmet>
-<script type="application/ld+json">
-{JSON.stringify({
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  name: "TubeKit",
-  url: "https://tubekitapp.in",
-  description:
-    "Free AI YouTube tools for creators.",
-  potentialAction: {
-    "@type": "SearchAction",
-    target:
-      "https://tubekitapp.in/search?q={search_term_string}",
-    "query-input": "required name=search_term_string"
-  }
-})}
-</script>
+      {/* Basic SEO */}
+
       <title>{title}</title>
 
       <meta
@@ -44,23 +44,40 @@ function SEO({
 
       <link
         rel="canonical"
-        href={url}
+        href={canonicalUrl}
       />
 
       {/* Open Graph */}
 
-      <meta property="og:type" content="website" />
+      <meta
+        property="og:type"
+        content="website"
+      />
 
-      <meta property="og:title" content={title} />
+      <meta
+        property="og:title"
+        content={title}
+      />
 
       <meta
         property="og:description"
         content={description}
       />
 
-      <meta property="og:image" content={image} />
+      <meta
+        property="og:url"
+        content={canonicalUrl}
+      />
 
-      <meta property="og:url" content={url} />
+      <meta
+        property="og:image"
+        content={imageUrl}
+      />
+
+      <meta
+        property="og:site_name"
+        content="TubeKit"
+      />
 
       {/* Twitter */}
 
@@ -81,9 +98,8 @@ function SEO({
 
       <meta
         name="twitter:image"
-        content={image}
+        content={imageUrl}
       />
-
     </Helmet>
   );
 }
