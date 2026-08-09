@@ -5,7 +5,7 @@ function Schema() {
 
     name: "TubeKit",
 
-    url: "https://tubekit.in",
+    url: "https://tubekitapp.in",
 
     description:
       "Free AI Tools for YouTube Creators.",
@@ -14,7 +14,7 @@ function Schema() {
       "@type": "SearchAction",
 
       target:
-        "https://tubekit.in/search?q={search_term_string}",
+        "https://tubekitapp.in/search?q={search_term_string}",
 
       "query-input":
         "required name=search_term_string",

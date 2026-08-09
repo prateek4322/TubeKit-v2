@@ -1,5 +1,10 @@
 import { Helmet } from "react-helmet-async";
 
+import Breadcrumb from "./Breadcrumb";
+import FAQSchema from "./FAQSchema";
+import Schema from "./Schema";
+import OrganizationSchema from "./OrganizationSchema";
+
 function SEO({
   title = "TubeKit | Free AI Tools for YouTube Creators",
 
@@ -10,6 +15,12 @@ function SEO({
   image = "/og-image.png",
 
   canonical = "/",
+
+  breadcrumbs = [],
+
+  faqs = [],
+
+  organization = false,
 }) {
   const siteUrl = "https://tubekitapp.in";
 
@@ -22,85 +33,121 @@ function SEO({
     : `${siteUrl}${image}`;
 
   return (
-    <Helmet>
-      {/* Basic SEO */}
+    <>
+      {/* =========================
+          BASIC SEO
+      ========================== */}
 
-      <title>{title}</title>
+      <Helmet>
+        <title>{title}</title>
 
-      <meta
-        name="description"
-        content={description}
-      />
+        <meta
+          name="description"
+          content={description}
+        />
 
-      <meta
-        name="keywords"
-        content={keywords}
-      />
+        <meta
+          name="keywords"
+          content={keywords}
+        />
 
-      <meta
-        name="robots"
-        content="index, follow"
-      />
+        <meta
+          name="robots"
+          content="index, follow"
+        />
 
-      <link
-        rel="canonical"
-        href={canonicalUrl}
-      />
+        <link
+          rel="canonical"
+          href={canonicalUrl}
+        />
 
-      {/* Open Graph */}
+        {/* =========================
+            OPEN GRAPH
+        ========================== */}
 
-      <meta
-        property="og:type"
-        content="website"
-      />
+        <meta
+          property="og:type"
+          content="website"
+        />
 
-      <meta
-        property="og:title"
-        content={title}
-      />
+        <meta
+          property="og:title"
+          content={title}
+        />
 
-      <meta
-        property="og:description"
-        content={description}
-      />
+        <meta
+          property="og:description"
+          content={description}
+        />
 
-      <meta
-        property="og:url"
-        content={canonicalUrl}
-      />
+        <meta
+          property="og:url"
+          content={canonicalUrl}
+        />
 
-      <meta
-        property="og:image"
-        content={imageUrl}
-      />
+        <meta
+          property="og:image"
+          content={imageUrl}
+        />
 
-      <meta
-        property="og:site_name"
-        content="TubeKit"
-      />
+        <meta
+          property="og:site_name"
+          content="TubeKit"
+        />
 
-      {/* Twitter */}
+        {/* =========================
+            TWITTER / X
+        ========================== */}
 
-      <meta
-        name="twitter:card"
-        content="summary_large_image"
-      />
+        <meta
+          name="twitter:card"
+          content="summary_large_image"
+        />
 
-      <meta
-        name="twitter:title"
-        content={title}
-      />
+        <meta
+          name="twitter:title"
+          content={title}
+        />
 
-      <meta
-        name="twitter:description"
-        content={description}
-      />
+        <meta
+          name="twitter:description"
+          content={description}
+        />
 
-      <meta
-        name="twitter:image"
-        content={imageUrl}
-      />
-    </Helmet>
+        <meta
+          name="twitter:image"
+          content={imageUrl}
+        />
+      </Helmet>
+
+      {/* =========================
+          WEBSITE SCHEMA
+      ========================== */}
+
+      <Schema />
+
+      {/* =========================
+          ORGANIZATION SCHEMA
+      ========================== */}
+
+      {organization && <OrganizationSchema />}
+
+      {/* =========================
+          BREADCRUMB
+      ========================== */}
+
+      {breadcrumbs.length > 0 && (
+        <Breadcrumb items={breadcrumbs} />
+      )}
+
+      {/* =========================
+          FAQ SCHEMA
+      ========================== */}
+
+      {faqs.length > 0 && (
+        <FAQSchema faqs={faqs} />
+      )}
+    </>
   );
 }
 
