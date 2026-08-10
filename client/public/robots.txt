@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tubekitapp.in/sitemap.xml
+Sitemap: https://www.tubekitapp.in/sitemap.xml

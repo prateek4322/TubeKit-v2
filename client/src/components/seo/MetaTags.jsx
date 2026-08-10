@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-const SITE_URL = "https://tubekit.com";
+const SITE_URL = "https://www.tubekitapp.in";
 const SITE_NAME = "TubeKit";
 
 function MetaTags({

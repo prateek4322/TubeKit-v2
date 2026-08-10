@@ -6,9 +6,9 @@ function OrganizationSchema() {
 
     name: "TubeKit",
 
-    url: "https://tubekitapp.in",
+    url: "https://www.tubekitapp.in",
 
-    logo: "https://tubekitapp.in/logo.png",
+    logo: "https://www.tubekitapp.in/logo.png",
 
     sameAs: [],
   };

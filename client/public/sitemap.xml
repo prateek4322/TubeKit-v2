@@ -3,138 +3,142 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://tubekitapp.in/</loc>
+    <loc>https://www.tubekitapp.in/</loc>
     <priority>1.0</priority>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/about</loc>
+    <loc>https://www.tubekitapp.in/about</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/contact</loc>
+    <loc>https://www.tubekitapp.in/contact</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/faq</loc>
+    <loc>https://www.tubekitapp.in/faq</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/privacy-policy</loc>
+    <loc>https://www.tubekitapp.in/privacy-policy</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/terms</loc>
+    <loc>https://www.tubekitapp.in/terms</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/disclaimer</loc>
+    <loc>https://www.tubekitapp.in/disclaimer</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/cookie-policy</loc>
+    <loc>https://www.tubekitapp.in/cookie-policy</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/title-generator</loc>
+    <loc>https://www.tubekitapp.in/tools/title-generator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/description-generator</loc>
+    <loc>https://www.tubekitapp.in/tools/description-generator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/tags-generator</loc>
+    <loc>https://www.tubekitapp.in/tools/tags-generator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/script-generator</loc>
+    <loc>https://www.tubekitapp.in/tools/script-generator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/money-calculator</loc>
+    <loc>https://www.tubekitapp.in/tools/money-calculator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/monetization-checker</loc>
+    <loc>https://www.tubekitapp.in/tools/monetization-checker</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/cpm-calculator</loc>
+    <loc>https://www.tubekitapp.in/tools/cpm-calculator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/rpm-calculator</loc>
+    <loc>https://www.tubekitapp.in/tools/rpm-calculator</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/channel-id-finder</loc>
+    <loc>https://www.tubekitapp.in/tools/channel-id-finder</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/video-id-extractor</loc>
+    <loc>https://www.tubekitapp.in/tools/video-id-extractor</loc>
   </url>
 
   <url>
-    <loc>https://tubekitapp.in/tools/thumbnail-downloader</loc>
+    <loc>https://www.tubekitapp.in/tools/thumbnail-downloader</loc>
   </url>
-<url>
-  <loc>https://tubekitapp.in/blog/how-to-write-youtube-titles-that-get-more-clicks</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/how-to-write-youtube-description-for-seo</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <!-- Blog -->
 
-<url>
-  <loc>https://tubekitapp.in/blog/best-youtube-seo-tools-for-creators</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-to-write-youtube-titles-that-get-more-clicks</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/how-to-find-youtube-keywords</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-to-write-youtube-description-for-seo</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/how-to-get-more-views-on-youtube</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/best-youtube-seo-tools-for-creators</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/youtube-cpm-vs-rpm</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-to-find-youtube-keywords</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/how-youtube-monetization-works</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-to-get-more-views-on-youtube</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/how-to-create-better-youtube-thumbnails</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/youtube-cpm-vs-rpm</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/youtube-shorts-ideas-for-beginners</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-youtube-monetization-works</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
-<url>
-  <loc>https://tubekitapp.in/blog/how-to-write-a-youtube-video-script</loc>
-  <changefreq>monthly</changefreq>
-  <priority>0.8</priority>
-</url>
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-to-create-better-youtube-thumbnails</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/blog/youtube-shorts-ideas-for-beginners</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/blog/how-to-write-a-youtube-video-script</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

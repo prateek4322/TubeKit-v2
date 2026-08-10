@@ -22,7 +22,7 @@ function SEO({
 
   organization = false,
 }) {
-  const siteUrl = "https://tubekitapp.in";
+  const siteUrl = "https://www.tubekitapp.in";
 
   const canonicalUrl = canonical.startsWith("http")
     ? canonical
