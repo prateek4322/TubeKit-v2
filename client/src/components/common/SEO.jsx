@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 
 const SITE_NAME = "TubeKit";
-const SITE_URL = "https://tubekitapp.in";
+const SITE_URL = "https://www.tubekitapp.in";
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.png`;
 
 function SEO({

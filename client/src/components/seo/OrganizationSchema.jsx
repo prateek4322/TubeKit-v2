@@ -8,7 +8,7 @@ function OrganizationSchema() {
 
     url: "https://www.tubekitapp.in",
 
-    logo: "https://www.tubekitapp.in/logo.png",
+    logo: "https://www.tubekitapp.in/tubekit-logo.png",
 
     sameAs: [],
   };
