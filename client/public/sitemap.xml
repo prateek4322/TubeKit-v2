@@ -2,11 +2,13 @@
 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+  <!-- Homepage -->
   <url>
     <loc>https://www.tubekitapp.in/</loc>
     <priority>1.0</priority>
   </url>
 
+  <!-- Main Pages -->
   <url>
     <loc>https://www.tubekitapp.in/about</loc>
   </url>
@@ -34,6 +36,9 @@
   <url>
     <loc>https://www.tubekitapp.in/cookie-policy</loc>
   </url>
+
+
+  <!-- 17 Tools -->
 
   <url>
     <loc>https://www.tubekitapp.in/tools/title-generator</loc>
@@ -78,6 +83,31 @@
   <url>
     <loc>https://www.tubekitapp.in/tools/thumbnail-downloader</loc>
   </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/tools/hashtag-generator</loc>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/tools/hook-generator</loc>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/tools/keyword-generator</loc>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/tools/outline-generator</loc>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/tools/shorts-generator</loc>
+  </url>
+
+  <url>
+    <loc>https://www.tubekitapp.in/tools/thumbnail-generator</loc>
+  </url>
+
 
   <!-- Blog -->
 
