@@ -21,6 +21,10 @@ function SEO({
   faqs = [],
 
   organization = false,
+
+  schema = null,
+
+  type = "website",
 }) {
   const siteUrl = "https://www.tubekitapp.in";
 
@@ -34,11 +38,11 @@ function SEO({
 
   return (
     <>
-      {/* =========================
-          BASIC SEO
-      ========================== */}
-
       <Helmet>
+        {/* =========================
+            BASIC SEO
+        ========================== */}
+
         <title>{title}</title>
 
         <meta
@@ -67,7 +71,7 @@ function SEO({
 
         <meta
           property="og:type"
-          content="website"
+          content={type}
         />
 
         <meta
@@ -118,6 +122,16 @@ function SEO({
           name="twitter:image"
           content={imageUrl}
         />
+
+        {/* =========================
+            CUSTOM JSON-LD SCHEMA
+        ========================== */}
+
+        {schema && (
+          <script type="application/ld+json">
+            {JSON.stringify(schema)}
+          </script>
+        )}
       </Helmet>
 
       {/* =========================
