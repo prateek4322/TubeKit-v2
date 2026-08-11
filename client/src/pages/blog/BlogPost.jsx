@@ -14,6 +14,10 @@ import ThumbnailGuide from "./posts/ThumbnailGuide";
 import ShortsGuide from "./posts/ShortsGuide";
 import ScriptGuide from "./posts/ScriptGuide";
 import ShortsViralGuide from "./posts/ShortsViralGuide";
+import SubscribersGuide from "./posts/SubscribersGuide";
+import WatchTimeGuide from "./posts/WatchTimeGuide";
+import CTRGuide from "./posts/CTRGuide";
+import YoutubeSEO2026Guide from "./posts/YoutubeSEO2026Guide";
 
 function BlogPost() {
   const { slug } = useParams();
@@ -262,6 +266,21 @@ function BlogPost() {
               "how-to-make-youtube-shorts-viral" && (
               <ShortsViralGuide />
             )}
+{post.slug === "how-to-get-more-subscribers-on-youtube" && (
+  <SubscribersGuide />
+)}
+
+{post.slug === "how-to-increase-youtube-watch-time" && (
+  <WatchTimeGuide />
+)}
+
+{post.slug === "how-to-increase-youtube-ctr" && (
+  <CTRGuide />
+)}
+
+{post.slug === "youtube-seo-guide-2026" && (
+  <YoutubeSEO2026Guide />
+)}
 
           </div>
 

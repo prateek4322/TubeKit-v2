@@ -211,6 +211,86 @@ const blogPosts = [
     "YouTube Shorts hashtags",
   ],
 },
+{
+  id: 12,
+  slug: "how-to-get-more-subscribers-on-youtube",
+  title: "How to Get More Subscribers on YouTube in 2026",
+  description:
+    "Learn how to get more subscribers on YouTube with practical strategies for better content, titles, thumbnails, Shorts and audience retention.",
+  category: "YouTube Growth",
+  author: "TubeKit",
+  date: "2026-08-11",
+  readTime: "9 min read",
+  image: "/blog/youtube-subscribers.jpg",
+  keywords: [
+    "how to get subscribers on YouTube",
+    "how to get more subscribers on YouTube",
+    "YouTube channel growth",
+    "YouTube subscribers",
+    "how to grow YouTube channel",
+  ],
+},
+
+{
+  id: 13,
+  slug: "how-to-increase-youtube-watch-time",
+  title: "How to Increase YouTube Watch Time and Audience Retention",
+  description:
+    "Learn how to increase YouTube watch time and audience retention with better hooks, scripts, video structure and viewer-focused content.",
+  category: "YouTube Growth",
+  author: "TubeKit",
+  date: "2026-08-11",
+  readTime: "9 min read",
+  image: "/blog/youtube-watch-time.jpg",
+  keywords: [
+    "how to increase YouTube watch time",
+    "YouTube watch time",
+    "YouTube audience retention",
+    "how to increase audience retention",
+    "YouTube retention",
+  ],
+},
+
+{
+  id: 14,
+  slug: "how-to-increase-youtube-ctr",
+  title: "YouTube CTR: How to Increase Click-Through Rate in 2026",
+  description:
+    "Learn what YouTube CTR means and how better titles and thumbnails can improve your video's click-through rate.",
+  category: "YouTube SEO",
+  author: "TubeKit",
+  date: "2026-08-11",
+  readTime: "8 min read",
+  image: "/blog/youtube-ctr.jpg",
+  keywords: [
+    "YouTube CTR",
+    "how to increase YouTube CTR",
+    "YouTube click through rate",
+    "YouTube thumbnail CTR",
+    "how to get more clicks on YouTube",
+  ],
+},
+
+{
+  id: 15,
+  slug: "youtube-seo-guide-2026",
+  title: "YouTube SEO in 2026: Complete Guide to Rank Videos Higher",
+  description:
+    "Learn YouTube SEO in 2026 with practical strategies for keywords, titles, descriptions, thumbnails, tags, search intent and analytics.",
+  category: "YouTube SEO",
+  author: "TubeKit",
+  date: "2026-08-11",
+  readTime: "12 min read",
+  image: "/blog/youtube-seo-2026.jpg",
+  keywords: [
+    "YouTube SEO",
+    "YouTube SEO 2026",
+    "how to rank YouTube videos",
+    "YouTube SEO tips",
+    "YouTube keyword research",
+    "how to rank higher on YouTube",
+  ],
+},
 ];
 
 export default blogPosts;
