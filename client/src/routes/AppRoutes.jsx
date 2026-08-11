@@ -5,6 +5,9 @@ import {
   useSearchParams,
 } from "react-router-dom";
 
+// Scroll
+import ScrollToTop from "@/components/common/ScrollToTop";
+
 // Layout
 import MainLayout from "@/components/layout/MainLayout";
 
@@ -155,6 +158,10 @@ function ShortsGeneratorWithQuery() {
 function AppRoutes() {
   return (
     <BrowserRouter>
+
+      {/* Scroll page to top whenever route/search changes */}
+      <ScrollToTop />
+
       <Routes>
 
         {/* =================================================
@@ -163,7 +170,10 @@ function AppRoutes() {
 
         <Route element={<MainLayout />}>
 
-          {/* Main Pages */}
+          {/* =========================
+              MAIN PAGES
+              ========================= */}
+
           <Route
             path="/"
             element={<Home />}
@@ -184,9 +194,9 @@ function AppRoutes() {
             element={<FAQ />}
           />
 
-          {/* =================================================
+          {/* =========================
               BLOG
-              ================================================= */}
+              ========================= */}
 
           <Route
             path="/blog"
@@ -198,9 +208,9 @@ function AppRoutes() {
             element={<BlogPost />}
           />
 
-          {/* =================================================
+          {/* =========================
               LEGAL
-              ================================================= */}
+              ========================= */}
 
           <Route
             path="/privacy-policy"
@@ -222,9 +232,9 @@ function AppRoutes() {
             element={<CookiePolicy />}
           />
 
-          {/* =================================================
+          {/* =========================
               YOUTUBE UTILITY TOOLS
-              ================================================= */}
+              ========================= */}
 
           <Route
             path="/tools/video-id-extractor"
@@ -241,10 +251,10 @@ function AppRoutes() {
             element={<ThumbnailDownloader />}
           />
 
-          {/* =================================================
+          {/* =========================
               AI GENERATORS
-              HERO SEARCH -> ?q= -> AUTO GENERATE
-              ================================================= */}
+              HERO SEARCH -> ?q=
+              ========================= */}
 
           <Route
             path="/tools/title-generator"
@@ -296,9 +306,9 @@ function AppRoutes() {
             element={<ShortsGeneratorWithQuery />}
           />
 
-          {/* =================================================
+          {/* =========================
               CALCULATORS
-              ================================================= */}
+              ========================= */}
 
           <Route
             path="/tools/rpm-calculator"
@@ -315,18 +325,18 @@ function AppRoutes() {
             element={<MoneyCalculator />}
           />
 
-          {/* =================================================
+          {/* =========================
               MONETIZATION
-              ================================================= */}
+              ========================= */}
 
           <Route
             path="/tools/monetization-checker"
             element={<MonetizationChecker />}
           />
 
-          {/* =================================================
+          {/* =========================
               404
-              ================================================= */}
+              ========================= */}
 
           <Route
             path="*"
@@ -334,7 +344,9 @@ function AppRoutes() {
           />
 
         </Route>
+
       </Routes>
+
     </BrowserRouter>
   );
 }
