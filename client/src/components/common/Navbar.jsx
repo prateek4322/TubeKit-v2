@@ -91,29 +91,41 @@ function Navbar() {
     setUtilityToolsOpen(false);
   };
 
+  // Home page par click karne par top par scroll
+  const handleHomeClick = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+    closeMobileMenu();
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
 
         {/* Logo */}
         <Link
-  to="/"
-  onClick={closeMobileMenu}
-  aria-label="TubeKit Home"
-  className="flex items-center"
->
-  <img
-    src="/tubekit-logo.png"
-    alt="TubeKit"
-    className="h-18 w-auto object-contain transition-transform duration-200 hover:scale-105"
-  />
-</Link>
+          to="/"
+          onClick={handleHomeClick}
+          aria-label="TubeKit Home"
+          className="flex items-center"
+        >
+          <img
+            src="/tubekit-logo.png"
+            alt="TubeKit"
+            className="h-18 w-auto object-contain transition-transform duration-200 hover:scale-105"
+          />
+        </Link>
+
         {/* Desktop Navigation */}
         <nav className="hidden items-center gap-8 md:flex">
 
           {/* Home */}
           <NavLink
             to="/"
+            onClick={handleHomeClick}
             className={({ isActive }) =>
               `transition-colors duration-200 ${
                 isActive
@@ -250,7 +262,9 @@ function Navbar() {
               : "Open navigation menu"
           }
           className="text-white md:hidden"
-          onClick={() => setMenuOpen((prev) => !prev)}
+          onClick={() =>
+            setMenuOpen((prev) => !prev)
+          }
         >
           {menuOpen ? (
             <X size={28} />
@@ -268,7 +282,7 @@ function Navbar() {
             {/* Mobile Home */}
             <NavLink
               to="/"
-              onClick={closeMobileMenu}
+              onClick={handleHomeClick}
               className={({ isActive }) =>
                 `rounded-xl px-4 py-3 transition-colors ${
                   isActive
