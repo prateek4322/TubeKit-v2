@@ -1,7 +1,26 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
+
+function SectionHeading({ children, color = "blue" }) {
+  const colors = {
+    red: "border-red-500 bg-red-500/5 text-red-400",
+    yellow: "border-yellow-400 bg-yellow-400/5 text-yellow-300",
+    green: "border-green-500 bg-green-500/5 text-green-400",
+    blue: "border-blue-500 bg-blue-500/5 text-blue-400",
+  };
+
+  return (
+    <h2
+      className={`rounded-r-xl border-l-4 px-5 py-3 text-2xl font-bold tracking-tight sm:text-3xl ${colors[color]}`}
+    >
+      {children}
+    </h2>
+  );
+}
 
 function ThumbnailDownloader() {
   const [url, setUrl] = useState("");
@@ -29,256 +48,618 @@ function ThumbnailDownloader() {
   const thumbnails = [
     {
       title: "Maximum Resolution",
+      description: "Highest available thumbnail resolution.",
       url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
+      color: "red",
     },
     {
       title: "High Quality",
+      description: "High-quality thumbnail preview.",
       url: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+      color: "yellow",
     },
     {
       title: "Medium Quality",
+      description: "Medium-resolution thumbnail image.",
       url: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
+      color: "green",
     },
     {
       title: "Default",
+      description: "Standard YouTube thumbnail image.",
       url: `https://img.youtube.com/vi/${videoId}/default.jpg`,
+      color: "blue",
     },
   ];
 
-  return ( 
-    <> <SEO
-title="YouTube Thumbnail Downloader | TubeKit"
-description="Download HD YouTube thumbnails."
-url="/tools/thumbnail-downloader"
-/>
-    <ToolLayout>
-      <ToolHeader
-        title="YouTube Thumbnail Downloader"
-        description="Download thumbnails from any YouTube video."
+  const faqs = [
+    {
+      question: "What is a YouTube thumbnail downloader?",
+      answer:
+        "A YouTube thumbnail downloader is a tool that retrieves an available thumbnail image associated with a YouTube video URL so it can be viewed or saved.",
+    },
+    {
+      question: "How do I download a YouTube thumbnail?",
+      answer:
+        "Copy the YouTube video URL, paste it into TubeKit's YouTube Thumbnail Downloader, click Get Thumbnails, and choose the available thumbnail resolution.",
+    },
+    {
+      question: "Can I download a YouTube thumbnail in HD?",
+      answer:
+        "TubeKit displays available thumbnail resolutions, including a maximum-resolution option when that image is available for the video.",
+    },
+    {
+      question: "Can I use someone else's YouTube thumbnail?",
+      answer:
+        "Downloading a thumbnail does not automatically give you permission to republish or commercially use it. Make sure you have the appropriate rights or permission before reusing another creator's thumbnail.",
+    },
+    {
+      question: "Can I download thumbnails from YouTube Shorts?",
+      answer:
+        "TubeKit accepts supported YouTube Shorts URLs and attempts to retrieve the available thumbnail associated with the video.",
+    },
+    {
+      question: "Is the TubeKit YouTube Thumbnail Downloader free?",
+      answer:
+        "Yes. TubeKit provides the YouTube Thumbnail Downloader as a free tool for creators.",
+    },
+  ];
+
+  return (
+    <>
+      <SEO
+        title="YouTube Thumbnail Downloader – Download HD Thumbnails | TubeKit"
+        description="Download available YouTube video thumbnails in HD and other resolutions with TubeKit's free YouTube Thumbnail Downloader. Paste a video URL and preview available thumbnail images."
+        keywords="YouTube thumbnail downloader, download YouTube thumbnail, YouTube thumbnail download, HD YouTube thumbnail downloader, YouTube thumbnail grabber, YouTube thumbnail extractor, YouTube thumbnail saver, download YouTube video thumbnail"
+        canonical="/tools/thumbnail-downloader"
+        faqs={faqs}
+        breadcrumbs={[
+          {
+            name: "Home",
+            path: "/",
+          },
+          {
+            name: "YouTube Thumbnail Downloader",
+            path: "/tools/thumbnail-downloader",
+          },
+        ]}
       />
 
-      <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-
-        <label className="mb-2 block text-white">
-          YouTube Video URL
-        </label>
-
-        <input
-          type="text"
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://youtu.be/xxxxxxxxxxx"
-          className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-white"
+      <ToolLayout>
+        <ToolHeader
+          title="YouTube Thumbnail Downloader"
+          description="Download and preview available thumbnails from YouTube videos in different resolutions."
         />
 
-        <div className="mt-8 flex gap-4">
+        {/* TOOL */}
+        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+          <label className="mb-2 block font-medium text-white">
+            YouTube Video URL
+          </label>
 
-          <button
-            onClick={extractVideoId}
-            className="rounded-xl bg-blue-600 px-6 py-3 text-white"
-          >
-            Get Thumbnails
-          </button>
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                extractVideoId();
+              }
+            }}
+            placeholder="https://www.youtube.com/watch?v=xxxxxxxxxxx"
+            className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-white outline-none transition focus:border-blue-500"
+          />
 
-          <button
-            onClick={reset}
-            className="rounded-xl bg-slate-700 px-6 py-3 text-white"
-          >
-            Reset
-          </button>
-
-        </div>
-
-      </div>
-
-      {videoId && (
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-
-          {thumbnails.map((item) => (
-            <div
-              key={item.title}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-5"
+          <div className="mt-8 flex flex-wrap gap-4">
+            <button
+              onClick={extractVideoId}
+              className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500"
             >
-              <img
-                src={item.url}
-                alt={item.title}
-                className="w-full rounded-xl"
-              />
+              Get Thumbnails
+            </button>
 
-              <h3 className="mt-4 text-lg font-bold text-white">
-                {item.title}
-              </h3>
-
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 inline-block rounded-lg bg-blue-600 px-5 py-2 text-white"
-              >
-                Download
-              </a>
-            </div>
-          ))}
-
+            <button
+              onClick={reset}
+              className="rounded-xl bg-slate-700 px-6 py-3 font-semibold text-white transition hover:bg-slate-600"
+            >
+              Reset
+            </button>
+          </div>
         </div>
-      )}
-      <section className="mt-12 space-y-10">
-  {/* How to Use */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      How to Use the YouTube Thumbnail Downloader
-    </h2>
 
-    <p className="mt-3 text-muted-foreground">
-      TubeKit's YouTube Thumbnail Downloader helps you retrieve available
-      thumbnail images associated with a YouTube video. Enter a supported
-      YouTube video URL and use the generated thumbnail options to view
-      or save the available image.
-    </p>
+        {/* THUMBNAIL RESULTS */}
+        {videoId && (
+          <div className="mt-10 grid gap-6 md:grid-cols-2">
+            {thumbnails.map((item) => {
+              const borderColors = {
+                red: "border-red-500/20 bg-red-500/5",
+                yellow: "border-yellow-400/20 bg-yellow-400/5",
+                green: "border-green-500/20 bg-green-500/5",
+                blue: "border-blue-500/20 bg-blue-500/5",
+              };
 
-    <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
-      <li>Copy the URL of the YouTube video.</li>
-      <li>Paste the URL into the Thumbnail Downloader.</li>
-      <li>Click the Download or Get Thumbnail button.</li>
-      <li>Review the available thumbnail image.</li>
-      <li>Save the image if you have permission to use it.</li>
-    </ol>
-  </div>
+              const textColors = {
+                red: "text-red-400",
+                yellow: "text-yellow-300",
+                green: "text-green-400",
+                blue: "text-blue-400",
+              };
 
-  {/* What Is YouTube Thumbnail */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      What Is a YouTube Thumbnail?
-    </h2>
+              return (
+                <div
+                  key={item.title}
+                  className={`rounded-2xl border p-5 ${borderColors[item.color]}`}
+                >
+                  <img
+                    src={item.url}
+                    alt={`${item.title} YouTube thumbnail`}
+                    className="w-full rounded-xl"
+                    loading="lazy"
+                  />
 
-    <p className="mt-3 text-muted-foreground">
-      A YouTube thumbnail is the preview image displayed for a video.
-      It gives viewers a visual indication of what the video is about
-      before they open it.
-    </p>
+                  <h3
+                    className={`mt-4 text-lg font-bold ${textColors[item.color]}`}
+                  >
+                    {item.title}
+                  </h3>
 
-    <p className="mt-3 text-muted-foreground">
-      Thumbnails can be an important part of how viewers evaluate videos,
-      so creators should make sure their thumbnails accurately represent
-      the content.
-    </p>
-  </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">
+                    {item.description}
+                  </p>
 
-  {/* Thumbnail Quality */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      YouTube Thumbnail Quality and Formats
-    </h2>
+                  <a
+                    href={item.url}
+                    download={`youtube-thumbnail-${item.title
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}.jpg`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 inline-flex rounded-lg bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-500"
+                  >
+                    Download Thumbnail
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        )}
 
-    <p className="mt-3 text-muted-foreground">
-      YouTube may provide thumbnail images at different resolutions or
-      sizes depending on the video and available image resources. The
-      exact quality available can vary.
-    </p>
+        {/* SEO CONTENT */}
+        <section className="mt-16 space-y-12">
 
-    <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
-      <li>Use the highest available quality when appropriate.</li>
-      <li>Check the image before saving or using it.</li>
-      <li>Make sure the thumbnail belongs to the intended video.</li>
-      <li>Respect the copyright and usage rights of the image.</li>
-    </ul>
-  </div>
+          {/* INTRO */}
+          <div>
+            <SectionHeading color="red">
+              Free YouTube Thumbnail Downloader
+            </SectionHeading>
 
-  {/* Features */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      YouTube Thumbnail Downloader Features
-    </h2>
+            <p className="mt-5 leading-8 text-slate-300">
+              TubeKit's free YouTube Thumbnail Downloader lets you retrieve
+              available thumbnail images from a YouTube video URL. Simply
+              paste the video link into the tool and view the available
+              thumbnail resolutions.
+            </p>
 
-    <ul className="mt-5 grid gap-3 sm:grid-cols-2 text-muted-foreground">
-      <li>✓ Retrieve YouTube thumbnails</li>
-      <li>✓ Simple video URL input</li>
-      <li>✓ Quick thumbnail preview</li>
-      <li>✓ Easy access to available images</li>
-      <li>✓ Supports common YouTube video URLs</li>
-      <li>✓ Free to use</li>
-    </ul>
-  </div>
+            <p className="mt-4 leading-8 text-slate-300">
+              This tool is useful for creators, researchers, designers,
+              marketers, and anyone who needs to inspect the thumbnail
+              associated with a YouTube video.
+            </p>
 
-  {/* Usage Rights */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      Can You Use Downloaded YouTube Thumbnails?
-    </h2>
+            <p className="mt-4 leading-8 text-slate-300">
+              The downloader retrieves available thumbnail images. It does
+              not remove watermarks, improve the original image quality,
+              or provide permission to reuse copyrighted material.
+            </p>
+          </div>
 
-    <p className="mt-3 text-muted-foreground">
-      Downloading an image does not automatically give you permission to
-      republish or commercially use it. Thumbnail images may be protected
-      by copyright or other rights.
-    </p>
+          {/* HOW TO USE */}
+          <div>
+            <SectionHeading color="yellow">
+              How to Download a YouTube Thumbnail
+            </SectionHeading>
 
-    <p className="mt-3 text-muted-foreground">
-      If you plan to reuse a thumbnail, make sure you have the appropriate
-      permission or rights to use the image.
-    </p>
-  </div>
+            <p className="mt-5 leading-8 text-slate-300">
+              You can get a YouTube thumbnail in a few simple steps:
+            </p>
 
-  {/* FAQ */}
-  <div>
-    <h2 className="text-2xl font-bold">
-      Frequently Asked Questions
-    </h2>
+            <ol className="mt-5 list-decimal space-y-3 pl-6 leading-8 text-slate-300">
+              <li>Copy the URL of the YouTube video.</li>
 
-    <div className="mt-6 space-y-6">
-      <div>
-        <h3 className="text-lg font-semibold">
-          What is a YouTube thumbnail downloader?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          It is a tool that retrieves an available thumbnail image from a
-          YouTube video URL.
-        </p>
-      </div>
+              <li>
+                Paste the URL into the TubeKit Thumbnail Downloader.
+              </li>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Can I download any YouTube thumbnail?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          The tool can retrieve available thumbnail images for supported
-          YouTube videos, but your right to reuse the image depends on
-          applicable copyright and usage rights.
-        </p>
-      </div>
+              <li>
+                Click the{" "}
+                <strong className="text-white">
+                  Get Thumbnails
+                </strong>{" "}
+                button.
+              </li>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Can I use downloaded thumbnails on my own channel?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          You should only reuse another creator's thumbnail when you have
-          the appropriate permission or legal right to do so.
-        </p>
-      </div>
+              <li>
+                Review the available thumbnail resolutions.
+              </li>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Does the downloader improve thumbnail quality?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          No. The tool retrieves available thumbnail images. It does not
-          guarantee higher quality than the source image provides.
-        </p>
-      </div>
+              <li>
+                Choose the thumbnail you want to view or save.
+              </li>
+            </ol>
+          </div>
 
-      <div>
-        <h3 className="text-lg font-semibold">
-          Is the TubeKit Thumbnail Downloader free?
-        </h3>
-        <p className="mt-2 text-muted-foreground">
-          TubeKit provides the Thumbnail Downloader as a free tool for
-          creators.
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
-    </ToolLayout>
+          {/* WHAT IS THUMBNAIL */}
+          <div>
+            <SectionHeading color="green">
+              What Is a YouTube Thumbnail?
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              A YouTube thumbnail is the preview image associated with a
+              video. It is one of the first visual elements viewers may
+              see when discovering a video on YouTube.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-300">
+              A well-designed thumbnail should communicate the subject of
+              the video clearly and accurately. Creators often combine
+              visual elements, short text, colors, products, people, or
+              other relevant imagery to communicate the video's topic.
+            </p>
+          </div>
+
+          {/* RESOLUTIONS */}
+          <div>
+            <SectionHeading color="blue">
+              YouTube Thumbnail Resolutions
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              YouTube can provide thumbnail images in different sizes.
+              The exact image available can depend on the individual
+              video.
+            </p>
+
+            <div className="mt-6 overflow-x-auto rounded-xl border border-white/10">
+              <table className="w-full min-w-[600px] text-left">
+                <thead>
+                  <tr className="border-b border-white/10">
+                    <th className="px-5 py-4 font-semibold text-white">
+                      Option
+                    </th>
+
+                    <th className="px-5 py-4 font-semibold text-white">
+                      Purpose
+                    </th>
+                  </tr>
+                </thead>
+
+                <tbody className="text-slate-400">
+                  <tr className="border-b border-white/10">
+                    <td className="px-5 py-4 font-medium text-red-400">
+                      Maximum Resolution
+                    </td>
+
+                    <td className="px-5 py-4">
+                      Highest available thumbnail option.
+                    </td>
+                  </tr>
+
+                  <tr className="border-b border-white/10">
+                    <td className="px-5 py-4 font-medium text-yellow-300">
+                      High Quality
+                    </td>
+
+                    <td className="px-5 py-4">
+                      Useful for high-quality previews.
+                    </td>
+                  </tr>
+
+                  <tr className="border-b border-white/10">
+                    <td className="px-5 py-4 font-medium text-green-400">
+                      Medium Quality
+                    </td>
+
+                    <td className="px-5 py-4">
+                      Smaller thumbnail suitable for quick viewing.
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="px-5 py-4 font-medium text-blue-400">
+                      Default
+                    </td>
+
+                    <td className="px-5 py-4">
+                      Standard thumbnail option.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* FEATURES */}
+          <div>
+            <SectionHeading color="red">
+              YouTube Thumbnail Downloader Features
+            </SectionHeading>
+
+            <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+              <li className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-slate-300">
+                ✓ Free YouTube thumbnail downloader
+              </li>
+
+              <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4 text-slate-300">
+                ✓ Supports common YouTube URLs
+              </li>
+
+              <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-slate-300">
+                ✓ Multiple thumbnail resolutions
+              </li>
+
+              <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 text-slate-300">
+                ✓ Quick thumbnail preview
+              </li>
+
+              <li className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-slate-300">
+                ✓ Simple URL-based workflow
+              </li>
+
+              <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4 text-slate-300">
+                ✓ Easy image access
+              </li>
+
+              <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-slate-300">
+                ✓ Works without complicated setup
+              </li>
+
+              <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 text-slate-300">
+                ✓ Free for creators
+              </li>
+            </ul>
+          </div>
+
+          {/* USE CASES */}
+          <div>
+            <SectionHeading color="yellow">
+              Who Can Use a YouTube Thumbnail Downloader?
+            </SectionHeading>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-5">
+                <h3 className="font-semibold text-red-400">
+                  YouTube Creators
+                </h3>
+
+                <p className="mt-2 text-sm leading-7 text-slate-400">
+                  Review existing thumbnails and study how different
+                  channels present their videos.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                <h3 className="font-semibold text-yellow-300">
+                  Designers
+                </h3>
+
+                <p className="mt-2 text-sm leading-7 text-slate-400">
+                  Inspect thumbnail layouts and visual approaches for
+                  research and inspiration.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
+                <h3 className="font-semibold text-green-400">
+                  Researchers
+                </h3>
+
+                <p className="mt-2 text-sm leading-7 text-slate-400">
+                  Access thumbnail images associated with videos for
+                  legitimate research purposes.
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+                <h3 className="font-semibold text-blue-400">
+                  Content Teams
+                </h3>
+
+                <p className="mt-2 text-sm leading-7 text-slate-400">
+                  Review visual trends and organize thumbnail references
+                  during content planning.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* COPYRIGHT */}
+          <div>
+            <SectionHeading color="red">
+              Can You Reuse a Downloaded YouTube Thumbnail?
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              Downloading a YouTube thumbnail does not automatically give
+              you permission to publish, modify, or commercially reuse
+              that image.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-300">
+              A thumbnail may be protected by copyright or other
+              applicable rights. If you want to reuse another creator's
+              thumbnail, make sure you have the appropriate permission or
+              legal right to use it.
+            </p>
+
+            <div className="mt-6 rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+              <p className="leading-7 text-yellow-200">
+                <strong>Important:</strong> Use downloaded thumbnails
+                responsibly and respect the rights of the original
+                creator.
+              </p>
+            </div>
+          </div>
+
+          {/* RELATED TOOL */}
+          <div>
+            <SectionHeading color="green">
+              Create Better YouTube Thumbnail Ideas
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              If you are creating your own thumbnails rather than
+              downloading an existing one, use TubeKit's AI Thumbnail
+              Generator to brainstorm visual concepts for your videos.
+            </p>
+
+            <Link
+              to="/tools/thumbnail-generator"
+              className="mt-6 inline-flex rounded-xl border border-green-500/30 bg-green-500/5 px-5 py-3 font-semibold text-green-400 transition hover:border-green-400 hover:bg-green-500/10"
+            >
+              Try AI Thumbnail Generator →
+            </Link>
+          </div>
+
+          {/* MORE TOOLS */}
+          <div>
+            <SectionHeading color="blue">
+              More Free YouTube Creator Tools
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              TubeKit provides additional tools for YouTube creators,
+              including title generation, descriptions, keywords,
+              scripts, and hashtags.
+            </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <Link
+                to="/tools/title-generator"
+                className="rounded-xl border border-red-500/20 bg-red-500/5 p-5 transition hover:border-red-400"
+              >
+                <span className="font-semibold text-red-400">
+                  YouTube Title Generator →
+                </span>
+
+                <p className="mt-2 text-sm text-slate-400">
+                  Generate YouTube title ideas with AI.
+                </p>
+              </Link>
+
+              <Link
+                to="/tools/description-generator"
+                className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5 transition hover:border-yellow-300"
+              >
+                <span className="font-semibold text-yellow-300">
+                  YouTube Description Generator →
+                </span>
+
+                <p className="mt-2 text-sm text-slate-400">
+                  Generate useful video description ideas.
+                </p>
+              </Link>
+
+              <Link
+                to="/tools/keyword-generator"
+                className="rounded-xl border border-green-500/20 bg-green-500/5 p-5 transition hover:border-green-400"
+              >
+                <span className="font-semibold text-green-400">
+                  YouTube Keyword Generator →
+                </span>
+
+                <p className="mt-2 text-sm text-slate-400">
+                  Generate keyword ideas for YouTube content.
+                </p>
+              </Link>
+
+              <Link
+                to="/tools/tags-generator"
+                className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5 transition hover:border-blue-400"
+              >
+                <span className="font-semibold text-blue-400">
+                  YouTube Tags Generator →
+                </span>
+
+                <p className="mt-2 text-sm text-slate-400">
+                  Generate relevant YouTube tag ideas.
+                </p>
+              </Link>
+            </div>
+          </div>
+
+          {/* RELATED BLOGS */}
+          <div>
+            <SectionHeading color="yellow">
+              Learn More About YouTube Thumbnails
+            </SectionHeading>
+
+            <div className="mt-6 grid gap-4">
+              <Link
+                to="/blog/how-to-create-better-youtube-thumbnails"
+                className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5 transition hover:border-yellow-300"
+              >
+                <span className="font-semibold text-yellow-300">
+                  How to Create Better YouTube Thumbnails →
+                </span>
+
+                <p className="mt-2 text-sm leading-7 text-slate-400">
+                  Learn practical principles for creating clear,
+                  relevant, and attractive YouTube thumbnails.
+                </p>
+              </Link>
+
+              <Link
+                to="/blog/how-to-write-youtube-titles-that-get-more-clicks"
+                className="rounded-xl border border-red-500/20 bg-red-500/5 p-5 transition hover:border-red-400"
+              >
+                <span className="font-semibold text-red-400">
+                  How to Write YouTube Titles That Get More Clicks →
+                </span>
+
+                <p className="mt-2 text-sm leading-7 text-slate-400">
+                  Learn how YouTube titles and thumbnails can work
+                  together to communicate your video's topic.
+                </p>
+              </Link>
+            </div>
+          </div>
+
+          {/* FAQ */}
+          <div>
+            <SectionHeading color="blue">
+              Frequently Asked Questions
+            </SectionHeading>
+
+            <div className="mt-6 space-y-4">
+              {faqs.map((faq, index) => {
+                const colors = [
+                  "border-red-500/20 bg-red-500/5",
+                  "border-yellow-400/20 bg-yellow-400/5",
+                  "border-green-500/20 bg-green-500/5",
+                  "border-blue-500/20 bg-blue-500/5",
+                ];
+
+                return (
+                  <div
+                    key={faq.question}
+                    className={`rounded-xl border p-5 ${colors[index % 4]}`}
+                  >
+                    <h3 className="text-lg font-semibold text-white">
+                      {faq.question}
+                    </h3>
+
+                    <p className="mt-2 leading-7 text-slate-400">
+                      {faq.answer}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+        </section>
+      </ToolLayout>
     </>
   );
 }

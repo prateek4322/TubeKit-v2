@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "@/services/api";
 
 import SEO from "@/components/common/SEO";
@@ -73,13 +74,42 @@ function DescriptionGenerator({ query = "" }) {
     }
   };
 
+  const faqs = [
+    {
+      question: "What is a YouTube description generator?",
+      answer:
+        "A YouTube description generator creates description ideas based on the topic or information provided by a creator.",
+    },
+    {
+      question: "Can I edit the generated YouTube description?",
+      answer:
+        "Yes. You should review and customize the generated description before publishing it so that it accurately represents your video.",
+    },
+    {
+      question: "Should I add keywords to my YouTube description?",
+      answer:
+        "Relevant keywords can help describe the topic of your video, but they should be used naturally instead of being unnecessarily repeated.",
+    },
+    {
+      question: "Can I use the description generator for YouTube Shorts?",
+      answer:
+        "Yes. TubeKit can be used to generate description ideas for YouTube Shorts as well as longer videos.",
+    },
+    {
+      question: "Is the TubeKit YouTube Description Generator free?",
+      answer:
+        "Yes. TubeKit provides the YouTube Description Generator as a free tool for creators.",
+    },
+  ];
+
   return (
     <>
       <SEO
-        title="AI YouTube Description Generator"
+        title="AI YouTube Description Generator | Free SEO Tool | TubeKit"
         description="Generate SEO-friendly YouTube descriptions with TubeKit's free AI YouTube Description Generator. Create clear, engaging and keyword-focused video descriptions in seconds."
-        keywords="YouTube description generator, AI YouTube description generator, YouTube SEO description, video description generator, YouTube description AI, free YouTube description generator"
+        keywords="YouTube description generator, AI YouTube description generator, YouTube SEO description, video description generator, YouTube description AI, free YouTube description generator, SEO YouTube description generator"
         canonical="/tools/description-generator"
+        faqs={faqs}
       />
 
       <ToolLayout>
@@ -88,6 +118,7 @@ function DescriptionGenerator({ query = "" }) {
           description="Generate clear, engaging and SEO-friendly YouTube descriptions in seconds."
         />
 
+        {/* Generator */}
         <ToolForm
           onGenerate={handleGenerate}
           loading={loading}
@@ -100,6 +131,7 @@ function DescriptionGenerator({ query = "" }) {
           }}
         />
 
+        {/* Output */}
         <ToolOutput
           results={results}
           loading={loading}
@@ -112,150 +144,297 @@ function DescriptionGenerator({ query = "" }) {
           }}
         />
 
-        <section className="mt-12 space-y-10">
-          {/* How to Use */}
+        {/* SEO Content */}
+        <section className="mt-16 space-y-12">
+
+          {/* Introduction */}
           <div>
-            <h2 className="text-2xl font-bold">
-              How to Use the YouTube Description Generator
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-red-400">
+                AI YouTube Description Generator
+              </span>{" "}
+              <span className="text-blue-400">
+                Free Online Tool
+              </span>
             </h2>
 
-            <p className="mt-3 text-muted-foreground">
+            <p className="mt-4 leading-8 text-muted-foreground">
               TubeKit's AI YouTube Description Generator helps creators
-              create clear and useful video descriptions from their video
-              topic. Enter your topic, generate a description, review the
-              result, and edit it before publishing.
+              create clear, useful and relevant descriptions for their
+              YouTube videos. Enter your video topic and generate a
+              description draft in seconds.
             </p>
 
-            <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
-              <li>Enter your YouTube video topic or main idea.</li>
-              <li>Click the Generate button.</li>
+            <p className="mt-4 leading-8 text-muted-foreground">
+              A well-written YouTube description can give viewers useful
+              context about your video, highlight important information,
+              provide relevant links and help communicate what the video
+              is about.
+            </p>
+          </div>
+
+          {/* How to Use */}
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-green-400">
+                How to Use
+              </span>{" "}
+              <span className="text-yellow-400">
+                the YouTube Description Generator
+              </span>
+            </h2>
+
+            <ol className="mt-6 list-decimal space-y-3 pl-6 text-muted-foreground">
+              <li>Enter your YouTube video's main topic.</li>
+              <li>Click the Generate Description button.</li>
               <li>Review the generated description.</li>
-              <li>Edit the description when necessary.</li>
+              <li>Edit the content to match your actual video.</li>
+              <li>Add useful links, resources or timestamps when applicable.</li>
               <li>Copy the final description to YouTube Studio.</li>
             </ol>
           </div>
 
-          {/* What Makes a Good Description */}
+          {/* What is Description */}
           <div>
-            <h2 className="text-2xl font-bold">
-              What Makes a Good YouTube Description?
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-yellow-400">
+                What Is a
+              </span>{" "}
+              <span className="text-red-400">
+                YouTube Description?
+              </span>
             </h2>
 
-            <p className="mt-3 text-muted-foreground">
-              A useful YouTube description gives viewers context about the
-              video and can provide additional information such as important
-              links, resources, timestamps, or relevant details.
+            <p className="mt-4 leading-8 text-muted-foreground">
+              A YouTube description is the text associated with a video
+              that provides additional information about its content.
+              Creators can use descriptions to explain the video,
+              provide resources, add links, mention important details and
+              guide viewers toward relevant information.
             </p>
 
-            <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
-              <li>A clear summary of the video.</li>
-              <li>Important information viewers may need.</li>
+            <p className="mt-4 leading-8 text-muted-foreground">
+              The description should accurately represent the video and
+              should be written primarily for viewers rather than being
+              filled with repeated keywords.
+            </p>
+          </div>
+
+          {/* Good Description */}
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-blue-400">
+                What Makes a
+              </span>{" "}
+              <span className="text-green-400">
+                Good YouTube Description?
+              </span>
+            </h2>
+
+            <ul className="mt-6 list-disc space-y-3 pl-6 text-muted-foreground">
+              <li>A clear explanation of the video's main topic.</li>
+              <li>Important information near the beginning.</li>
               <li>Relevant keywords used naturally.</li>
-              <li>Useful links or resources when applicable.</li>
-              <li>Calls to action when they are relevant.</li>
+              <li>Useful links or resources when appropriate.</li>
+              <li>Timestamps when they improve navigation.</li>
+              <li>A relevant call to action when appropriate.</li>
+              <li>Information that accurately represents the video.</li>
+            </ul>
+          </div>
+
+          {/* SEO */}
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-red-400">
+                YouTube Description
+              </span>{" "}
+              <span className="text-yellow-400">
+                SEO Tips
+              </span>
+            </h2>
+
+            <p className="mt-4 leading-8 text-muted-foreground">
+              Your description should naturally explain what viewers can
+              expect from the video. Use relevant terms that genuinely
+              describe the topic instead of repeating the same keyword
+              unnecessarily.
+            </p>
+
+            <ul className="mt-6 list-disc space-y-3 pl-6 text-muted-foreground">
+              <li>Clearly describe the video's subject.</li>
+              <li>Use your primary topic naturally.</li>
+              <li>Include related terms when relevant.</li>
+              <li>Avoid keyword stuffing.</li>
+              <li>Keep important information easy to find.</li>
+              <li>Make sure all links are relevant and useful.</li>
             </ul>
           </div>
 
           {/* Features */}
           <div>
-            <h2 className="text-2xl font-bold">
-              Features
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-green-400">
+                YouTube Description Generator
+              </span>{" "}
+              <span className="text-blue-400">
+                Features
+              </span>
             </h2>
 
-            <ul className="mt-5 grid gap-3 text-muted-foreground sm:grid-cols-2">
-              <li>✓ AI-generated descriptions</li>
-              <li>✓ Topic-based content</li>
-              <li>✓ SEO-friendly suggestions</li>
+            <ul className="mt-6 grid gap-3 text-muted-foreground sm:grid-cols-2">
+              <li>✓ AI-generated YouTube descriptions</li>
+              <li>✓ Topic-based content generation</li>
+              <li>✓ SEO-friendly description ideas</li>
               <li>✓ Easy copy functionality</li>
               <li>✓ Regenerate descriptions</li>
+              <li>✓ Useful for long-form videos</li>
+              <li>✓ Useful for YouTube Shorts</li>
               <li>✓ Free to use</li>
             </ul>
           </div>
 
           {/* Tips */}
           <div>
-            <h2 className="text-2xl font-bold">
-              Tips for Better YouTube Descriptions
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-yellow-400">
+                Tips for Better
+              </span>{" "}
+              <span className="text-red-400">
+                YouTube Descriptions
+              </span>
             </h2>
 
-            <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
+            <ul className="mt-6 list-disc space-y-3 pl-6 text-muted-foreground">
               <li>Explain the video's main topic clearly.</li>
-              <li>Put important information near the beginning.</li>
+
               <li>
-                Use keywords naturally instead of keyword stuffing.
+                Put the most important information near the beginning.
               </li>
+
               <li>
-                Add useful links when they provide value to viewers.
+                Use relevant keywords naturally instead of keyword stuffing.
               </li>
+
               <li>
-                Make sure the description accurately represents the video.
+                Add useful links when they provide genuine value.
+              </li>
+
+              <li>
+                Add timestamps when your video benefits from chapters.
+              </li>
+
+              <li>
+                Make sure the description accurately represents your video.
+              </li>
+
+              <li>
+                Review AI-generated content before publishing.
               </li>
             </ul>
           </div>
 
-          {/* FAQ */}
+          {/* Internal Links */}
           <div>
-            <h2 className="text-2xl font-bold">
-              Frequently Asked Questions
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-blue-400">
+                More Free
+              </span>{" "}
+              <span className="text-green-400">
+                YouTube SEO Tools
+              </span>
             </h2>
 
-            <div className="mt-6 space-y-6">
-              <div>
-                <h3 className="text-lg font-semibold">
-                  What is a YouTube description generator?
+            <p className="mt-4 text-muted-foreground">
+              Use TubeKit's other free tools to improve different parts
+              of your YouTube content workflow.
+            </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+
+              <Link
+                to="/tools/title-generator"
+                className="rounded-2xl border border-red-500/30 bg-red-500/5 p-5 transition hover:border-red-400"
+              >
+                <h3 className="font-black text-red-400">
+                  AI YouTube Title Generator →
                 </h3>
 
-                <p className="mt-2 text-muted-foreground">
-                  It is a tool that creates description ideas based on the
-                  topic or information provided by a creator.
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Generate title ideas for your YouTube videos.
                 </p>
-              </div>
+              </Link>
 
-              <div>
-                <h3 className="text-lg font-semibold">
-                  Can I edit the generated description?
+              <Link
+                to="/tools/tags-generator"
+                className="rounded-2xl border border-yellow-500/30 bg-yellow-500/5 p-5 transition hover:border-yellow-400"
+              >
+                <h3 className="font-black text-yellow-400">
+                  YouTube Tags Generator →
                 </h3>
 
-                <p className="mt-2 text-muted-foreground">
-                  Yes. Review and customize the generated text before
-                  publishing it so that it accurately represents your video.
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Generate relevant tags based on your video topic.
                 </p>
-              </div>
+              </Link>
 
-              <div>
-                <h3 className="text-lg font-semibold">
-                  Should I add keywords to my YouTube description?
+              <Link
+                to="/tools/keyword-generator"
+                className="rounded-2xl border border-green-500/30 bg-green-500/5 p-5 transition hover:border-green-400"
+              >
+                <h3 className="font-black text-green-400">
+                  YouTube Keyword Generator →
                 </h3>
 
-                <p className="mt-2 text-muted-foreground">
-                  Relevant keywords can help describe the topic of your
-                  video, but they should be used naturally.
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Find keyword ideas for YouTube content and SEO.
                 </p>
-              </div>
+              </Link>
 
-              <div>
-                <h3 className="text-lg font-semibold">
-                  Can I use the generator for YouTube Shorts?
+              <Link
+                to="/tools/script-generator"
+                className="rounded-2xl border border-blue-500/30 bg-blue-500/5 p-5 transition hover:border-blue-400"
+              >
+                <h3 className="font-black text-blue-400">
+                  AI YouTube Script Generator →
                 </h3>
 
-                <p className="mt-2 text-muted-foreground">
-                  Yes. You can generate description ideas for Shorts as well
-                  as longer YouTube videos.
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Create structured scripts for your YouTube videos.
                 </p>
-              </div>
+              </Link>
 
-              <div>
-                <h3 className="text-lg font-semibold">
-                  Is the TubeKit description generator free?
-                </h3>
-
-                <p className="mt-2 text-muted-foreground">
-                  TubeKit provides the description generator as a free tool
-                  for creators.
-                </p>
-              </div>
             </div>
           </div>
+
+          {/* FAQ */}
+          <div>
+            <h2 className="text-3xl font-black tracking-tight">
+              <span className="text-red-400">
+                Frequently Asked Questions
+              </span>{" "}
+              <span className="text-blue-400">
+                About YouTube Descriptions
+              </span>
+            </h2>
+
+            <div className="mt-7 space-y-5">
+              {faqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="rounded-2xl border border-white/10 bg-white/[0.02] p-5"
+                >
+                  <h3 className="text-lg font-black text-white">
+                    {faq.question}
+                  </h3>
+
+                  <p className="mt-3 leading-7 text-muted-foreground">
+                    {faq.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
         </section>
       </ToolLayout>
     </>

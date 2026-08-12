@@ -8,9 +8,11 @@ import OrganizationSchema from "./OrganizationSchema";
 function SEO({
   title = "TubeKit | Free AI Tools for YouTube Creators",
 
-  description = "Free AI-powered YouTube tools for YouTube creators including title generator, description generator, tags generator, script writer, thumbnail tools and more.",
+  description =
+    "Free AI-powered YouTube tools for YouTube creators including title generator, description generator, tags generator, script writer, thumbnail tools and more.",
 
-  keywords = "TubeKit, YouTube AI Tools, YouTube SEO, AI Title Generator, YouTube Tags Generator",
+  keywords =
+    "TubeKit, YouTube AI Tools, YouTube SEO, AI Title Generator, YouTube Tags Generator",
 
   image = "/og-image.png",
 
@@ -25,23 +27,49 @@ function SEO({
   schema = null,
 
   type = "website",
+
+  // Article SEO
+  author = "TubeKit",
+
+  publishedDate = "",
+
+  modifiedDate = "",
+
+  // Optional article section
+  articleSection = "",
+
+  // Prevent accidental indexing if needed
+  noIndex = false,
 }) {
   const siteUrl = "https://www.tubekitapp.in";
 
-  const canonicalUrl = canonical.startsWith("http")
-    ? canonical
-    : `${siteUrl}${canonical}`;
+  const normalizeUrl = (value) => {
+    if (!value) return siteUrl;
 
-  const imageUrl = image.startsWith("http")
-    ? image
-    : `${siteUrl}${image}`;
+    if (value.startsWith("http://") || value.startsWith("https://")) {
+      return value;
+    }
+
+    return `${siteUrl}${
+      value.startsWith("/") ? value : `/${value}`
+    }`;
+  };
+
+  const canonicalUrl = normalizeUrl(canonical);
+
+  const imageUrl = normalizeUrl(image);
+
+  const isArticle = type === "article";
 
   return (
     <>
       <Helmet>
+
         {/* =========================
             BASIC SEO
         ========================== */}
+
+        <html lang="en" />
 
         <title>{title}</title>
 
@@ -50,14 +78,29 @@ function SEO({
           content={description}
         />
 
-        <meta
-          name="keywords"
-          content={keywords}
-        />
+        {keywords && (
+          <meta
+            name="keywords"
+            content={keywords}
+          />
+        )}
 
         <meta
           name="robots"
-          content="index, follow"
+          content={
+            noIndex
+              ? "noindex, nofollow"
+              : "index, follow"
+          }
+        />
+
+        <meta
+          name="googlebot"
+          content={
+            noIndex
+              ? "noindex, nofollow"
+              : "index, follow"
+          }
         />
 
         <link
@@ -71,7 +114,7 @@ function SEO({
 
         <meta
           property="og:type"
-          content={type}
+          content={isArticle ? "article" : "website"}
         />
 
         <meta
@@ -95,9 +138,51 @@ function SEO({
         />
 
         <meta
+          property="og:image:alt"
+          content={title}
+        />
+
+        <meta
           property="og:site_name"
           content="TubeKit"
         />
+
+        <meta
+          property="og:locale"
+          content="en_IN"
+        />
+
+        {/* =========================
+            ARTICLE META
+        ========================== */}
+
+        {isArticle && author && (
+          <meta
+            property="article:author"
+            content={author}
+          />
+        )}
+
+        {isArticle && articleSection && (
+          <meta
+            property="article:section"
+            content={articleSection}
+          />
+        )}
+
+        {isArticle && publishedDate && (
+          <meta
+            property="article:published_time"
+            content={publishedDate}
+          />
+        )}
+
+        {isArticle && modifiedDate && (
+          <meta
+            property="article:modified_time"
+            content={modifiedDate}
+          />
+        )}
 
         {/* =========================
             TWITTER / X
@@ -123,8 +208,13 @@ function SEO({
           content={imageUrl}
         />
 
+        <meta
+          name="twitter:image:alt"
+          content={title}
+        />
+
         {/* =========================
-            CUSTOM JSON-LD SCHEMA
+            JSON-LD
         ========================== */}
 
         {schema && (
@@ -132,6 +222,7 @@ function SEO({
             {JSON.stringify(schema)}
           </script>
         )}
+
       </Helmet>
 
       {/* =========================
@@ -144,14 +235,18 @@ function SEO({
           ORGANIZATION SCHEMA
       ========================== */}
 
-      {organization && <OrganizationSchema />}
+      {organization && (
+        <OrganizationSchema />
+      )}
 
       {/* =========================
           BREADCRUMB
       ========================== */}
 
       {breadcrumbs.length > 0 && (
-        <Breadcrumb items={breadcrumbs} />
+        <Breadcrumb
+          items={breadcrumbs}
+        />
       )}
 
       {/* =========================
@@ -159,7 +254,9 @@ function SEO({
       ========================== */}
 
       {faqs.length > 0 && (
-        <FAQSchema faqs={faqs} />
+        <FAQSchema
+          faqs={faqs}
+        />
       )}
     </>
   );
