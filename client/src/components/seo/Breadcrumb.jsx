@@ -1,6 +1,19 @@
 import React from "react";
 
-const SITE_URL = "https://YOUR-DOMAIN.com";
+const SITE_URL = "https://www.tubekitapp.in";
+
+function normalizeUrl(value = "/") {
+  if (
+    value.startsWith("http://") ||
+    value.startsWith("https://")
+  ) {
+    return value;
+  }
+
+  return `${SITE_URL}${
+    value.startsWith("/") ? value : `/${value}`
+  }`;
+}
 
 function Breadcrumb({ items = [] }) {
   if (!items.length) return null;
@@ -8,11 +21,12 @@ function Breadcrumb({ items = [] }) {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
       name: item.name,
-      item: `${SITE_URL}${item.path}`,
+      item: normalizeUrl(item.url || item.path || "/"),
     })),
   };
 
@@ -20,29 +34,43 @@ function Breadcrumb({ items = [] }) {
     <>
       <nav
         aria-label="Breadcrumb"
-        className="mb-6 text-sm text-gray-500"
+        className="mb-6 text-sm text-slate-400"
       >
         <ol className="flex flex-wrap items-center gap-2">
-          {items.map((item, index) => (
-            <React.Fragment key={item.path}>
-              {index > 0 && <li>/</li>}
+          {items.map((item, index) => {
+            const itemUrl =
+              item.url || item.path || "/";
 
-              <li>
-                {index === items.length - 1 ? (
-                  <span className="text-gray-900">
-                    {item.name}
-                  </span>
-                ) : (
-                  <a
-                    href={item.path}
-                    className="hover:text-blue-600"
+            return (
+              <React.Fragment
+                key={`${item.name}-${index}`}
+              >
+                {index > 0 && (
+                  <li
+                    aria-hidden="true"
+                    className="text-slate-600"
                   >
-                    {item.name}
-                  </a>
+                    /
+                  </li>
                 )}
-              </li>
-            </React.Fragment>
-          ))}
+
+                <li>
+                  {index === items.length - 1 ? (
+                    <span className="text-white">
+                      {item.name}
+                    </span>
+                  ) : (
+                    <a
+                      href={itemUrl}
+                      className="transition-colors hover:text-blue-400"
+                    >
+                      {item.name}
+                    </a>
+                  )}
+                </li>
+              </React.Fragment>
+            );
+          })}
         </ol>
       </nav>
 
