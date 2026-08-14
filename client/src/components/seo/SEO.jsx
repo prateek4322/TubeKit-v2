@@ -9,10 +9,10 @@ function SEO({
   title = "TubeKit | Free AI Tools for YouTube Creators",
 
   description =
-    "Free AI-powered YouTube tools for YouTube creators including title generator, description generator, tags generator, script writer, thumbnail tools and more.",
+    "Free AI-powered YouTube tools for creators including title generator, description generator, tags generator, script writer, thumbnail tools and more.",
 
   keywords =
-    "TubeKit, YouTube AI Tools, YouTube SEO, AI Title Generator, YouTube Tags Generator",
+    "TubeKit, YouTube AI Tools, YouTube SEO, AI YouTube Tools, YouTube Title Generator",
 
   image = "/og-image.png",
 
@@ -28,17 +28,14 @@ function SEO({
 
   type = "website",
 
-  // Article SEO
   author = "TubeKit",
 
   publishedDate = "",
 
   modifiedDate = "",
 
-  // Optional article section
   articleSection = "",
 
-  // Prevent accidental indexing if needed
   noIndex = false,
 }) {
   const siteUrl = "https://www.tubekitapp.in";
@@ -46,7 +43,10 @@ function SEO({
   const normalizeUrl = (value) => {
     if (!value) return siteUrl;
 
-    if (value.startsWith("http://") || value.startsWith("https://")) {
+    if (
+      value.startsWith("http://") ||
+      value.startsWith("https://")
+    ) {
       return value;
     }
 
@@ -56,7 +56,6 @@ function SEO({
   };
 
   const canonicalUrl = normalizeUrl(canonical);
-
   const imageUrl = normalizeUrl(image);
 
   const isArticle = type === "article";
@@ -153,7 +152,7 @@ function SEO({
         />
 
         {/* =========================
-            ARTICLE META
+            ARTICLE
         ========================== */}
 
         {isArticle && author && (
@@ -214,7 +213,7 @@ function SEO({
         />
 
         {/* =========================
-            JSON-LD
+            CUSTOM JSON-LD
         ========================== */}
 
         {schema && (
@@ -225,38 +224,20 @@ function SEO({
 
       </Helmet>
 
-      {/* =========================
-          WEBSITE SCHEMA
-      ========================== */}
-
+      {/* Website Schema */}
       <Schema />
 
-      {/* =========================
-          ORGANIZATION SCHEMA
-      ========================== */}
+      {/* Organization Schema */}
+      {organization && <OrganizationSchema />}
 
-      {organization && (
-        <OrganizationSchema />
-      )}
-
-      {/* =========================
-          BREADCRUMB
-      ========================== */}
-
+      {/* Breadcrumb */}
       {breadcrumbs.length > 0 && (
-        <Breadcrumb
-          items={breadcrumbs}
-        />
+        <Breadcrumb items={breadcrumbs} />
       )}
 
-      {/* =========================
-          FAQ SCHEMA
-      ========================== */}
-
+      {/* FAQ Schema */}
       {faqs.length > 0 && (
-        <FAQSchema
-          faqs={faqs}
-        />
+        <FAQSchema faqs={faqs} />
       )}
     </>
   );

@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
-import Schema from "@/components/seo/Schema";
 import SEO from "@/components/common/SEO";
 import Hero from "@/components/home/hero/Hero";
 import SearchSection from "@/components/home/search/SearchSection";
@@ -53,7 +52,7 @@ function Home() {
 
   const handleToolSelect = (tool, query) => {
     setActiveTool(tool);
-    setToolQuery(query || "");
+    setToolQuery(query?.trim() || "");
 
     setTimeout(() => {
       toolSectionRef.current?.scrollIntoView({
@@ -69,50 +68,74 @@ function Home() {
 
   return (
     <>
+      {/* =========================
+          HOME SEO
+      ========================== */}
+
       <SEO
-  title="TubeKit | Free AI Tools for YouTube Creators"
-  description="Free AI-powered YouTube tools for creators. Generate YouTube titles, descriptions, tags, hashtags, scripts, hooks, outlines and more with TubeKit."
-  keywords="TubeKit, YouTube AI tools, YouTube tools, YouTube SEO tools, AI YouTube tools"
-  canonical="/"
-/>
-      <Schema />
+        title="TubeKit | Free AI Tools for YouTube Creators"
+        description="Free AI-powered YouTube tools for creators. Generate YouTube titles, descriptions, tags, hashtags, scripts, hooks, outlines and more with TubeKit."
+        keywords="TubeKit, YouTube AI tools, YouTube tools, YouTube SEO tools, AI YouTube tools, free YouTube tools"
+        canonical="/"
+        organization={true}
+      />
+
+      {/* =========================
+          HERO
+      ========================== */}
 
       <Hero onToolSelect={handleToolSelect} />
 
-      {/* Tool opens on the SAME HOME PAGE */}
+      {/* =========================
+          ACTIVE TOOL
+      ========================== */}
+
       {ActiveTool && (
         <section
           ref={toolSectionRef}
+          aria-label={`${activeTool.name} tool`}
           className="relative bg-[#050816] px-4 py-16 sm:px-6 lg:px-8"
         >
           <div className="mx-auto max-w-7xl">
+
             {/* Tool Header */}
-            <div className="mb-8 text-center">
-              <p className="mb-2 text-sm font-medium uppercase tracking-wider text-blue-400">
+            <div className="mb-10 text-center">
+
+              <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-blue-400">
                 TubeKit AI Tool
               </p>
 
-              <h2 className="text-3xl font-bold text-white sm:text-4xl">
+              <h2 className="text-3xl font-black text-white sm:text-4xl">
                 {activeTool.name}
               </h2>
 
               {toolQuery && (
                 <p className="mt-3 text-slate-400">
                   Topic:{" "}
-                  <span className="text-white">
+                  <span className="font-medium text-white">
                     {toolQuery}
                   </span>
                 </p>
               )}
+
             </div>
 
-            {/* Existing Tool */}
+            {/* Tool */}
             <ActiveTool query={toolQuery} />
+
           </div>
         </section>
       )}
 
+      {/* =========================
+          SEARCH
+      ========================== */}
+
       <SearchSection />
+
+      {/* =========================
+          FEATURED TOOLS
+      ========================== */}
 
       <FeaturedTools />
     </>
