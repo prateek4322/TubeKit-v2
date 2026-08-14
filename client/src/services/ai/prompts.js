@@ -9,5 +9,6 @@ Language: ${data.language}
 Tone: ${data.tone}
 
 Return only the titles.
-`;
+`
+;
 }
