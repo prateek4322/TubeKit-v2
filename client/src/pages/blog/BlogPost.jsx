@@ -1,7 +1,11 @@
 import { Link, useParams } from "react-router-dom";
-import SEO from "@/components/common/SEO";
 
-import blogPosts from "@/data/blogPosts";
+import SEO from "@/components/common/SEO";
+import RelatedPosts from "@/components/blog/RelatedPosts";
+import ToolCTA from "@/components/blog/ToolCTA";
+import MarkdownArticle from "@/components/blog/MarkdownArticle";
+
+import allBlogPosts from "@/data/allBlogPosts";
 
 import TitleGuide from "./posts/TitleGuide";
 import DescriptionGuide from "./posts/DescriptionGuide";
@@ -19,16 +23,137 @@ import WatchTimeGuide from "./posts/WatchTimeGuide";
 import CTRGuide from "./posts/CTRGuide";
 import YoutubeSEO2026Guide from "./posts/YoutubeSEO2026Guide";
 
+
+/* ============================================================
+   EXISTING JSX BLOG CONTENT
+============================================================ */
+
+const blogContent = {
+  "how-to-write-youtube-titles-that-get-more-clicks":
+    TitleGuide,
+
+  "how-to-write-youtube-description-for-seo":
+    DescriptionGuide,
+
+  "best-youtube-seo-tools-for-creators":
+    SeoToolsGuide,
+
+  "how-to-find-youtube-keywords":
+    KeywordGuide,
+
+  "how-to-get-more-views-on-youtube":
+    GrowthGuide,
+
+  "youtube-cpm-vs-rpm":
+    CpmRpmGuide,
+
+  "how-youtube-monetization-works":
+    MonetizationGuide,
+
+  "how-to-create-better-youtube-thumbnails":
+    ThumbnailGuide,
+
+  "youtube-shorts-ideas-for-beginners":
+    ShortsGuide,
+
+  "how-to-write-a-youtube-video-script":
+    ScriptGuide,
+
+  "how-to-make-youtube-shorts-viral":
+    ShortsViralGuide,
+
+  "how-to-get-more-subscribers-on-youtube":
+    SubscribersGuide,
+
+  "how-to-increase-youtube-watch-time":
+    WatchTimeGuide,
+
+  "how-to-increase-youtube-ctr":
+    CTRGuide,
+
+  "youtube-seo-guide-2026":
+    YoutubeSEO2026Guide,
+};
+
+
+/* ============================================================
+   RELATED POSTS
+============================================================ */
+
+function getRelatedPosts(currentPost, limit = 3) {
+  if (!currentPost) {
+    return [];
+  }
+
+  const sameCategory = allBlogPosts.filter(
+    (post) =>
+      post.slug !== currentPost.slug &&
+      post.category === currentPost.category
+  );
+
+  const currentKeywords = new Set(
+    (currentPost.keywords || []).map((keyword) =>
+      keyword.toLowerCase()
+    )
+  );
+
+  const keywordRelated = allBlogPosts
+    .filter(
+      (post) =>
+        post.slug !== currentPost.slug &&
+        post.category !== currentPost.category
+    )
+    .map((post) => {
+      const overlap = (post.keywords || []).filter((keyword) =>
+        currentKeywords.has(keyword.toLowerCase())
+      ).length;
+
+      return {
+        ...post,
+        overlap,
+      };
+    })
+    .filter((post) => post.overlap > 0)
+    .sort((a, b) => b.overlap - a.overlap);
+
+  const combined = [
+    ...sameCategory,
+    ...keywordRelated,
+  ];
+
+  const uniquePosts = [];
+  const seen = new Set();
+
+  for (const post of combined) {
+    if (!seen.has(post.slug)) {
+      seen.add(post.slug);
+      uniquePosts.push(post);
+    }
+
+    if (uniquePosts.length >= limit) {
+      break;
+    }
+  }
+
+  return uniquePosts;
+}
+
+
+/* ============================================================
+   BLOG POST
+============================================================ */
+
 function BlogPost() {
   const { slug } = useParams();
 
-  const post = blogPosts.find(
+  const post = allBlogPosts.find(
     (item) => item.slug === slug
   );
 
-  /* =========================
+
+  /* ==========================================================
      ARTICLE NOT FOUND
-  ========================== */
+  ========================================================== */
 
   if (!post) {
     return (
@@ -63,9 +188,17 @@ function BlogPost() {
     );
   }
 
-  /* =========================
+
+  /* ==========================================================
+     EXISTING JSX ARTICLE COMPONENT
+  ========================================================== */
+
+  const ContentComponent = blogContent[post.slug];
+
+
+  /* ==========================================================
      ARTICLE SCHEMA
-  ========================== */
+  ========================================================== */
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -103,12 +236,20 @@ function BlogPost() {
     },
   };
 
+
+  /* ==========================================================
+     RELATED POSTS
+  ========================================================== */
+
+  const relatedPosts = getRelatedPosts(post);
+
+
+  /* ==========================================================
+     PAGE
+  ========================================================== */
+
   return (
     <>
-      {/* =========================
-          BLOG SEO
-      ========================== */}
-
       <SEO
         title={`${post.title} | TubeKit`}
         description={post.description}
@@ -119,52 +260,80 @@ function BlogPost() {
         type="article"
       />
 
-      {/* =========================
-          BLOG PAGE
-      ========================== */}
-
       <main className="min-h-screen bg-slate-950 px-6 py-16 sm:py-20">
 
         <article className="mx-auto max-w-4xl">
 
-          {/* Back */}
+          {/* ==================================================
+              BREADCRUMB
+          ================================================== */}
 
-          <Link
-            to="/blog"
-            className="text-sm font-medium text-blue-400 hover:text-blue-300"
+          <nav
+            aria-label="Breadcrumb"
+            className="flex flex-wrap items-center gap-2 text-sm text-slate-500"
           >
-            ← Back to Blog
-          </Link>
+
+            <Link
+              to="/"
+              className="transition hover:text-white"
+            >
+              Home
+            </Link>
+
+            <span>/</span>
+
+            <Link
+              to="/blog"
+              className="transition hover:text-white"
+            >
+              Blog
+            </Link>
+
+            <span>/</span>
+
+            <span className="text-slate-400">
+              {post.category}
+            </span>
+
+          </nav>
 
 
-          {/* Category */}
+          {/* ==================================================
+              CATEGORY
+          ================================================== */}
 
           <div className="mt-8">
 
-            <span className="inline-flex rounded-full bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-400">
+            <span className="inline-flex rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1 text-sm font-semibold text-blue-400">
               {post.category}
             </span>
 
           </div>
 
 
-          {/* Title */}
+          {/* ==================================================
+              TITLE
+          ================================================== */}
 
-          <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl">
+          <h1 className="mt-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
             {post.title}
           </h1>
 
 
-          {/* Description */}
+          {/* ==================================================
+              DESCRIPTION
+          ================================================== */}
 
-          <p className="mt-6 text-lg leading-8 text-slate-400">
+          <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-400">
             {post.description}
           </p>
 
 
-          {/* Meta */}
+          {/* ==================================================
+              META
+          ================================================== */}
 
-          <div className="mt-6 flex flex-wrap gap-3 text-sm text-slate-500">
+          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-slate-500">
 
             <span>
               By {post.author}
@@ -185,113 +354,82 @@ function BlogPost() {
           </div>
 
 
-          {/* Featured Image */}
+          {/* ==================================================
+              FEATURED IMAGE
+          ================================================== */}
 
-          <div className="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-slate-900">
+          {post.image && (
+            <div className="mt-10 overflow-hidden rounded-3xl border border-white/10 bg-slate-900 shadow-2xl shadow-black/20">
 
-            <img
-              src={post.image}
-              alt={post.title}
-              className="block h-auto w-full"
-            />
+              <img
+                src={post.image}
+                alt={post.title}
+                className="block h-auto w-full"
+              />
 
-          </div>
+            </div>
+          )}
 
 
-          {/* =========================
+          {/* ==================================================
               ARTICLE CONTENT
-          ========================== */}
+          ================================================== */}
 
           <div className="mt-12">
 
-            {post.slug ===
-              "how-to-write-youtube-titles-that-get-more-clicks" && (
-              <TitleGuide />
+            {/* Existing JSX Blogs */}
+
+            {ContentComponent ? (
+              <ContentComponent />
+
+            ) : post.source === "markdown" ? (
+
+              /* Markdown Blogs */
+
+              <MarkdownArticle
+                content={post.content}
+              />
+
+            ) : (
+
+              <div className="rounded-2xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+
+                <p className="text-sm text-yellow-400">
+                  This article is currently being prepared.
+                </p>
+
+              </div>
+
             )}
-
-
-            {post.slug ===
-              "how-to-write-youtube-description-for-seo" && (
-              <DescriptionGuide />
-            )}
-
-
-            {post.slug ===
-              "best-youtube-seo-tools-for-creators" && (
-              <SeoToolsGuide />
-            )}
-
-
-            {post.slug ===
-              "how-to-find-youtube-keywords" && (
-              <KeywordGuide />
-            )}
-
-
-            {post.slug ===
-              "how-to-get-more-views-on-youtube" && (
-              <GrowthGuide />
-            )}
-
-
-            {post.slug === "youtube-cpm-vs-rpm" && (
-              <CpmRpmGuide />
-            )}
-
-
-            {post.slug === "how-youtube-monetization-works" && (
-              <MonetizationGuide />
-            )}
-
-
-            {post.slug ===
-              "how-to-create-better-youtube-thumbnails" && (
-              <ThumbnailGuide />
-            )}
-
-
-            {post.slug ===
-              "youtube-shorts-ideas-for-beginners" && (
-              <ShortsGuide />
-            )}
-
-
-            {post.slug ===
-              "how-to-write-a-youtube-video-script" && (
-              <ScriptGuide />
-            )}
-
-
-            {post.slug ===
-              "how-to-make-youtube-shorts-viral" && (
-              <ShortsViralGuide />
-            )}
-{post.slug === "how-to-get-more-subscribers-on-youtube" && (
-  <SubscribersGuide />
-)}
-
-{post.slug === "how-to-increase-youtube-watch-time" && (
-  <WatchTimeGuide />
-)}
-
-{post.slug === "how-to-increase-youtube-ctr" && (
-  <CTRGuide />
-)}
-
-{post.slug === "youtube-seo-guide-2026" && (
-  <YoutubeSEO2026Guide />
-)}
 
           </div>
 
 
-          {/* Back to Blog */}
+          {/* ==================================================
+              TOOL CTA
+          ================================================== */}
+
+          <ToolCTA />
+
+
+          {/* ==================================================
+              RELATED POSTS
+          ================================================== */}
+
+          <RelatedPosts
+            posts={relatedPosts}
+          />
+
+
+          {/* ==================================================
+              BACK TO BLOG
+          ================================================== */}
 
           <div className="mt-14 border-t border-white/10 pt-8">
 
             <Link
               to="/blog"
-              className="font-semibold text-blue-400 hover:text-blue-300"
+              className="font-semibold text-blue-400 transition hover:text-blue-300"
             >
               ← Explore More Articles
             </Link>

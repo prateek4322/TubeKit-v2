@@ -1,7 +1,8 @@
 import SEO from "@/components/common/SEO";
 import BlogHeader from "@/components/blog/BlogHeader";
 import BlogGrid from "@/components/blog/BlogGrid";
-import blogPosts from "@/data/blogPosts";
+
+import allBlogPosts from "@/data/allBlogPosts";
 
 function Blog() {
   return (
@@ -13,6 +14,7 @@ function Blog() {
       />
 
       <main className="min-h-screen bg-slate-950">
+
         {/* Header */}
         <section className="px-6 pb-16 pt-20 sm:pt-24">
           <BlogHeader />
@@ -20,8 +22,9 @@ function Blog() {
 
         {/* Blog Posts */}
         <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
-          <BlogGrid posts={blogPosts} />
+          <BlogGrid posts={allBlogPosts} />
         </section>
+
       </main>
     </>
   );

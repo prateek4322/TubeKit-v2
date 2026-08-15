@@ -19,8 +19,8 @@ import FAQ from "@/pages/FAQ";
 import NotFound from "@/pages/NotFound";
 
 // Blog
-import Blog from "@/pages/blog/Blog";
-import BlogPost from "@/pages/blog/BlogPost";
+import Blog from "@/pages/Blog/Blog";
+import BlogPost from "@/pages/Blog/BlogPost";
 
 // Legal
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
