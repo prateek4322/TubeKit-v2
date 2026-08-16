@@ -338,6 +338,63 @@ const blogPosts = [
       "YouTube SEO strategy",
     ],
   },
+  {
+  id: 16,
+  slug: "free-ai-tools-for-youtube-creators",
+  title:
+    "Top 10 Free AI Tools for YouTube Creators to Explode Your Growth in 2026",
+
+  description:
+    "Discover the best free AI tools for YouTube creators in 2026 for titles, descriptions, tags, keywords, scripts, hooks, outlines, thumbnails and YouTube SEO.",
+
+  category: "YouTube AI Tools",
+
+  author: "TubeKit",
+
+  date: "2026-08-16",
+
+  readTime: "12 min read",
+
+  image: "/blog/free-ai-tools-for-youtube-creators.jpg",
+
+  keywords: [
+    "free AI tools for YouTube creators",
+    "AI YouTube tools",
+    "free YouTube AI tools",
+    "AI tools for YouTubers",
+    "YouTube SEO tools",
+    "free YouTube creator tools",
+    "AI content creation tools for YouTube",
+    "YouTube AI tools 2026",
+    "best free AI tools for YouTube",
+  ],
+
+},
+{
+  id: 17,
+  slug: "realme-16x-5g-review",
+  title:
+    "Realme 16x 5G Review: Price, Specifications, Pros & Cons",
+  description:
+    "Realme 16x 5G review covering price in India, specifications, display, performance, camera, 7000mAh battery, pros, cons and buying verdict.",
+  category: "Mobile Reviews",
+  author: "TubeKit",
+  date: "2026-08-16",
+  readTime: "14 min read",
+  image: "/blog/realme-16x-5g-review.jpg",
+  keywords: [
+    "Realme 16x 5G review",
+    "Realme 16x 5G price in India",
+    "Realme 16x 5G specifications",
+    "Realme 16x 5G pros and cons",
+    "Realme 16x 5G battery",
+    "Realme 16x 5G camera",
+    "Realme 16x 5G performance",
+    "Realme 16x 5G 5G phone",
+    "Realme 16x 5G review India",
+  ],
+},
+
 ];
 
 export default blogPosts;

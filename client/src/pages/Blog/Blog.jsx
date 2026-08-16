@@ -1,8 +1,7 @@
 import SEO from "@/components/common/SEO";
 import BlogHeader from "@/components/blog/BlogHeader";
 import BlogGrid from "@/components/blog/BlogGrid";
-
-import allBlogPosts from "@/data/allBlogPosts";
+import blogPosts from "@/data/blogPosts";
 
 function Blog() {
   return (
@@ -22,7 +21,7 @@ function Blog() {
 
         {/* Blog Posts */}
         <section className="mx-auto max-w-7xl px-6 pb-20 lg:px-8">
-          <BlogGrid posts={allBlogPosts} />
+          <BlogGrid posts={blogPosts} />
         </section>
 
       </main>

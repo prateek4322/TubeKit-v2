@@ -3,9 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import SEO from "@/components/common/SEO";
 import RelatedPosts from "@/components/blog/RelatedPosts";
 import ToolCTA from "@/components/blog/ToolCTA";
-import MarkdownArticle from "@/components/blog/MarkdownArticle";
 
-import allBlogPosts from "@/data/allBlogPosts";
+import blogPosts from "@/data/blogPosts";
 
 import TitleGuide from "./posts/TitleGuide";
 import DescriptionGuide from "./posts/DescriptionGuide";
@@ -22,10 +21,11 @@ import SubscribersGuide from "./posts/SubscribersGuide";
 import WatchTimeGuide from "./posts/WatchTimeGuide";
 import CTRGuide from "./posts/CTRGuide";
 import YoutubeSEO2026Guide from "./posts/YoutubeSEO2026Guide";
-
+import FreeAIToolsForYouTubeCreators from "./posts/FreeAIToolsForYouTubeCreators";
+import Realme16x5GReview from "./posts/Realme16x5GReview";
 
 /* ============================================================
-   EXISTING JSX BLOG CONTENT
+   JSX BLOG CONTENT
 ============================================================ */
 
 const blogContent = {
@@ -73,6 +73,12 @@ const blogContent = {
 
   "youtube-seo-guide-2026":
     YoutubeSEO2026Guide,
+
+  "free-ai-tools-for-youtube-creators":
+    FreeAIToolsForYouTubeCreators,
+
+    "realme-16x-5g-review":
+  Realme16x5GReview,
 };
 
 
@@ -85,7 +91,7 @@ function getRelatedPosts(currentPost, limit = 3) {
     return [];
   }
 
-  const sameCategory = allBlogPosts.filter(
+  const sameCategory = blogPosts.filter(
     (post) =>
       post.slug !== currentPost.slug &&
       post.category === currentPost.category
@@ -97,7 +103,7 @@ function getRelatedPosts(currentPost, limit = 3) {
     )
   );
 
-  const keywordRelated = allBlogPosts
+  const keywordRelated = blogPosts
     .filter(
       (post) =>
         post.slug !== currentPost.slug &&
@@ -146,7 +152,7 @@ function getRelatedPosts(currentPost, limit = 3) {
 function BlogPost() {
   const { slug } = useParams();
 
-  const post = allBlogPosts.find(
+  const post = blogPosts.find(
     (item) => item.slug === slug
   );
 
@@ -190,7 +196,7 @@ function BlogPost() {
 
 
   /* ==========================================================
-     EXISTING JSX ARTICLE COMPONENT
+     JSX ARTICLE COMPONENT
   ========================================================== */
 
   const ContentComponent = blogContent[post.slug];
@@ -377,21 +383,9 @@ function BlogPost() {
 
           <div className="mt-12">
 
-            {/* Existing JSX Blogs */}
-
             {ContentComponent ? (
               <ContentComponent />
-
-            ) : post.source === "markdown" ? (
-
-              /* Markdown Blogs */
-
-              <MarkdownArticle
-                content={post.content}
-              />
-
             ) : (
-
               <div className="rounded-2xl border border-yellow-500/20 bg-yellow-500/5 p-6">
 
                 <p className="text-sm text-yellow-400">
@@ -399,7 +393,6 @@ function BlogPost() {
                 </p>
 
               </div>
-
             )}
 
           </div>
