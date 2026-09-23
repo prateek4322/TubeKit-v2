@@ -1,29 +1,36 @@
-🎬 TubeKit
+# 🎬 TubeKit
 
-AI-Powered YouTube Creator Studio
+<h3 align="center">AI-Powered YouTube Creator Studio</h3>
 
-Create. Optimize. Publish. Grow.
+<p align="center">
+  <b>Create. Optimize. Publish. Grow.</b>
+</p>
 
-TubeKit is an AI-powered creator platform designed to simplify the entire YouTube content workflow — from idea generation and scripting to SEO optimization and content planning.
+<p align="center">
+  <a href="https://tubekitapp.in">
+    <img src="https://img.shields.io/badge/🌐_Live_Website-TubeKit-0D6EFD?style=for-the-badge" />
+  </a>
+  <a href="https://tubekitapp.in/blog">
+    <img src="https://img.shields.io/badge/📚_Blog-YouTube_Growth-FF0000?style=for-the-badge" />
+  </a>
+  <a href="https://github.com/prateek4322/TubeKit-v2">
+    <img src="https://img.shields.io/github/stars/prateek4322/TubeKit-v2?style=for-the-badge&logo=github&label=Stars" />
+  </a>
+</p>
 
-<p align="center"><a href="https://tubekitapp.in">
-<img src="https://img.shields.io/badge/🌐_Live_Website-TubeKit-0D6EFD?style=for-the-badge" />
-</a><img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=black" /><img src="https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white" /><img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" /><img src="https://img.shields.io/badge/Node.js-Backend-339933?style=for-the-badge&logo=node.js&logoColor=white" /></p>---
-
-🌐 Live Product
-
-"🚀 Visit TubeKit →" (https://tubekitapp.in)
-
-TubeKit brings essential AI-powered YouTube creator tools into one modern workspace.
-
-No more switching between multiple tools for every video.
+<p align="center">
+  <img src="https://readme-typing-svg.demolab.com?font=Inter&weight=700&size=24&duration=3000&pause=1000&color=FF0000&center=true&vCenter=true&width=700&lines=AI+YouTube+Creator+Studio;Generate+Titles+%7C+Scripts+%7C+SEO;Create+Better+Content+Faster;Built+for+Modern+Creators" />
+</p>
 
 ---
 
-⚡ What is TubeKit?
+## 🚀 What is TubeKit?
 
-YouTube creators need to handle multiple stages before publishing a video:
+**TubeKit** is an AI-powered YouTube Creator Studio designed to simplify the complete content creation workflow.
 
+From a simple video idea to optimized publishing — TubeKit brings essential creator tools into one modern workspace.
+
+```text
 💡 Idea
    ↓
 🔎 Research
@@ -40,118 +47,170 @@ YouTube creators need to handle multiple stages before publishing a video:
    ↓
 🖼️ Thumbnail
    ↓
-📊 SEO Optimization
+📊 SEO
    ↓
 🚀 Publish
 
-TubeKit simplifies this workflow with AI-powered tools built specifically for creators.
+> One workspace. Multiple AI tools. Faster content creation.
+
+
+
 
 ---
 
-🧠 AI Creator Studio
+🌐 Live Product
+
+<p align="center">🚀 <a href="https://tubekitapp.in">Visit TubeKit →</a>
+
+</p>TubeKit is built for creators who want to spend less time switching between tools and more time creating content.
+
+
+---
+
+⚡ AI Creator Studio
 
 🎯 Content Generation
 
-Tool| Description
-🎯 AI Title Generator| Generate engaging and optimized YouTube titles
-✍️ AI Script Writer| Create structured video scripts
-📝 Description Generator| Generate SEO-friendly descriptions
-🏷️ Tags Generator| Generate relevant YouTube tags
-#️⃣ Hashtag Generator| Generate targeted hashtags
-🔎 Keyword Generator| Discover relevant content keywords
-🪝 Hook Generator| Create attention-grabbing video hooks
-📋 Outline Generator| Build structured video outlines
+Tool	What it does
+
+🎯 AI Title Generator	Generate engaging YouTube titles
+✍️ AI Script Writer	Create structured video scripts
+📝 Description Generator	Generate SEO-friendly descriptions
+🏷️ Tags Generator	Generate relevant YouTube tags
+#️⃣ Hashtag Generator	Generate targeted hashtags
+🔎 Keyword Generator	Discover relevant keywords
+🪝 Hook Generator	Create attention-grabbing hooks
+📋 Outline Generator	Build structured video outlines
+
+
+
+---
 
 🎨 Creative Tools
 
-Tool| Description
-🖼️ Thumbnail Ideas| Generate creative thumbnail concepts
-🎬 Shorts Generator| Generate YouTube Shorts concepts
-💡 Content Ideas| Discover potential video topics
+Tool	What it does
 
-📊 Optimization
+🖼️ Thumbnail Ideas	Generate thumbnail concepts
+🎬 Shorts Generator	Generate Shorts concepts
+💡 Content Ideas	Discover new video topics
 
-Tool| Description
-📈 SEO Score| Analyze content optimization
-💰 Monetization Checker| Check monetization-related factors
-🔥 Trending Keywords| Discover trending keyword opportunities
+
+
+---
+
+📊 Optimization Tools
+
+Tool	What it does
+
+📈 SEO Score	Analyze content optimization
+🔥 Trending Keywords	Discover keyword opportunities
+💰 Monetization Checker	Analyze monetization-related factors
+
+
 
 ---
 
 ✨ Platform Features
 
-🤖 AI-Powered
+<div align="center">🤖 AI Powered	⚡ Fast Workflow
 
-Generate high-quality YouTube content using modern generative AI.
+Generate content using modern generative AI	Create content within seconds
 
-⚡ Fast Workflow
 
-Create titles, descriptions, scripts, tags and more within seconds.
+📊 YouTube SEO	🧠 Creator Focused
 
-📊 YouTube SEO
+Optimize titles, metadata and keywords	Built around real creator workflows
 
-Build content around keywords, metadata and optimization strategies.
 
-🧠 Creator-Focused
+📚 Creator Resources	🕘 History
 
-Every tool is designed around real YouTube content workflows.
+Learn through the TubeKit blog	Reuse previously generated content
 
-📚 Creator Resources
 
-Learn YouTube SEO, growth strategies and content optimization through the TubeKit blog.
-
-🕘 History
-
-Keep track of previously generated content and reuse successful ideas.
-
-📱 Responsive
-
-Designed to work across:
-
-Desktop • Tablet • Mobile
-
+</div>
 ---
 
-🎨 Product Design
+🎨 RGYB Design System
 
-TubeKit follows a modern creator-focused interface with a distinctive RGYB visual system:
+TubeKit uses a distinctive RGYB visual system.
 
-🔴 Red       → Energy & Attention
-🟢 Green     → Growth & Success
-🟡 Yellow    → Creativity & Ideas
-🔵 Blue      → Technology & Trust
+🔴 RED
+Energy • Attention • Action
+
+🟢 GREEN
+Growth • Success • Progress
+
+🟡 YELLOW
+Creativity • Ideas • Discovery
+
+🔵 BLUE
+Technology • Trust • Intelligence
 
 The interface combines:
 
-Modern UI + AI Tools + YouTube Workflow + Creator Analytics
+Modern UI
+     +
+AI Tools
+     +
+YouTube Workflow
+     +
+Creator Analytics
+     =
+TubeKit Creator Studio
+
 
 ---
 
-🏗️ Architecture
+🧠 AI Workflow
 
-                    ┌─────────────────────┐
-                    │      TubeKit UI     │
-                    │   React + Vite      │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │    REST API Layer   │
-                    │   Node + Express    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │     AI Engine       │
-                    │   Google Gemini     │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Generated Content   │
-                    │ Titles • Scripts    │
-                    │ SEO • Tags • Ideas  │
-                    └─────────────────────┘
+flowchart TD
+
+A[💡 Video Idea] --> B[🔎 Research]
+B --> C[🤖 AI Content Generation]
+
+C --> D[🎯 Title]
+C --> E[✍️ Script]
+C --> F[📝 Description]
+C --> G[🏷️ Tags]
+C --> H[#️⃣ Hashtags]
+
+D --> I[📊 SEO Optimization]
+E --> I
+F --> I
+G --> I
+H --> I
+
+I --> J[🖼️ Thumbnail Strategy]
+J --> K[🚀 Ready to Publish]
+
+
+---
+
+🏗️ System Architecture
+
+┌─────────────────────────────────────┐
+│            🎬 TubeKit UI            │
+│          React + Vite               │
+└──────────────────┬──────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────┐
+│            REST API Layer            │
+│          Node.js + Express           │
+└──────────────────┬──────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────┐
+│             🤖 AI Engine             │
+│            Google Gemini             │
+└──────────────────┬──────────────────┘
+                   │
+                   ▼
+┌─────────────────────────────────────┐
+│          Generated Content           │
+│ Titles • Scripts • SEO • Tags • Ideas│
+└─────────────────────────────────────┘
+
 
 ---
 
@@ -159,21 +218,19 @@ Modern UI + AI Tools + YouTube Workflow + Creator Analytics
 
 Frontend
 
-React 19
-Vite
-Tailwind CSS 4
-React Router
-Framer Motion
-Lucide React
+<p>
+<img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black" />
+<img src="https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white" />
+<img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" />
+<img src="https://img.shields.io/badge/React_Router-7-CA4245?style=flat-square&logo=reactrouter&logoColor=white" />
+<img src="https://img.shields.io/badge/Framer_Motion-Animation-0055FF?style=flat-square" />
+</p>Backend
 
-Backend
-
-Node.js
-Express.js
-REST APIs
-Google Gemini API
-
-Development
+<p>
+<img src="https://img.shields.io/badge/Node.js-Backend-339933?style=flat-square&logo=node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/Express.js-REST_API-000000?style=flat-square&logo=express&logoColor=white" />
+<img src="https://img.shields.io/badge/Google_Gemini-AI-4285F4?style=flat-square&logo=google&logoColor=white" />
+</p>Development
 
 Git
 GitHub
@@ -183,8 +240,9 @@ npm
 
 Deployment
 
-Vercel
-Render
+Frontend → Vercel
+Backend  → Render
+
 
 ---
 
@@ -218,44 +276,59 @@ TubeKit/
 ├── index.html
 └── README.md
 
+
 ---
 
 🚀 Getting Started
 
 Prerequisites
 
-Make sure you have installed:
+Make sure you have:
 
 Node.js
 npm
 Git
 
-1. Clone
+1️⃣ Clone Repository
 
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/prateek4322/TubeKit-v2.git
 
-2. Enter the project
+2️⃣ Enter Project
 
-cd tubekitapp
+cd TubeKit-v2
 
-3. Install dependencies
+3️⃣ Install Dependencies
 
 npm install
 
-4. Start development server
+4️⃣ Start Development Server
 
 npm run dev
+
+Your development server will start locally.
+
 
 ---
 
 🔐 Environment Variables
 
-Create a ".env" file:
+Create a .env file:
 
 VITE_API_URL=your_api_url
 GEMINI_API_KEY=your_gemini_api_key
 
-«⚠️ Never expose API keys or commit ".env" files to GitHub.»
+> ⚠️ Never commit .env files or expose private API keys publicly.
+
+
+
+Add this to .gitignore:
+
+.env
+.env.local
+.env.production
+node_modules/
+dist/
+
 
 ---
 
@@ -263,44 +336,68 @@ GEMINI_API_KEY=your_gemini_api_key
 
 Phase 01 — Foundation
 
-- [x] AI Title Generator
-- [x] Description Generator
-- [x] Tags Generator
-- [x] Hashtag Generator
-- [x] Keyword Generator
-- [x] Script Generator
+[x] AI Title Generator
+
+[x] Description Generator
+
+[x] Tags Generator
+
+[x] Hashtag Generator
+
+[x] Keyword Generator
+
+[x] Script Generator
+
 
 Phase 02 — Creator Studio
 
-- [x] Dashboard
-- [x] History
-- [x] Blog
-- [x] SEO Tools
-- [x] Thumbnail Ideas
+[x] Dashboard
+
+[x] History
+
+[x] Blog
+
+[x] SEO Tools
+
+[x] Thumbnail Ideas
+
 
 Phase 03 — Advanced AI
 
-- [ ] AI Content Planner
-- [ ] AI Thumbnail Generator
-- [ ] Channel Audit
-- [ ] Competitor Analysis
-- [ ] Advanced SEO Analysis
-- [ ] Content Calendar
-- [ ] YouTube Analytics Integration
+[ ] AI Content Planner
+
+[ ] AI Thumbnail Generator
+
+[ ] Channel Audit
+
+[ ] Competitor Analysis
+
+[ ] Advanced SEO Analysis
+
+[ ] Content Calendar
+
+[ ] YouTube Analytics Integration
+
 
 Phase 04 — Creator Ecosystem
 
-- [ ] Creator Workspace
-- [ ] Multi-language AI
-- [ ] Advanced AI Studio
-- [ ] Team Collaboration
-- [ ] Personalized Recommendations
+[ ] Creator Workspace
+
+[ ] Multi-language AI
+
+[ ] Advanced AI Studio
+
+[ ] Team Collaboration
+
+[ ] Personalized Recommendations
+
+
 
 ---
 
-📚 TubeKit Blog
+📚 Creator Resources
 
-TubeKit also provides educational content for creators covering:
+The TubeKit blog covers:
 
 YouTube SEO
 Content Strategy
@@ -312,25 +409,63 @@ Channel Growth
 Thumbnail Strategy
 Creator Productivity
 
-Explore the resources:
+📖 <a href="https://tubekitapp.in/blog">Explore TubeKit Blog →</a>
 
-"📖 Visit TubeKit Blog →" (https://tubekitapp.in/blog)
 
+---
+
+📊 GitHub Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=prateek4322&show_icons=true&theme=transparent&hide_border=true&rank_icon=github" height="170"/>
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=prateek4322&layout=compact&theme=transparent&hide_border=true" height="170"/>
+</p>
+---
+
+🔥 Contribution Activity
+
+<p align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=prateek4322&theme=transparent&hide_border=true" />
+</p>
+---
+
+🐍 Contribution Snake
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/prateek4322/prateek4322/output/github-contribution-grid-snake.svg" />
+</p>
 ---
 
 🎯 Product Vision
 
 TubeKit is being built around one simple idea:
 
-«Give creators the tools they need to turn an idea into optimized YouTube content faster.»
+> Give creators the tools they need to turn an idea into optimized YouTube content faster.
 
-The long-term goal is to evolve TubeKit from a collection of AI utilities into a complete AI-powered YouTube Creator Studio.
+
+
+The long-term vision is to evolve TubeKit from a collection of AI utilities into a complete:
+
+🎬
+     TUBEKIT STUDIO
+           │
+     ┌─────┴─────┐
+     │           │
+   CREATE      OPTIMIZE
+     │           │
+     └─────┬─────┘
+           │
+        ANALYZE
+           │
+           ▼
+         GROW 🚀
+
 
 ---
 
 🤝 Contributing
 
-Contributions and ideas are welcome.
+Contributions, suggestions and improvements are welcome.
 
 git checkout -b feature/new-feature
 
@@ -342,33 +477,40 @@ git push origin feature/new-feature
 
 Then open a Pull Request.
 
----
-
-📄 License
-
-This project is maintained by the TubeKit development team.
 
 ---
 
-🔗 Links
+🔗 TubeKit Links
 
 <p align="center">🌐 Website
+
+<a href="https://tubekitapp.in">
 https://tubekitapp.in
+</a><br><br>
 
 📖 Blog
+
+<a href="https://tubekitapp.in/blog">
 https://tubekitapp.in/blog
+</a><br><br>
 
 💻 GitHub
+
+<a href="https://github.com/prateek4322/TubeKit-v2">
 https://github.com/prateek4322/TubeKit-v2
+</a></p>
+---
 
-</p>---
-
-<div align="center">🚀 TubeKit
+<p align="center">🚀 TubeKit
 
 Create Smarter. Optimize Better. Grow Faster.
 
 Built for the next generation of YouTube creators.
 
+<br>🔴 🟢 🟡 🔵
+
+<br><br>
+
 © 2026 TubeKit
 
-</div>
+</p>
