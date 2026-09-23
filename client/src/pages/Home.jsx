@@ -316,7 +316,82 @@ const ActiveTool = activeTool
           <SearchSection />
         </div>
       </section>
+{/* =====================================================
+    CREATOR INTRO
+====================================================== */}
+<section className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+  <div className="mx-auto max-w-7xl">
+    <div className="mx-auto max-w-4xl text-center">
 
+      <p className="text-sm font-black uppercase tracking-[0.22em] text-red-400">
+        Built for YouTube Creators
+      </p>
+
+      <h2 className="mt-4 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+        Create, Optimize & Grow
+        <span className="mt-2 block text-red-500">
+          With TubeKit
+        </span>
+      </h2>
+
+      <p className="mx-auto mt-6 max-w-3xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8 lg:text-lg">
+        TubeKit brings AI-powered content creation and practical YouTube
+        utilities into one simple workspace. Choose a tool, enter your topic,
+        review the generated result and customize it for your audience.
+      </p>
+
+    </div>
+
+    <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+
+      <div className="rounded-3xl border-2 border-red-500/60 bg-[#070b18] p-6 shadow-lg shadow-red-500/5 transition duration-300 hover:-translate-y-1 hover:border-red-400 sm:p-7">
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-red-400">
+          Create
+        </p>
+
+        <h3 className="mt-4 text-xl font-bold text-white">
+          Turn ideas into content
+        </h3>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400">
+          Generate titles, scripts, hooks, descriptions, hashtags and
+          thumbnail concepts from a simple topic or video idea.
+        </p>
+      </div>
+
+      <div className="rounded-3xl border-2 border-green-500/60 bg-[#070b18] p-6 shadow-lg shadow-green-500/5 transition duration-300 hover:-translate-y-1 hover:border-green-400 sm:p-7">
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-green-400">
+          Optimize
+        </p>
+
+        <h3 className="mt-4 text-xl font-bold text-white">
+          Improve your content workflow
+        </h3>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400">
+          Explore keyword, tag, title and description ideas to help you plan
+          content around your topic and audience.
+        </p>
+      </div>
+
+      <div className="rounded-3xl border-2 border-blue-500/60 bg-[#070b18] p-6 shadow-lg shadow-blue-500/5 transition duration-300 hover:-translate-y-1 hover:border-blue-400 sm:p-7">
+        <p className="text-xs font-black uppercase tracking-[0.18em] text-blue-400">
+          Customize
+        </p>
+
+        <h3 className="mt-4 text-xl font-bold text-white">
+          Keep your creative control
+        </h3>
+
+        <p className="mt-3 text-sm leading-7 text-slate-400">
+          Use AI suggestions as a starting point, then refine the output with
+          your own experience, style, examples and creative direction.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
       
 {/* =====================================================
           ESSENTIAL CREATOR TOOLS
