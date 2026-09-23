@@ -273,22 +273,22 @@ function Hero({ onToolSelect }) {
                 </div>
 
            {/* Generate */}
-<div className="flex w-full flex-col gap-2 md:w-auto">
-  <button
-    type="button"
-    onClick={handleSearch}
-    className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border-2 border-red-500 bg-red-500 px-5 text-xs font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/35 sm:min-h-14 sm:px-6 sm:text-sm"
-  >
-    <Search
-      className="h-4 w-4 shrink-0 !text-white sm:h-5 sm:w-5"
-      style={{
-        color: "#ffffff",
-        stroke: "#ffffff",
-      }}
-      strokeWidth={2.5}
-    />
-    <span>Generate</span>
-  </button>
+<button
+  type="button"
+  onClick={handleSearch}
+  className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border-2 border-red-500 bg-red-500 px-5 text-xs font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/35 sm:min-h-14 sm:w-auto sm:px-6 sm:text-sm"
+>
+  <Search
+    className="h-4 w-4 shrink-0 !text-white sm:h-5 sm:w-5"
+    style={{
+      color: "#ffffff",
+      stroke: "#ffffff",
+    }}
+    strokeWidth={2.5}
+  />
+
+  <span>Generate</span>
+</button>
 
   {!query.trim() && (
     <p className="px-1 text-center text-[10px] font-medium leading-4 text-slate-500 sm:text-xs md:hidden">
