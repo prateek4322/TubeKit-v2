@@ -87,6 +87,7 @@ const rgby = {
     glow: "active:shadow-[0_0_35px_rgba(59,130,246,0.10)]",
   },
 };
+
 const essentialTools = [
   {
     name: "AI Title Generator",
@@ -255,6 +256,7 @@ const faqs = [
     color: "red",
   },
 ];
+
 function Home() {
   const [activeTool, setActiveTool] = useState(null);
   const [toolQuery, setToolQuery] = useState("");
@@ -326,20 +328,15 @@ function Home() {
         </section>
       )}
 
-      {/* ESSENTIAL TOOLS */}
+{/* ESSENTIAL TOOLS */}
       <section
         id="tools"
-        className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
+        className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
-              Essential
-            </span>
-
-            <h2 className="mt-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Essential
-              <span className="block text-red-500">Creator Tools</span>
+            <h2 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <span className="text-red-500">Essential</span> Creator Tools
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
@@ -390,43 +387,53 @@ function Home() {
           </div>
         </div>
       </section>
-{/* FEATURED TOOLS */}
-      <section className="bg-[#050816] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+
+      {/* FEATURED TOOLS */}
+      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
-              Featured
-            </span>
-
-            <h2 className="mt-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-              Featured
-              <span className="block text-red-500">Tools</span>
-            </h2>
-
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
-              Explore additional tools for YouTube research, analysis,
-              optimization and creator workflows.
-            </p>
-          </div>
-
-          <div className="mx-auto mt-12 max-w-6xl">
+          <div className="mx-auto max-w-6xl">
             <FeaturedTools />
           </div>
         </div>
       </section>
 
-      
+      {/* STATS */}
+      <section className="bg-[#030712] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {[
+            ["17+", "Creator tools", "red"],
+            ["AI", "Powered workflows", "green"],
+            ["SEO", "Content support", "yellow"],
+            ["24/7", "Self-serve access", "blue"],
+          ].map(([value, label, color]) => {
+            const s = rgby[color];
+
+            return (
+              <div
+                key={label}
+                className="rounded-2xl border border-transparent bg-[#080b12] px-4 py-6 text-center transition duration-300 hover:-translate-y-0.5 hover:bg-[#0b0f18]"
+              >
+                <div className={`text-3xl font-black sm:text-4xl ${s.text}`}>
+                  {value}
+                </div>
+                <div className="mt-2 text-xs font-medium text-slate-500 sm:text-sm">
+                  {label}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ABOUT */}
-      <section className="bg-[#050816] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-6xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
             About TubeKit
           </span>
 
-          <h2 className="mt-5 text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Understanding
-            <span className="text-red-500"> TubeKit</span>
+          <h2 className="mt-5 whitespace-nowrap text-[clamp(1.7rem,6vw,3.75rem)] font-black leading-tight tracking-tight text-white">
+            Understanding <span className="text-red-500">TubeKit</span>
           </h2>
 
           <p className="mx-auto mt-6 max-w-4xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
@@ -442,13 +449,8 @@ function Home() {
       <section className="bg-[#050816] px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
-              Key Features
-            </span>
-
-            <h2 className="mt-5 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-              Key Features
-              <span className="text-red-500"> of TubeKit</span>
+            <h2 className="mt-5 whitespace-nowrap text-[clamp(1.45rem,5vw,3rem)] font-black leading-tight text-white">
+              Key Features <span className="text-red-500">of TubeKit</span>
             </h2>
           </div>
 
@@ -478,18 +480,12 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* BENEFITS */}
-      <section className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+{/* BENEFITS */}
+      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex rounded-full bg-green-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-green-400">
-              Benefits
-            </span>
-
-            <h2 className="mt-5 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-              Benefits of Using
-              <span className="text-red-500"> TubeKit</span>
+            <h2 className="mt-5 whitespace-nowrap text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+              Benefits of Using <span className="text-red-500">TubeKit</span>
             </h2>
           </div>
 
@@ -524,17 +520,13 @@ function Home() {
           </div>
         </div>
       </section>
-{/* COMMON USE CASES */}
-      <section className="bg-[#050816] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+
+      {/* COMMON USE CASES */}
+      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex rounded-full bg-yellow-400/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-yellow-300">
-              Use Cases
-            </span>
-
-            <h2 className="mt-5 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-              Common
-              <span className="text-red-500"> Use Cases</span>
+            <h2 className="mt-5 whitespace-nowrap text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
+              Common <span className="text-red-500">Use Cases</span>
             </h2>
 
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
@@ -570,7 +562,7 @@ function Home() {
       {/* HOW IT WORKS */}
       <section
         id="how-it-works"
-        className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
+        className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -578,9 +570,8 @@ function Home() {
               How It Works
             </span>
 
-            <h2 className="mt-5 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
-              From Idea
-              <span className="block text-red-500">To Upload</span>
+            <h2 className="mt-5 whitespace-nowrap text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
+              From Idea <span className="text-red-500">To Upload</span>
             </h2>
           </div>
 
@@ -607,15 +598,14 @@ function Home() {
       </section>
 
       {/* BEST PRACTICES */}
-      <section className="bg-[#050816] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
             Best Practices
           </span>
 
-          <h2 className="mt-5 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-            Better YouTube
-            <span className="text-red-500"> Content Practices</span>
+          <h2 className="mt-5 whitespace-nowrap text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+            Better YouTube <span className="text-red-500">Content Practices</span>
           </h2>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
@@ -642,17 +632,17 @@ function Home() {
           </div>
         </div>
       </section>
-{/* FAQ */}
-      <section className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+
+      {/* FAQ */}
+      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
             <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
-              FAQ
+FAQ
             </span>
 
-            <h2 className="mt-5 text-4xl font-black text-white sm:text-5xl lg:text-6xl">
-              Common
-              <span className="block text-red-500">Questions</span>
+            <h2 className="mt-5 whitespace-nowrap text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
+              Common <span className="text-red-500">Questions</span>
             </h2>
           </div>
 
@@ -707,7 +697,7 @@ function Home() {
       {/* LATEST BLOG - AFTER THE MAIN CONTENT */}
       <section
         id="latest-blog"
-        className="bg-[#050816] px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
+        className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -715,9 +705,8 @@ function Home() {
               Blog
             </span>
 
-            <h2 className="mt-5 text-4xl font-black leading-tight text-white sm:text-5xl lg:text-6xl">
-              Latest from
-              <span className="block text-red-500">the Blog</span>
+            <h2 className="mt-5 whitespace-nowrap text-[clamp(1.65rem,6vw,3.75rem)] font-black leading-tight text-white">
+              Latest from <span className="text-red-500">the Blog</span>
             </h2>
 
             <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
@@ -743,7 +732,7 @@ function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
+      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-5xl rounded-3xl bg-[#080b12] px-6 py-12 text-center sm:px-10 sm:py-16">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
             <Play className="h-5 w-5" />
