@@ -397,33 +397,7 @@ function Home() {
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="bg-[#030712] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          {[
-            ["17+", "Creator tools", "red"],
-            ["AI", "Powered workflows", "green"],
-            ["SEO", "Content support", "yellow"],
-            ["24/7", "Self-serve access", "blue"],
-          ].map(([value, label, color]) => {
-            const s = rgby[color];
-
-            return (
-              <div
-                key={label}
-                className="rounded-2xl border border-transparent bg-[#080b12] px-4 py-6 text-center transition duration-300 hover:-translate-y-0.5 hover:bg-[#0b0f18]"
-              >
-                <div className={`text-3xl font-black sm:text-4xl ${s.text}`}>
-                  {value}
-                </div>
-                <div className="mt-2 text-xs font-medium text-slate-500 sm:text-sm">
-                  {label}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+   
 
       {/* ABOUT */}
       <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
