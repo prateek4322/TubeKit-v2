@@ -24,6 +24,18 @@ import ChannelIdFinder from "@/pages/tools/ChannelIdFinder";
 import VideoIdExtractor from "@/pages/tools/VideoIdExtractor";
 import ThumbnailDownloader from "@/pages/tools/ThumbnailDownloader";
 
+/*
+  TubeKit Home Page
+  ------------------------------------------------------------
+  Design direction:
+  - Dark premium creator-tool layout
+  - RGYB card system: Red / Green / Yellow / Blue
+  - Every card uses ONE solid color on all four borders
+  - No half/top-only RGYB lines
+  - Desktop + mobile responsive
+  - Hero remains a separate component
+*/
+
 const toolComponents = {
   "/tools/title-generator": TitleGenerator,
   "/tools/description-generator": DescriptionGenerator,
@@ -44,13 +56,40 @@ const toolComponents = {
   "/tools/thumbnail-downloader": ThumbnailDownloader,
 };
 
+const rgbyStyles = {
+  red: {
+    border: "border-red-500/70 hover:border-red-400",
+    icon: "bg-red-500/15 text-red-400",
+    text: "text-red-400",
+    glow: "hover:shadow-red-500/10",
+  },
+  green: {
+    border: "border-green-500/70 hover:border-green-400",
+    icon: "bg-green-500/15 text-green-400",
+    text: "text-green-400",
+    glow: "hover:shadow-green-500/10",
+  },
+  yellow: {
+    border: "border-yellow-400/70 hover:border-yellow-300",
+    icon: "bg-yellow-400/15 text-yellow-300",
+    text: "text-yellow-300",
+    glow: "hover:shadow-yellow-400/10",
+  },
+  blue: {
+    border: "border-blue-500/70 hover:border-blue-400",
+    icon: "bg-blue-500/15 text-blue-400",
+    text: "text-blue-400",
+    glow: "hover:shadow-blue-500/10",
+  },
+};
+
 const essentialTools = [
   {
     name: "AI Title Generator",
     path: "/tools/title-generator",
     color: "red",
     description:
-      "Create engaging YouTube title ideas designed around your topic, audience and search intent.",
+      "Create engaging YouTube title ideas around your topic, audience and search intent.",
   },
   {
     name: "AI Description Generator",
@@ -99,7 +138,7 @@ const essentialTools = [
     path: "/tools/thumbnail-generator",
     color: "yellow",
     description:
-      "Explore thumbnail concepts, visual directions and attention-focused ideas before designing.",
+      "Explore thumbnail concepts and visual directions before designing your final thumbnail.",
   },
 ];
 
@@ -113,20 +152,52 @@ const workflow = [
   {
     number: "02",
     title: "Add your topic",
-    text: "Enter your video idea, niche, keyword or other useful context to guide the result.",
+    text: "Enter your video idea, niche, keyword or useful context to guide the result.",
     color: "green",
   },
   {
     number: "03",
     title: "Generate ideas",
-    text: "TubeKit processes your input and creates practical content ideas you can review and refine.",
+    text: "TubeKit creates practical suggestions that you can review, edit and refine.",
     color: "yellow",
   },
   {
     number: "04",
-    title: "Publish with confidence",
-    text: "Use the generated output as a starting point for your title, script, metadata or content plan.",
+    title: "Publish your version",
+    text: "Use the result as a starting point and add your own experience and creative direction.",
     color: "blue",
+  },
+];
+const seoCards = [
+  {
+    title: "Titles",
+    text: "Make the topic clear and interesting without misleading the viewer.",
+    color: "red",
+  },
+  {
+    title: "Keywords",
+    text: "Build keyword ideas around the topic and search intent of your audience.",
+    color: "green",
+  },
+  {
+    title: "Descriptions",
+    text: "Give viewers useful context about what they will find in the video.",
+    color: "yellow",
+  },
+  {
+    title: "Tags",
+    text: "Use relevant metadata when it adds useful context to the video topic.",
+    color: "blue",
+  },
+  {
+    title: "Hooks",
+    text: "Start with a clear reason for viewers to continue watching.",
+    color: "red",
+  },
+  {
+    title: "Consistency",
+    text: "Publish useful content consistently and learn from your channel analytics.",
+    color: "green",
   },
 ];
 
@@ -134,32 +205,32 @@ const faqs = [
   {
     question: "What is TubeKit?",
     answer:
-      "TubeKit is an AI-powered toolkit for YouTube creators. It brings together tools for titles, descriptions, tags, scripts, keywords, hooks, hashtags, thumbnails and creator utilities in one place.",
-  },
-  {
-    question: "Are TubeKit tools useful for YouTube Shorts?",
-    answer:
-      "Yes. TubeKit includes tools that can support Shorts workflows, including hooks, scripts, hashtags, titles and thumbnail ideas.",
+      "TubeKit is an AI-powered toolkit for YouTube creators. It brings together tools for titles, descriptions, tags, scripts, keywords, hooks, hashtags, thumbnails and creator utilities.",
+    color: "red",
   },
   {
     question: "Can beginners use TubeKit?",
     answer:
       "Yes. The tools are designed around simple inputs so creators can start with a basic video idea and turn it into more structured content.",
+    color: "green",
+  },
+  {
+    question: "Can TubeKit help with YouTube SEO?",
+    answer:
+      "TubeKit provides tools for titles, descriptions, tags, keywords, hashtags and content planning. Actual search performance depends on many factors including relevance, audience response and video quality.",
+    color: "yellow",
   },
   {
     question: "Does TubeKit replace YouTube Studio?",
     answer:
       "No. TubeKit is a creator-support toolkit. YouTube Studio remains the place to manage your channel, publish videos and review official channel analytics.",
+    color: "blue",
   },
   {
     question: "How should I use AI-generated content?",
     answer:
-      "Treat generated results as a starting point. Review facts, adapt the wording to your audience and add your own experience, examples and creative direction before publishing.",
-  },
-  {
-    question: "Can TubeKit help with YouTube SEO?",
-    answer:
-      "TubeKit provides tools for titles, descriptions, tags, keywords, hashtags and content planning. These can help with metadata and ideation, while actual search performance depends on many factors including relevance, audience response and video quality.",
+      "Treat generated results as a starting point. Review facts, adapt the wording to your audience and add your own experience before publishing.",
+    color: "red",
   },
 ];
 
@@ -181,8 +252,7 @@ function Home() {
       });
     }, 100);
   };
-
-  const ActiveTool = activeTool
+const ActiveTool = activeTool
     ? toolComponents[activeTool.path]
     : null;
 
@@ -196,122 +266,143 @@ function Home() {
         organization={true}
       />
 
-      {/* HERO â€” kept as a separate component */}
+      {/* =====================================================
+          HERO
+          Kept completely separate. Hero can be redesigned later.
+      ====================================================== */}
       <Hero onToolSelect={handleToolSelect} />
 
-      {/* ACTIVE TOOL */}
+      {/* =====================================================
+          ACTIVE TOOL
+      ====================================================== */}
       {ActiveTool && (
         <section
           ref={toolSectionRef}
           aria-label={`${activeTool.name} tool`}
-          className="relative overflow-hidden bg-[#030712] px-4 py-24 sm:px-6 lg:px-8"
+          className="relative overflow-hidden bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8"
         >
-          <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-blue-500/10 blur-3xl" />
-
-          <div className="relative mx-auto max-w-7xl">
-            <div className="mb-12 text-center">
-              <span className="inline-flex rounded-full border border-blue-500/20 bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-blue-300">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-10 text-center">
+              <span className="inline-flex rounded-full border border-blue-500/30 bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
                 TubeKit AI Tool
               </span>
 
-              <h2 className="mt-5 text-3xl font-black tracking-tight text-white sm:text-5xl">
+              <h2 className="mt-5 text-3xl font-black text-white sm:text-5xl">
                 {activeTool.name}
               </h2>
 
               {toolQuery && (
                 <p className="mx-auto mt-4 max-w-2xl text-slate-400">
-                  Working with topic:{" "}
+                  Topic:{" "}
                   <span className="font-semibold text-white">{toolQuery}</span>
                 </p>
               )}
             </div>
 
-            <div className="rounded-[2rem] border border-white/10 bg-white/[0.03] p-3 shadow-2xl shadow-black/20 sm:p-6">
+            <div className="rounded-[2rem] border border-blue-500/30 bg-[#070b18] p-3 shadow-2xl sm:p-6">
               <ActiveTool query={toolQuery} />
             </div>
           </div>
         </section>
       )}
-      {/* INTRO / TRUST STRIP */}
-      <section className="relative overflow-hidden bg-[#030712] px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid gap-5 md:grid-cols-4">
-            {[
-              ["01", "AI-powered workflow", "Create ideas faster without starting every task from a blank page.", "red"],
-              ["02", "Creator-focused", "Every tool is built around practical YouTube content workflows.", "green"],
-              ["03", "Simple inputs", "Give TubeKit your topic and focus on reviewing and improving the result.", "yellow"],
-              ["04", "One creator hub", "Keep ideation, SEO support and creator utilities in one place.", "blue"],
-            ].map(([number, title, text, color]) => (
+{/* =====================================================
+          TRUST / BENEFITS
+      ====================================================== */}
+      <section className="bg-[#030712] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            {
+              number: "01",
+              title: "AI-powered workflow",
+              text: "Create ideas faster without starting every task from a blank page.",
+              color: "red",
+            },
+            {
+              number: "02",
+              title: "Creator-focused",
+              text: "Tools are designed around practical YouTube content workflows.",
+              color: "green",
+            },
+            {
+              number: "03",
+              title: "Simple inputs",
+              text: "Give TubeKit your topic and focus on reviewing the result.",
+              color: "yellow",
+            },
+            {
+              number: "04",
+              title: "One creator hub",
+              text: "Keep ideation, SEO support and creator utilities together.",
+              color: "blue",
+            },
+          ].map((item) => {
+            const s = rgbyStyles[item.color];
+
+            return (
               <div
-                key={number}
-                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-7 transition duration-300 hover:-translate-y-1 hover:border-white/20"
+                key={item.number}
+                className={`rounded-3xl border-2 bg-[#070b18] p-6 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-[#0a0f1f] hover:shadow-2xl ${s.border} ${s.glow}`}
               >
-                <div
-                  className={`absolute left-0 top-0 h-1 w-full ${
-                    color === "red"
-                      ? "bg-red-500"
-                      : color === "green"
-                        ? "bg-green-500"
-                        : color === "yellow"
-                          ? "bg-yellow-400"
-                          : "bg-blue-500"
-                  }`}
-                />
-                <div className="text-xs font-black tracking-[0.2em] text-slate-500">
-                  {number}
-                </div>
-                <h3 className="mt-5 text-lg font-bold text-white">{title}</h3>
-                <p className="mt-3 text-sm leading-7 text-slate-400">{text}</p>
+                <span className={`text-xs font-black tracking-[0.2em] ${s.text}`}>
+                  {item.number}
+                </span>
+
+                <h3 className="mt-5 text-lg font-bold text-white">
+                  {item.title}
+                </h3>
+
+                <p className="mt-3 text-sm leading-7 text-slate-400">
+                  {item.text}
+                </p>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
 
-      {/* SEARCH COMPONENT â€” existing styling is preserved */}
-      <section className="bg-[#050816] px-4 py-16 sm:px-6 lg:px-8">
+      {/* =====================================================
+          SEARCH
+          Existing component is preserved.
+      ====================================================== */}
+      <section className="bg-[#050816] px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <SearchSection />
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="relative overflow-hidden bg-[#050816] px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[0.025] p-8 sm:p-10">
-          <div className="grid gap-8 text-center sm:grid-cols-2 lg:grid-cols-4">
-            {[
-              ["17+", "Creator tools"],
-              ["AI", "Powered workflows"],
-              ["SEO", "Content support"],
-              ["24/7", "Self-serve access"],
-            ].map(([value, label], index) => (
-              <div key={label} className="relative">
-                <div
-                  className={`mx-auto mb-4 h-1 w-12 rounded-full ${
-                    index === 0
-                      ? "bg-red-500"
-                      : index === 1
-                        ? "bg-green-500"
-                        : index === 2
-                          ? "bg-yellow-400"
-                          : "bg-blue-500"
-                  }`}
-                />
-                <div className="text-4xl font-black tracking-tight text-white">
-                  {value}
-                </div>
+      {/* =====================================================
+          STATS
+      ====================================================== */}
+      <section className="bg-[#050816] px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 lg:grid-cols-4">
+          {[
+            ["17+", "Creator tools", "red"],
+            ["AI", "Powered workflows", "green"],
+            ["SEO", "Content support", "yellow"],
+            ["24/7", "Self-serve access", "blue"],
+          ].map(([value, label, color]) => {
+            const s = rgbyStyles[color];
+
+            return (
+              <div
+                key={label}
+                className={`rounded-3xl border-2 bg-[#070b18] px-5 py-7 text-center shadow-lg ${s.border}`}
+              >
+                <div className={`text-4xl font-black ${s.text}`}>{value}</div>
                 <div className="mt-2 text-sm font-medium text-slate-400">
                   {label}
                 </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </section>
-{/* ESSENTIAL TOOLS */}
+{/* =====================================================
+          ESSENTIAL CREATOR TOOLS
+      ====================================================== */}
       <section
         id="tools"
-        className="relative overflow-hidden bg-[#030712] px-4 py-28 sm:px-6 lg:px-8"
+        className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -330,63 +421,29 @@ function Home() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {essentialTools.map((tool) => {
-              const borderClass =
-                tool.color === "red"
-                  ? "border-red-500/45 hover:border-red-400"
-                  : tool.color === "green"
-                    ? "border-green-500/45 hover:border-green-400"
-                    : tool.color === "yellow"
-                      ? "border-yellow-400/45 hover:border-yellow-300"
-                      : "border-blue-500/45 hover:border-blue-400";
-
-              const glowClass =
-                tool.color === "red"
-                  ? "hover:shadow-red-500/10"
-                  : tool.color === "green"
-                    ? "hover:shadow-green-500/10"
-                    : tool.color === "yellow"
-                      ? "hover:shadow-yellow-400/10"
-                      : "hover:shadow-blue-500/10";
+              const s = rgbyStyles[tool.color];
 
               return (
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className={`group relative overflow-hidden rounded-3xl border-2 bg-[#070b18] p-7 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-white/[0.045] hover:shadow-2xl ${borderClass} ${glowClass}`}
+                  className={`group rounded-3xl border-2 bg-[#070b18] p-6 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-[#0a0f1f] hover:shadow-2xl sm:p-7 ${s.border} ${s.glow}`}
                 >
-                  <div
-                    className={`absolute inset-x-0 top-0 h-1 ${
-                      tool.color === "red"
-                        ? "bg-red-500"
-                        : tool.color === "green"
-                          ? "bg-green-500"
-                          : tool.color === "yellow"
-                            ? "bg-yellow-400"
-                            : "bg-blue-500"
-                    }`}
-                  />
-
-                  <div className="mb-6 flex items-center justify-between">
+                  <div className="flex items-center justify-between">
                     <span
-                      className={`h-2.5 w-2.5 rounded-full ${
-                        tool.color === "red"
-                          ? "bg-red-500"
-                          : tool.color === "green"
-                            ? "bg-green-500"
-                            : tool.color === "yellow"
-                              ? "bg-yellow-400"
-                              : "bg-blue-500"
-                      }`}
-                    />
+                      className={`flex h-10 w-10 items-center justify-center rounded-xl text-xs font-black ${s.icon}`}
+                    >
+                      AI
+                    </span>
 
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-slate-600">
                       TubeKit
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-white">
+                  <h3 className="mt-6 text-xl font-bold leading-tight text-white">
                     {tool.name}
                   </h3>
 
@@ -394,8 +451,10 @@ function Home() {
                     {tool.description}
                   </p>
 
-                  <span className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-blue-400 transition group-hover:translate-x-1 group-hover:text-blue-300">
-                    Open tool <span aria-hidden="true">â†’</span>
+                  <span
+                    className={`mt-6 inline-flex text-sm font-bold transition group-hover:translate-x-1 ${s.text}`}
+                  >
+                    Open tool
                   </span>
                 </a>
               );
@@ -404,26 +463,30 @@ function Home() {
         </div>
       </section>
 
-      {/* FEATURED TOOLS â€” existing component */}
-      <section className="bg-[#050816] px-4 py-20 sm:px-6 lg:px-8">
+      {/* =====================================================
+          FEATURED TOOLS
+          Existing component is preserved.
+      ====================================================== */}
+      <section className="bg-[#050816] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <FeaturedTools />
         </div>
       </section>
-
-      {/* ABOUT */}
+{/* =====================================================
+          ABOUT TUBEKIT
+      ====================================================== */}
       <section
         id="about"
-        className="relative overflow-hidden bg-[#030712] px-4 py-28 sm:px-6 lg:px-8"
+        className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
-        <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.05fr_0.95fr]">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <span className="text-sm font-bold uppercase tracking-[0.22em] text-green-400">
               What is TubeKit?
             </span>
 
             <h2 className="mt-5 text-4xl font-black tracking-tight text-white sm:text-5xl">
-              A practical AI workspace for modern YouTube creators
+              A practical AI workspace for YouTube creators
             </h2>
 
             <p className="mt-7 text-base leading-8 text-slate-400 sm:text-lg">
@@ -435,106 +498,41 @@ function Home() {
             </p>
 
             <p className="mt-5 text-base leading-8 text-slate-400 sm:text-lg">
-              The goal is simple: help you spend less time staring at a blank
-              page and more time improving the actual content. Use the
-              generated suggestions as a starting point, then add your own
+              Use generated suggestions as a starting point, then add your own
               expertise, voice, examples and creative decisions.
             </p>
-
-            <div className="mt-9 grid gap-4 sm:grid-cols-2">
-              {[
-                ["Content ideation", "Turn a topic into actionable content directions."],
-                ["YouTube SEO support", "Work with titles, keywords, descriptions and tags."],
-                ["Short-form workflow", "Plan hooks, scripts and hashtags for Shorts."],
-                ["Creator utilities", "Use practical tools for common YouTube tasks."],
-              ].map(([title, text], index) => (
-                <div
-                  key={title}
-                  className="rounded-2xl border border-white/10 bg-white/[0.025] p-5"
-                >
-                  <div
-                    className={`mb-4 h-1 w-9 rounded-full ${
-                      index === 0
-                        ? "bg-red-500"
-                        : index === 1
-                          ? "bg-green-500"
-                          : index === 2
-                            ? "bg-yellow-400"
-                            : "bg-blue-500"
-                    }`}
-                  />
-                  <h3 className="font-bold text-white">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{text}</p>
-                </div>
-              ))}
-            </div>
           </div>
 
-          <div className="relative">
-            <div className="absolute -inset-8 rounded-full bg-blue-500/10 blur-3xl" />
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              ["Content ideation", "Turn a topic into actionable content directions.", "red"],
+              ["YouTube SEO", "Work with titles, keywords, descriptions and tags.", "green"],
+              ["Short-form workflow", "Plan hooks, scripts and hashtags for Shorts.", "yellow"],
+              ["Creator utilities", "Use practical tools for common YouTube tasks.", "blue"],
+            ].map(([title, text, color]) => {
+              const s = rgbyStyles[color];
 
-            <div className="relative rounded-[2rem] border border-white/10 bg-white/[0.035] p-7 shadow-2xl shadow-black/30 sm:p-9">
-              <div className="flex items-center justify-between border-b border-white/10 pb-6">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.2em] text-slate-500">
-                    Creator workspace
-                  </p>
-                  <h3 className="mt-2 text-xl font-bold text-white">
-                    Your content flow
-                  </h3>
+              return (
+                <div
+                  key={title}
+                  className={`rounded-3xl border-2 bg-[#070b18] p-6 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl ${s.border} ${s.glow}`}
+                >
+                  <div className={`h-2 w-10 rounded-full ${s.icon.split(" ")[0]}`} />
+                  <h3 className="mt-6 text-lg font-bold text-white">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-400">{text}</p>
                 </div>
-
-                <div className="flex gap-1.5">
-                  <span className="h-2.5 w-2.5 rounded-full bg-red-500" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-green-500" />
-                  <span className="h-2.5 w-2.5 rounded-full bg-blue-500" />
-                </div>
-              </div>
-
-              <div className="space-y-4 pt-7">
-                {[
-                  ["01", "Video topic", "Start with an idea"],
-                  ["02", "Title & keyword", "Shape the content direction"],
-                  ["03", "Script & hook", "Build the video structure"],
-                  ["04", "Description & tags", "Prepare supporting metadata"],
-                  ["05", "Thumbnail concept", "Plan the visual direction"],
-                ].map(([number, title, text], index) => (
-                  <div
-                    key={number}
-                    className="flex items-center gap-4 rounded-2xl border border-white/10 bg-black/20 p-4"
-                  >
-                    <div
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-black text-black ${
-                        index === 0
-                          ? "bg-red-400"
-                          : index === 1
-                            ? "bg-green-400"
-                            : index === 2
-                              ? "bg-yellow-300"
-                              : index === 3
-                                ? "bg-blue-400"
-                                : "bg-red-400"
-                      }`}
-                    >
-                      {number}
-                    </div>
-
-                    <div>
-                      <div className="font-bold text-white">{title}</div>
-                      <div className="mt-1 text-xs text-slate-500">{text}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+              );
+            })}
           </div>
         </div>
       </section>
-{/* HOW IT WORKS */}
+
+      {/* =====================================================
+          HOW IT WORKS
+      ====================================================== */}
       <section
         id="how-it-works"
-        className="relative overflow-hidden bg-[#050816] px-4 py-28 sm:px-6 lg:px-8"
+        className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -543,58 +541,55 @@ function Home() {
             </span>
 
             <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
-              A simple four-step creator workflow
+              A simple creator workflow
             </h2>
 
             <p className="mt-6 text-base leading-8 text-slate-400 sm:text-lg">
-              TubeKit is designed to keep the process straightforward. Give
-              the tool enough context, review the output and make it your own.
+              Give the tool enough context, review the output and make it your
+              own.
             </p>
           </div>
 
-          <div className="relative mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {workflow.map((item) => (
-              <div
-                key={item.number}
-                className="relative rounded-3xl border border-white/10 bg-white/[0.025] p-7"
-              >
+          <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {workflow.map((item) => {
+              const s = rgbyStyles[item.color];
+
+              return (
                 <div
-                  className={`text-sm font-black ${
-                    item.color === "red"
-                      ? "text-red-400"
-                      : item.color === "green"
-                        ? "text-green-400"
-                        : item.color === "yellow"
-                          ? "text-yellow-400"
-                          : "text-blue-400"
-                  }`}
+                  key={item.number}
+                  className={`rounded-3xl border-2 bg-[#070b18] p-7 shadow-lg transition duration-300 hover:-translate-y-1 hover:shadow-2xl ${s.border} ${s.glow}`}
                 >
-                  {item.number}
+                  <div
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl text-xs font-black ${s.icon}`}
+                  >
+                    {item.number}
+                  </div>
+
+                  <h3 className="mt-6 text-xl font-bold text-white">
+                    {item.title}
+                  </h3>
+
+                  <p className="mt-4 text-sm leading-7 text-slate-400">
+                    {item.text}
+                  </p>
                 </div>
-
-                <h3 className="mt-5 text-xl font-bold text-white">
-                  {item.title}
-                </h3>
-
-                <p className="mt-4 text-sm leading-7 text-slate-400">
-                  {item.text}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
-
-      {/* SEO EDUCATION */}
-      <section className="bg-[#030712] px-4 py-28 sm:px-6 lg:px-8">
+{/* =====================================================
+          YOUTUBE SEO
+      ====================================================== */}
+      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="grid gap-10 lg:grid-cols-3">
-            <div className="lg:col-span-1">
+          <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
+            <div>
               <span className="text-sm font-bold uppercase tracking-[0.22em] text-blue-400">
                 YouTube SEO
               </span>
 
-              <h2 className="mt-4 text-4xl font-black text-white">
+              <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
                 Build better metadata around better content
               </h2>
 
@@ -605,95 +600,86 @@ function Home() {
               </p>
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2 lg:col-span-2">
-              {[
-                ["Titles", "Make the topic clear and interesting without misleading the viewer."],
-                ["Keywords", "Research and organize topic ideas around what your audience may search for."],
-                ["Descriptions", "Give viewers and search systems useful context about the video."],
-                ["Tags", "Use relevant metadata where it adds useful context to the video topic."],
-                ["Hooks", "Open with a clear reason for viewers to continue watching."],
-                ["Consistency", "Publish useful content consistently while learning from your analytics."],
-              ].map(([title, text], index) => (
-                <article
-                  key={title}
-                  className="rounded-3xl border border-white/10 bg-white/[0.025] p-7"
-                >
-                  <div
-                    className={`mb-5 h-1 w-10 rounded-full ${
-                      index % 4 === 0
-                        ? "bg-red-500"
-                        : index % 4 === 1
-                          ? "bg-green-500"
-                          : index % 4 === 2
-                            ? "bg-yellow-400"
-                            : "bg-blue-500"
-                    }`}
-                  />
-                  <h3 className="text-lg font-bold text-white">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-400">{text}</p>
-                </article>
-              ))}
+            <div className="grid gap-5 sm:grid-cols-2">
+              {seoCards.map((card) => {
+                const s = rgbyStyles[card.color];
+
+                return (
+                  <article
+                    key={card.title}
+                    className={`rounded-3xl border-2 bg-[#070b18] p-6 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl ${s.border} ${s.glow}`}
+                  >
+                    <h3 className="text-lg font-bold text-white">
+                      {card.title}
+                    </h3>
+
+                    <p className="mt-3 text-sm leading-7 text-slate-400">
+                      {card.text}
+                    </p>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
 
-      {/* MONETIZATION */}
-      <section className="bg-[#050816] px-4 py-28 sm:px-6 lg:px-8">
+      {/* =====================================================
+          MONETIZATION
+      ====================================================== */}
+      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="rounded-[2rem] border border-white/10 bg-white/[0.025] p-8 sm:p-12">
-            <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-              <div>
-                <span className="text-sm font-bold uppercase tracking-[0.22em] text-green-400">
-                  Creator growth
-                </span>
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <span className="text-sm font-bold uppercase tracking-[0.22em] text-green-400">
+                Creator growth
+              </span>
 
-                <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
-                  Plan content with growth in mind
-                </h2>
+              <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
+                Plan content with growth in mind
+              </h2>
 
-                <p className="mt-6 text-base leading-8 text-slate-400">
-                  TubeKit also includes creator utilities that can help you
-                  understand common YouTube metrics and plan content around
-                  your goals. Use calculators and estimators as planning aids,
-                  not as guarantees of future earnings.
-                </p>
-              </div>
+              <p className="mt-6 text-base leading-8 text-slate-400">
+                TubeKit includes creator utilities that can help you understand
+                common YouTube metrics and plan content around your goals.
+              </p>
+            </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                {[
-                  ["CPM Calculator", "Estimate advertising revenue scenarios from CPM and views."],
-                  ["RPM Calculator", "Understand revenue-per-thousand-view calculations."],
-                  ["Money Calculator", "Explore simple creator revenue scenarios."],
-                  ["Monetization Checker", "Review common monetization-related requirements and information."],
-                ].map(([title, text], index) => (
+            <div className="grid gap-5 sm:grid-cols-2">
+              {[
+                ["CPM Calculator", "Estimate advertising revenue scenarios from CPM and views.", "/tools/cpm-calculator", "red"],
+                ["RPM Calculator", "Understand revenue-per-thousand-view calculations.", "/tools/rpm-calculator", "blue"],
+                ["Money Calculator", "Explore simple creator revenue scenarios.", "/tools/money-calculator", "green"],
+                ["Monetization Checker", "Review common monetization-related information.", "/tools/monetization-checker", "yellow"],
+              ].map(([title, text, href, color]) => {
+                const s = rgbyStyles[color];
+
+                return (
                   <a
                     key={title}
-                    href={
-                      [
-                        "/tools/cpm-calculator",
-                        "/tools/rpm-calculator",
-                        "/tools/money-calculator",
-                        "/tools/monetization-checker",
-                      ][index]
-                    }
-                    className="rounded-2xl border border-white/10 bg-black/20 p-6 transition hover:-translate-y-1 hover:border-white/20"
+                    href={href}
+                    className={`rounded-3xl border-2 bg-[#070b18] p-6 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl ${s.border} ${s.glow}`}
                   >
-                    <h3 className="font-bold text-white">{title}</h3>
-                    <p className="mt-3 text-sm leading-6 text-slate-400">{text}</p>
+                    <h3 className="text-lg font-bold text-white">{title}</h3>
+                    <p className="mt-3 text-sm leading-7 text-slate-400">{text}</p>
+                    <span className={`mt-5 inline-flex text-sm font-bold ${s.text}`}>
+                      Open tool
+                    </span>
                   </a>
-                ))}
-              </div>
+                );
+              })}
             </div>
           </div>
         </div>
       </section>
-{/* WHY TUBEKIT */}
-      <section className="bg-[#030712] px-4 py-28 sm:px-6 lg:px-8">
+{/* =====================================================
+          WHY TUBEKIT
+      ====================================================== */}
+      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
             <span className="text-sm font-bold uppercase tracking-[0.22em] text-red-400">
-              Why creators use TubeKit
+              Why TubeKit
             </span>
 
             <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
@@ -706,39 +692,37 @@ function Home() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-6 md:grid-cols-3">
+          <div className="mt-14 grid gap-5 md:grid-cols-3">
             {[
-              ["Faster ideation", "Move from a rough idea to multiple content directions quickly."],
-              ["Structured workflow", "Keep titles, scripts, metadata and supporting tasks connected."],
-              ["Creative control", "Use AI output as a draft and customize every result before publishing."],
-            ].map(([title, text], index) => (
-              <div
-                key={title}
-                className="rounded-3xl border border-white/10 bg-white/[0.025] p-8"
-              >
+              ["Faster ideation", "Move from a rough idea to multiple content directions quickly.", "red"],
+              ["Structured workflow", "Keep titles, scripts, metadata and supporting tasks connected.", "green"],
+              ["Creative control", "Use AI output as a draft and customize every result.", "blue"],
+            ].map(([title, text, color]) => {
+              const s = rgbyStyles[color];
+
+              return (
                 <div
-                  className={`mb-7 h-10 w-10 rounded-2xl ${
-                    index === 0
-                      ? "bg-red-500/15"
-                      : index === 1
-                        ? "bg-green-500/15"
-                        : "bg-blue-500/15"
-                  }`}
-                />
+                  key={title}
+                  className={`rounded-3xl border-2 bg-[#070b18] p-8 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl ${s.border} ${s.glow}`}
+                >
+                  <div className={`h-10 w-10 rounded-2xl ${s.icon}`} />
 
-                <h3 className="text-xl font-bold text-white">{title}</h3>
+                  <h3 className="mt-7 text-xl font-bold text-white">{title}</h3>
 
-                <p className="mt-4 text-sm leading-7 text-slate-400">{text}</p>
-              </div>
-            ))}
+                  <p className="mt-4 text-sm leading-7 text-slate-400">{text}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* FAQ */}
+{/* =====================================================
+          FAQ
+      ====================================================== */}
       <section
         id="faq"
-        className="bg-[#050816] px-4 py-28 sm:px-6 lg:px-8"
+        className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
       >
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
@@ -749,39 +733,29 @@ function Home() {
             <h2 className="mt-4 text-4xl font-black text-white sm:text-5xl">
               Questions creators commonly ask
             </h2>
-
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-400">
-              Learn how TubeKit fits into your YouTube planning, SEO and
-              content creation workflow.
-            </p>
           </div>
 
           <div className="mt-14 space-y-4">
             {faqs.map((faq, index) => {
               const isOpen = openFaq === index;
+              const s = rgbyStyles[faq.color];
 
               return (
                 <div
                   key={faq.question}
-                  className={`overflow-hidden rounded-2xl border transition ${
-                    isOpen
-                      ? "border-blue-500/30 bg-blue-500/[0.04]"
-                      : "border-white/10 bg-white/[0.02]"
-                  }`}
+                  className={`overflow-hidden rounded-3xl border-2 bg-[#070b18] shadow-lg ${s.border}`}
                 >
                   <button
                     type="button"
                     onClick={() => setOpenFaq(isOpen ? -1 : index)}
-                    className="flex w-full items-center justify-between gap-6 px-6 py-6 text-left"
+                    className="flex w-full items-center justify-between gap-5 px-6 py-6 text-left sm:px-7"
                     aria-expanded={isOpen}
                   >
                     <span className="font-bold text-white">{faq.question}</span>
 
                     <span
-                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-lg transition ${
-                        isOpen
-                          ? "rotate-45 border-blue-400/40 text-blue-300"
-                          : "border-white/10 text-slate-400"
+                      className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-lg transition ${s.icon} ${
+                        isOpen ? "rotate-45" : ""
                       }`}
                     >
                       +
@@ -789,7 +763,7 @@ function Home() {
                   </button>
 
                   {isOpen && (
-                    <div className="border-t border-white/10 px-6 py-6">
+                    <div className="border-t border-white/10 px-6 py-6 sm:px-7">
                       <p className="text-sm leading-7 text-slate-400">
                         {faq.answer}
                       </p>
@@ -801,37 +775,33 @@ function Home() {
           </div>
         </div>
       </section>
-{/* FINAL CTA */}
-      <section className="relative overflow-hidden bg-[#030712] px-4 py-28 sm:px-6 lg:px-8">
-        <div className="absolute inset-x-0 top-0 mx-auto h-px max-w-5xl bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
-        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035] px-6 py-16 text-center sm:px-12 sm:py-20">
-          <div className="pointer-events-none absolute left-1/2 top-0 h-56 w-56 -translate-x-1/2 rounded-full bg-red-500/10 blur-3xl" />
-
-          <div className="relative">
-            <div className="mx-auto flex w-fit gap-2">
-              <span className="h-2.5 w-10 rounded-full bg-red-500" />
-              <span className="h-2.5 w-10 rounded-full bg-green-500" />
-              <span className="h-2.5 w-10 rounded-full bg-yellow-400" />
-              <span className="h-2.5 w-10 rounded-full bg-blue-500" />
-            </div>
-
-            <h2 className="mt-7 text-4xl font-black tracking-tight text-white sm:text-5xl">
-              Turn your next YouTube idea into a complete content plan
-            </h2>
-
-            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">
-              Start with a topic, explore TubeKit's creator tools and build
-              your next video with a clearer workflow.
-            </p>
-
-            <a
-              href="#tools"
-              className="mt-9 inline-flex items-center rounded-2xl bg-white px-7 py-4 text-sm font-black text-slate-950 transition hover:-translate-y-0.5 hover:bg-slate-100"
-            >
-              Explore Creator Tools â†’
-            </a>
+{/* =====================================================
+          FINAL CTA
+      ====================================================== */}
+      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+        <div className="mx-auto max-w-5xl rounded-[2rem] border-2 border-blue-500/60 bg-[#070b18] px-6 py-16 text-center shadow-2xl shadow-blue-500/5 sm:px-12">
+          <div className="mx-auto flex w-fit gap-2">
+            <span className="h-2.5 w-10 rounded-full bg-red-500" />
+            <span className="h-2.5 w-10 rounded-full bg-green-500" />
+            <span className="h-2.5 w-10 rounded-full bg-yellow-400" />
+            <span className="h-2.5 w-10 rounded-full bg-blue-500" />
           </div>
+
+          <h2 className="mt-7 text-4xl font-black tracking-tight text-white sm:text-5xl">
+            Turn your next YouTube idea into a content plan
+          </h2>
+
+          <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-400 sm:text-lg">
+            Start with a topic, explore TubeKit's creator tools and build your
+            next video with a clearer workflow.
+          </p>
+
+          <a
+            href="#tools"
+            className="mt-9 inline-flex rounded-2xl bg-white px-7 py-4 text-sm font-black text-slate-950 transition hover:-translate-y-0.5 hover:bg-slate-100"
+          >
+            Explore Creator Tools
+          </a>
         </div>
       </section>
     </>
