@@ -42,7 +42,6 @@ function ToolForm({
     setTopic(initialTopic || "");
   }, [initialTopic]);
 
-  // Dynamic status while AI is working
   useEffect(() => {
     if (!loading) {
       setStatusIndex(0);
@@ -95,43 +94,64 @@ function ToolForm({
       onSubmit={handleSubmit}
       className="mx-auto w-full max-w-5xl"
     >
-      {/* =========================
-          CREATOR INPUT
-      ========================== */}
+      {/* =====================================================
+          PREMIUM CREATOR INPUT
+      ====================================================== */}
       <div
         className="
           group
+          relative
           overflow-hidden
-          rounded-2xl
-          border border-blue-500/70
-          bg-[#080b12]
-          shadow-[0_0_25px_rgba(59,130,246,0.06)]
+          rounded-3xl
+          border border-blue-500/30
+          bg-gradient-to-br
+          from-[#0b1220]
+          via-[#080c15]
+          to-[#050810]
+          p-2
+          shadow-[0_20px_60px_rgba(0,0,0,0.35)]
           transition-all
           duration-300
-          focus-within:border-blue-400
-          focus-within:shadow-[0_0_40px_rgba(59,130,246,0.15)]
+          hover:border-blue-500/50
+          focus-within:border-blue-400/70
+          focus-within:shadow-[0_0_45px_rgba(59,130,246,0.14)]
         "
       >
-        {/* AI Scan Line */}
-        <div className="relative h-[2px] overflow-hidden bg-blue-500/10">
+        {/* Top AI Scan */}
+        <div className="absolute left-6 right-6 top-0 h-px overflow-hidden bg-blue-500/10">
           <div
             className="
-              absolute
-              left-0
-              top-0
               h-full
-              w-32
+              w-24
               bg-gradient-to-r
               from-transparent
               via-blue-400
               to-transparent
-              opacity-0
-              group-focus-within:opacity-100
-              animate-[inputScan_2.2s_linear_infinite]
+              animate-[inputScan_2.5s_linear_infinite]
             "
           />
         </div>
 
+        {/* Input Header */}
+        <div className="flex items-center justify-between px-4 pt-3 sm:px-5">
+          <div className="flex items-center gap-2">
+            <div className="relative flex h-7 w-7 items-center justify-center rounded-lg bg-blue-500/10">
+              <span className="absolute h-2 w-2 animate-ping rounded-full bg-blue-400/40" />
+
+              <span className="relative h-1.5 w-1.5 rounded-full bg-blue-400 shadow-[0_0_10px_rgba(96,165,250,0.9)]" />
+            </div>
+
+            <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
+              Creator Input
+            </span>
+          </div>
+
+          <span className="hidden text-[10px] font-medium text-slate-600 sm:block">
+            AI Ready
+          </span>
+        </div>
+
+        {/* Textarea */}
         <textarea
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
@@ -140,9 +160,9 @@ function ToolForm({
           disabled={loading}
           rows={5}
           className="
-            min-h-[135px]
+            min-h-[145px]
             w-full
-            resize-y
+            resize-none
             border-0
             bg-transparent
             px-4
@@ -161,19 +181,19 @@ function ToolForm({
         />
 
         {/* Input Footer */}
-        <div className="flex items-center justify-between gap-3 border-t border-white/[0.06] px-3 py-2.5 sm:px-4">
+        <div className="mx-2 flex items-center justify-between gap-3 rounded-2xl border border-white/[0.05] bg-white/[0.025] px-3 py-2.5 sm:mx-2.5 sm:px-4">
           <div className="flex items-center gap-2">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-60" />
               <span className="relative h-1.5 w-1.5 rounded-full bg-blue-400" />
             </span>
 
-            <span className="text-[11px] text-slate-500">
-              AI Ready
+            <span className="text-[10px] text-slate-500 sm:text-[11px]">
+              Ready to create
             </span>
           </div>
 
-          <span className="text-[11px] text-slate-600">
+          <span className="text-[10px] text-slate-600 sm:text-[11px]">
             Enter to generate
             <span className="hidden sm:inline">
               {" "} | Shift + Enter for new line
@@ -182,34 +202,40 @@ function ToolForm({
         </div>
       </div>
 
-      {/* =========================
-          GENERATE BUTTON
-      ========================== */}
-      <div className="mt-5">
+      {/* =====================================================
+          PREMIUM GENERATE BUTTON
+      ====================================================== */}
+      <div className="mt-6">
         <button
           type="submit"
           disabled={loading}
           className="
+            group
             relative
             w-full
             overflow-hidden
             rounded-2xl
-            bg-red-500
-            px-5
+            border
+            border-red-400/30
+            bg-gradient-to-r
+            from-red-500
+            via-red-500
+            to-orange-500
+            px-6
             py-4
             text-sm
             font-bold
             text-white
-            shadow-lg
-            shadow-red-500/20
+            shadow-[0_12px_30px_rgba(239,68,68,0.20)]
             transition-all
-            duration-200
+            duration-300
             hover:-translate-y-0.5
-            hover:bg-red-400
-            hover:shadow-red-500/30
+            hover:border-red-300/50
+            hover:shadow-[0_16px_40px_rgba(239,68,68,0.30)]
             active:translate-y-0
             disabled:cursor-not-allowed
             disabled:opacity-60
+            sm:py-[18px]
             sm:text-base
           "
         >
@@ -219,25 +245,41 @@ function ToolForm({
               className="
                 absolute
                 inset-y-0
-                -left-20
-                w-16
+                -left-24
+                w-20
                 rotate-12
-                bg-white/20
-                blur-md
+                bg-gradient-to-r
+                from-transparent
+                via-white/30
+                to-transparent
+                blur-sm
                 animate-[buttonShine_3s_ease-in-out_infinite]
               "
             />
           )}
 
-          <span className="relative">
-            {loading ? "Creating..." : buttonText}
+          <span className="relative flex items-center justify-center gap-2.5">
+            {loading ? (
+              <>
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                <span>Creating...</span>
+              </>
+            ) : (
+              <>
+                <span>{buttonText}</span>
+
+                <span className="flex h-6 w-6 items-center justify-center rounded-lg bg-white/15 text-[9px] font-black tracking-wide transition-transform duration-300 group-hover:translate-x-0.5">
+                  AI
+                </span>
+              </>
+            )}
           </span>
         </button>
       </div>
 
-      {/* =========================
-          CREATOR STUDIO LOADER
-      ========================== */}
+      {/* =====================================================
+          PREMIUM CREATOR STUDIO LOADER
+      ====================================================== */}
       {loading && (
         <div
           className="
@@ -245,7 +287,8 @@ function ToolForm({
             mt-5
             overflow-hidden
             rounded-2xl
-            border border-blue-500/20
+            border
+            border-blue-500/20
             bg-[#060b16]
             shadow-[0_0_45px_rgba(37,99,235,0.12)]
           "
@@ -255,12 +298,11 @@ function ToolForm({
 
           <div className="relative p-4 sm:p-5">
 
-            {/* Header */}
+            {/* Loader Header */}
             <div className="flex items-center gap-3">
 
               {/* AI Orb */}
               <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-500/10">
-
                 <div
                   className="
                     absolute
@@ -288,15 +330,15 @@ function ToolForm({
                 />
               </div>
 
-              {/* Status */}
+              {/* Dynamic Status */}
               <div className="min-w-0 flex-1">
                 <div className="flex items-center justify-between gap-3">
-
                   <p
                     key={statusIndex}
                     className="animate-[statusFade_0.4s_ease-out] text-sm font-bold text-white sm:text-base"
                   >
                     {currentStatus.title}
+
                     <span className="ml-1 text-blue-400 animate-pulse">
                       ...
                     </span>
@@ -316,9 +358,7 @@ function ToolForm({
               </div>
             </div>
 
-            {/* =========================
-                CREATOR PIPELINE
-            ========================== */}
+            {/* Creator Pipeline */}
             <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-5">
               {statuses.map((step, index) => {
                 const active = index === statusIndex;
@@ -351,7 +391,6 @@ function ToolForm({
                     )}
 
                     <div className="relative flex items-center justify-center gap-1.5">
-
                       <span
                         className={`
                           h-1.5
@@ -391,14 +430,9 @@ function ToolForm({
               })}
             </div>
 
-            {/* =========================
-                AI SCAN PROGRESS
-            ========================== */}
+            {/* AI Scan Progress */}
             <div className="mt-5">
-
               <div className="relative h-2 overflow-hidden rounded-full bg-slate-900">
-
-                {/* Moving Progress */}
                 <div
                   className="
                     absolute
@@ -415,7 +449,6 @@ function ToolForm({
                   "
                 />
 
-                {/* Scan */}
                 <div
                   className="
                     absolute
@@ -443,9 +476,8 @@ function ToolForm({
               </div>
             </div>
 
-            {/* Bottom Message */}
+            {/* Bottom Status */}
             <div className="mt-4 flex items-center gap-2 rounded-xl border border-blue-500/10 bg-blue-500/[0.035] px-3 py-2.5">
-
               <span className="relative flex h-2 w-2 shrink-0">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-blue-400 opacity-60" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-blue-400" />
@@ -456,74 +488,84 @@ function ToolForm({
               </p>
             </div>
           </div>
-
-          <style>{`
-            @keyframes inputScan {
-              0% {
-                transform: translateX(-150px);
-              }
-              100% {
-                transform: translateX(900px);
-              }
-            }
-
-            @keyframes buttonShine {
-              0% {
-                transform: translateX(-100px) rotate(12deg);
-              }
-              45%,
-              100% {
-                transform: translateX(500px) rotate(12deg);
-              }
-            }
-
-            @keyframes statusFade {
-              from {
-                opacity: 0;
-                transform: translateY(4px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-
-            @keyframes stepShine {
-              0% {
-                transform: translateX(-110%);
-              }
-              45%,
-              100% {
-                transform: translateX(110%);
-              }
-            }
-
-            @keyframes aiProgress {
-              0% {
-                transform: translateX(-120%);
-                width: 28%;
-              }
-              45% {
-                transform: translateX(100%);
-                width: 48%;
-              }
-              100% {
-                transform: translateX(300%);
-                width: 34%;
-              }
-            }
-
-            @keyframes progressScan {
-              0% {
-                transform: translateX(-100px);
-              }
-              100% {
-                transform: translateX(500px);
-              }
-            }
-          `}</style>
         </div>
       )}
+
+      {/* =====================================================
+          ANIMATIONS
+      ====================================================== */}
+      <style>{`
+        @keyframes inputScan {
+          0% {
+            transform: translateX(-120px);
+          }
+
+          100% {
+            transform: translateX(700px);
+          }
+        }
+
+        @keyframes buttonShine {
+          0% {
+            transform: translateX(-120px) rotate(12deg);
+          }
+
+          45%,
+          100% {
+            transform: translateX(600px) rotate(12deg);
+          }
+        }
+
+        @keyframes statusFade {
+          from {
+            opacity: 0;
+            transform: translateY(4px);
+          }
+
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes stepShine {
+          0% {
+            transform: translateX(-110%);
+          }
+
+          45%,
+          100% {
+            transform: translateX(110%);
+          }
+        }
+
+        @keyframes aiProgress {
+          0% {
+            transform: translateX(-120%);
+            width: 28%;
+          }
+
+          45% {
+            transform: translateX(100%);
+            width: 48%;
+          }
+
+          100% {
+            transform: translateX(300%);
+            width: 34%;
+          }
+        }
+
+        @keyframes progressScan {
+          0% {
+            transform: translateX(-100px);
+          }
+
+          100% {
+            transform: translateX(500px);
+          }
+        }
+      `}</style>
     </form>
   );
 }
