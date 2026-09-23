@@ -87,7 +87,6 @@ const rgby = {
     glow: "active:shadow-[0_0_35px_rgba(59,130,246,0.10)]",
   },
 };
-
 const essentialTools = [
   {
     name: "AI Title Generator",
@@ -146,6 +145,7 @@ const essentialTools = [
     description: "Explore thumbnail concepts before designing your final visual.",
   },
 ];
+
 const keyFeatures = [
   {
     title: "Create Faster",
@@ -169,10 +169,9 @@ const keyFeatures = [
     title: "Creator Utilities",
     text: "Access everyday YouTube utilities and calculators from one simple creator-focused workspace.",
     color: "blue",
-    icon: Youtube,
+    icon: Play,
   },
 ];
-
 const workflow = [
   {
     number: "01",
@@ -291,10 +290,8 @@ function Home() {
         canonical="/"
         organization={true}
       />
-
-      {/* HERO - kept separate */}
+{/* HERO - kept separate */}
       <Hero onToolSelect={handleToolSelect} />
-
 
       {/* ACTIVE TOOL */}
       {ActiveTool && (
@@ -421,7 +418,6 @@ function Home() {
           })}
         </div>
       </section>
-
 
       {/* ESSENTIAL TOOLS */}
       <section
@@ -550,7 +546,6 @@ function Home() {
           </div>
         </div>
       </section>
-
 {/* HOW IT WORKS */}
       <section
         id="how-it-works"
@@ -686,8 +681,7 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* FAQ */}
+{/* FAQ */}
       <section className="bg-[#030712] px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
@@ -709,7 +703,7 @@ function Home() {
               return (
                 <div
                   key={faq.question}
-                  className={`border border-transparent bg-[#070b18] transition duration-300 ${isOpen ? `border-${faq.color}-500/40` : ""}`}
+                  className={`border bg-[#070b18] transition duration-300 ${isOpen ? (faq.color === "red" ? "border-red-500/40" : faq.color === "green" ? "border-green-500/40" : faq.color === "yellow" ? "border-yellow-400/40" : "border-blue-500/40") : "border-transparent"}`}
                 >
                   <button
                     type="button"
