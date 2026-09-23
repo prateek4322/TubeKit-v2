@@ -13,7 +13,6 @@ import {
   Sparkles,
   Target,
   Wand2,
-  Youtube,
 } from "lucide-react";
 
 import SEO from "@/components/common/SEO";
