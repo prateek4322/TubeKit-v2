@@ -359,7 +359,7 @@ https://tubekitapp.in
 https://tubekitapp.in/blog
 
 💻 GitHub
-Add your repository URL
+https://github.com/prateek4322/TubeKit-v2
 
 </p>---
 
