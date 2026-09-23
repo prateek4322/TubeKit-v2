@@ -188,7 +188,7 @@ function Home() {
 
   return (
     <>
-<SEO
+      <SEO
         title="TubeKit | Free AI Tools for YouTube Creators"
         description="TubeKit is a free AI toolkit for YouTube creators. Generate titles, descriptions, tags, scripts, hooks, keywords, hashtags, thumbnail ideas and more."
         keywords="TubeKit, YouTube AI tools, free YouTube tools, YouTube SEO tools, AI YouTube tools, YouTube title generator, YouTube script generator"
@@ -232,7 +232,6 @@ function Home() {
           </div>
         </section>
       )}
-
       {/* INTRO / TRUST STRIP */}
       <section className="relative overflow-hidden bg-[#030712] px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -333,33 +332,59 @@ function Home() {
 
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {essentialTools.map((tool) => {
-              const colorClass =
+              const borderClass =
                 tool.color === "red"
-                  ? "border-red-500/20 hover:border-red-500/50"
+                  ? "border-red-500/45 hover:border-red-400"
                   : tool.color === "green"
-                    ? "border-green-500/20 hover:border-green-500/50"
+                    ? "border-green-500/45 hover:border-green-400"
                     : tool.color === "yellow"
-                      ? "border-yellow-400/20 hover:border-yellow-400/50"
-                      : "border-blue-500/20 hover:border-blue-500/50";
+                      ? "border-yellow-400/45 hover:border-yellow-300"
+                      : "border-blue-500/45 hover:border-blue-400";
 
-              const dotClass =
+              const glowClass =
                 tool.color === "red"
-                  ? "bg-red-500"
+                  ? "hover:shadow-red-500/10"
                   : tool.color === "green"
-                    ? "bg-green-500"
+                    ? "hover:shadow-green-500/10"
                     : tool.color === "yellow"
-                      ? "bg-yellow-400"
-                      : "bg-blue-500";
+                      ? "hover:shadow-yellow-400/10"
+                      : "hover:shadow-blue-500/10";
 
               return (
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className={`group rounded-3xl border bg-white/[0.025] p-7 transition duration-300 hover:-translate-y-1 hover:bg-white/[0.05] ${colorClass}`}
+                  className={`group relative overflow-hidden rounded-3xl border-2 bg-[#070b18] p-7 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-white/[0.045] hover:shadow-2xl ${borderClass} ${glowClass}`}
                 >
-                  <span
-                    className={`mb-6 block h-2 w-12 rounded-full ${dotClass}`}
+                  <div
+                    className={`absolute inset-x-0 top-0 h-1 ${
+                      tool.color === "red"
+                        ? "bg-red-500"
+                        : tool.color === "green"
+                          ? "bg-green-500"
+                          : tool.color === "yellow"
+                            ? "bg-yellow-400"
+                            : "bg-blue-500"
+                    }`}
                   />
+
+                  <div className="mb-6 flex items-center justify-between">
+                    <span
+                      className={`h-2.5 w-2.5 rounded-full ${
+                        tool.color === "red"
+                          ? "bg-red-500"
+                          : tool.color === "green"
+                            ? "bg-green-500"
+                            : tool.color === "yellow"
+                              ? "bg-yellow-400"
+                              : "bg-blue-500"
+                      }`}
+                    />
+
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                      TubeKit
+                    </span>
+                  </div>
 
                   <h3 className="text-xl font-bold text-white">
                     {tool.name}
@@ -369,8 +394,8 @@ function Home() {
                     {tool.description}
                   </p>
 
-                  <span className="mt-6 inline-block text-sm font-bold text-white transition group-hover:translate-x-1">
-                    Open tool â†’
+                  <span className="mt-6 inline-flex items-center gap-1 text-sm font-bold text-blue-400 transition group-hover:translate-x-1 group-hover:text-blue-300">
+                    Open tool <span aria-hidden="true">â†’</span>
                   </span>
                 </a>
               );
@@ -385,7 +410,8 @@ function Home() {
           <FeaturedTools />
         </div>
       </section>
-{/* ABOUT */}
+
+      {/* ABOUT */}
       <section
         id="about"
         className="relative overflow-hidden bg-[#030712] px-4 py-28 sm:px-6 lg:px-8"
@@ -489,7 +515,7 @@ function Home() {
                               : index === 3
                                 ? "bg-blue-400"
                                 : "bg-red-400"
-}`}
+                      }`}
                     >
                       {number}
                     </div>
@@ -505,8 +531,7 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* HOW IT WORKS */}
+{/* HOW IT WORKS */}
       <section
         id="how-it-works"
         className="relative overflow-hidden bg-[#050816] px-4 py-28 sm:px-6 lg:px-8"
@@ -634,7 +659,8 @@ function Home() {
                   not as guarantees of future earnings.
                 </p>
               </div>
-<div className="grid gap-4 sm:grid-cols-2">
+
+              <div className="grid gap-4 sm:grid-cols-2">
                 {[
                   ["CPM Calculator", "Estimate advertising revenue scenarios from CPM and views."],
                   ["RPM Calculator", "Understand revenue-per-thousand-view calculations."],
@@ -662,8 +688,7 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* WHY TUBEKIT */}
+{/* WHY TUBEKIT */}
       <section className="bg-[#030712] px-4 py-28 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-3xl text-center">
@@ -709,7 +734,8 @@ function Home() {
           </div>
         </div>
       </section>
-{/* FAQ */}
+
+      {/* FAQ */}
       <section
         id="faq"
         className="bg-[#050816] px-4 py-28 sm:px-6 lg:px-8"
@@ -775,8 +801,7 @@ function Home() {
           </div>
         </div>
       </section>
-
-      {/* FINAL CTA */}
+{/* FINAL CTA */}
       <section className="relative overflow-hidden bg-[#030712] px-4 py-28 sm:px-6 lg:px-8">
         <div className="absolute inset-x-0 top-0 mx-auto h-px max-w-5xl bg-gradient-to-r from-transparent via-white/20 to-transparent" />
 
