@@ -92,7 +92,6 @@ function Hero({ onToolSelect }) {
         <div className="absolute -right-32 top-20 h-80 w-80 rounded-full bg-blue-500/10 blur-[110px]" />
         <div className="absolute bottom-0 left-1/4 h-64 w-64 rounded-full bg-green-500/8 blur-[100px]" />
         <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-yellow-400/8 blur-[100px]" />
-
         <div className="absolute left-1/2 top-0 h-px w-[75%] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       </div>
 
@@ -105,11 +104,8 @@ function Hero({ onToolSelect }) {
           </span>
 
           <span>AI Creator Studio</span>
-
           <span className="h-3 w-px bg-white/15" />
-
           <Sparkles className="h-3 w-3 text-yellow-400 sm:h-3.5 sm:w-3.5" />
-
           <span className="text-slate-400">Built for YouTube</span>
         </div>
 
@@ -142,9 +138,8 @@ function Hero({ onToolSelect }) {
 
             <div className="relative rounded-[1.35rem] border border-white/10 bg-[#070b18]/95 p-2 shadow-2xl shadow-black/50 backdrop-blur-2xl sm:rounded-[1.6rem] sm:p-2.5">
               <div className="flex flex-col gap-2 md:flex-row">
-                
                 {/* Search input */}
-                <div className="group/input flex min-h-12 flex-1 items-center rounded-xl border-2 border-red-500/70 bg-[#030712] px-3.5 transition duration-300 focus-within:border-red-400 focus-within:shadow-lg focus-within:shadow-red-500/15 sm:min-h-14 sm:px-4">
+                <div className="group/input flex min-h-12 min-w-0 flex-1 items-center rounded-xl border-2 border-red-500/70 bg-[#030712] px-3.5 transition duration-300 focus-within:border-red-400 focus-within:shadow-lg focus-within:shadow-red-500/15 sm:min-h-14 sm:px-4">
                   <Search
                     className="mr-2.5 h-[18px] w-[18px] shrink-0 !text-red-500 sm:mr-3 sm:h-5 sm:w-5"
                     style={{
@@ -168,7 +163,7 @@ function Hero({ onToolSelect }) {
                     <button
                       type="button"
                       onClick={() => setQuery("")}
-                      className="ml-1.5 rounded-lg px-1.5 py-1 text-[10px] font-bold text-slate-500 transition hover:bg-white/5 hover:text-white sm:ml-2 sm:px-2 sm:text-xs"
+                      className="ml-1.5 shrink-0 rounded-lg px-1.5 py-1 text-[10px] font-bold text-slate-500 transition hover:bg-white/5 hover:text-white sm:ml-2 sm:px-2 sm:text-xs"
                     >
                       Clear
                     </button>
@@ -225,7 +220,6 @@ function Hero({ onToolSelect }) {
                           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
                             AI Generation
                           </p>
-
                           <p className="mt-1 text-xs text-slate-500">
                             Choose what you want to create
                           </p>
@@ -262,7 +256,6 @@ function Hero({ onToolSelect }) {
                                       : "bg-slate-700"
                                   }`}
                                 />
-
                                 <span className="text-sm font-medium">
                                   {tool.name}
                                 </span>
@@ -286,7 +279,14 @@ function Hero({ onToolSelect }) {
                   disabled={!query.trim()}
                   className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border-2 border-red-500 bg-red-500 px-5 text-xs font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/35 disabled:cursor-not-allowed disabled:border-slate-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none sm:min-h-14 sm:w-auto sm:px-6 sm:text-sm"
                 >
-                  <Zap className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <Search
+                    className="h-4 w-4 shrink-0 !text-white sm:h-5 sm:w-5"
+                    style={{
+                      color: "#ffffff",
+                      stroke: "#ffffff",
+                    }}
+                    strokeWidth={2.5}
+                  />
                   <span>Generate</span>
                 </button>
               </div>
