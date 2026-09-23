@@ -200,7 +200,6 @@ const workflow = [
     color: "blue",
   },
 ];
-
 const creatorGuides = [
   {
     title: "YouTube SEO",
@@ -331,15 +330,15 @@ function Home() {
 {/* ESSENTIAL TOOLS */}
       <section
         id="tools"
-        className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
+        className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-28 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <h2 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               <span className="text-red-500">Essential</span> Creator Tools
             </h2>
 
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
+            <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
               Powerful tools for titles, descriptions, keywords, scripts,
               hooks, hashtags and thumbnails in one simple workspace.
             </p>
@@ -354,7 +353,7 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className={`group rounded-2xl border border-transparent bg-[#080b12] p-5 outline-none transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] hover:shadow-2xl sm:p-6 ${s.active} ${s.glow}`}
+                  className={`group rounded-2xl border border-red-500/20 bg-red-500/10 p-5 outline-none transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] hover:shadow-2xl sm:p-6 ${s.active} ${s.glow}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div
@@ -377,7 +376,7 @@ function Home() {
                   </p>
 
                   <span
-                    className={`mt-5 inline-flex text-xs font-bold uppercase tracking-wider ${s.text}`}
+                    className="mt-5 inline-flex text-xs font-bold uppercase tracking-wider text-blue-400 transition group-hover:text-blue-300"
                   >
                     Open tool
                   </span>
@@ -389,7 +388,7 @@ function Home() {
       </section>
 
       {/* FEATURED TOOLS */}
-      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-6xl">
             <FeaturedTools />
@@ -397,10 +396,36 @@ function Home() {
         </div>
       </section>
 
-   
+      {/* STATS */}
+      <section className="bg-[#030712] px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        <div className="mx-auto grid max-w-5xl grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+          {[
+            ["17+", "Creator tools", "red"],
+            ["AI", "Powered workflows", "green"],
+            ["SEO", "Content support", "yellow"],
+            ["24/7", "Self-serve access", "blue"],
+          ].map(([value, label, color]) => {
+            const s = rgby[color];
+
+            return (
+              <div
+                key={label}
+                className="rounded-2xl border border-transparent bg-red-500/10 px-4 py-6 text-center transition duration-300 hover:-translate-y-0.5 hover:bg-[#0b0f18]"
+              >
+                <div className={`text-3xl font-black sm:text-4xl ${s.text}`}>
+                  {value}
+                </div>
+                <div className="mt-2 text-xs font-medium text-slate-500 sm:text-sm">
+                  {label}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
       {/* ABOUT */}
-      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-6xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
             About TubeKit
@@ -420,9 +445,9 @@ function Home() {
       </section>
 
       {/* KEY FEATURES */}
-      <section className="bg-[#050816] px-4 pb-20 sm:px-6 sm:pb-24 lg:px-8">
+      <section className="bg-[#050816] px-5 pb-24 sm:px-8 sm:pb-28 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 whitespace-nowrap text-[clamp(1.45rem,5vw,3rem)] font-black leading-tight text-white">
               Key Features <span className="text-red-500">of TubeKit</span>
             </h2>
@@ -443,7 +468,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`group rounded-2xl border border-transparent bg-[#080b12] p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
+                  className={`group rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <div className={`mb-5 h-1.5 w-10 rounded-full ${s.icon.split(" ")[0]}`} />
                   <h3 className="text-lg font-bold text-white">{title}</h3>
@@ -454,10 +479,11 @@ function Home() {
           </div>
         </div>
       </section>
+
 {/* BENEFITS */}
-      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 whitespace-nowrap text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
               Benefits of Using <span className="text-red-500">TubeKit</span>
             </h2>
@@ -476,7 +502,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`group flex gap-5 rounded-2xl border border-transparent bg-[#080b12] p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
+                  className={`group flex gap-5 rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <div
                     className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${s.icon}`}
@@ -496,9 +522,9 @@ function Home() {
       </section>
 
       {/* COMMON USE CASES */}
-      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 whitespace-nowrap text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
               Common <span className="text-red-500">Use Cases</span>
             </h2>
@@ -522,7 +548,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`rounded-2xl border border-transparent bg-[#080b12] p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
+                  className={`rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <h3 className="text-lg font-bold text-white">{title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-500">{text}</p>
@@ -536,10 +562,10 @@ function Home() {
       {/* HOW IT WORKS */}
       <section
         id="how-it-works"
-        className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
+        className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-28 lg:px-12"
       >
         <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
               How It Works
             </span>
@@ -557,7 +583,7 @@ function Home() {
                 <div
                   key={step.number}
                   tabIndex={0}
-                  className={`rounded-2xl border border-transparent bg-[#080b12] p-6 text-center transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
+                  className={`rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <div className={`text-sm font-black tracking-[0.18em] ${s.text}`}>
                     {step.number}
@@ -572,7 +598,7 @@ function Home() {
       </section>
 
       {/* BEST PRACTICES */}
-      <section className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-4xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
             Best Practices
@@ -582,7 +608,7 @@ function Home() {
             Better YouTube <span className="text-red-500">Content Practices</span>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
+          <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
             Use clear topics, accurate titles and thumbnails, useful
             descriptions, strong openings and audience feedback to improve
             your content over time.
@@ -597,7 +623,7 @@ function Home() {
             ].map((item, index) => (
               <div
                 key={item}
-                className="flex gap-3 rounded-xl bg-[#080b12] p-4"
+                className="flex gap-3 rounded-xl bg-red-500/10 p-4"
               >
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
                 <span className="text-sm leading-6 text-slate-500">{item}</span>
@@ -607,12 +633,13 @@ function Home() {
         </div>
       </section>
 
+
       {/* FAQ */}
-      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
             <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
-FAQ
+              FAQ
             </span>
 
             <h2 className="mt-5 whitespace-nowrap text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
@@ -628,7 +655,7 @@ FAQ
               return (
                 <div
                   key={faq.question}
-                  className={`rounded-2xl border bg-[#080b12] transition duration-300 ${
+                  className={`rounded-2xl border bg-red-500/10 transition duration-300 ${
                     isOpen
                       ? faq.color === "red"
                         ? "border-red-500/40"
@@ -671,10 +698,10 @@ FAQ
       {/* LATEST BLOG - AFTER THE MAIN CONTENT */}
       <section
         id="latest-blog"
-        className="bg-[#050816] px-4 py-24 sm:px-6 sm:py-28 lg:px-8"
+        className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
               Blog
             </span>
@@ -683,7 +710,7 @@ FAQ
               Latest from <span className="text-red-500">the Blog</span>
             </h2>
 
-            <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
+            <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
               Explore practical YouTube SEO strategies, creator tips, AI
               tools, content ideas and growth guides from TubeKit.
             </p>
@@ -706,8 +733,8 @@ FAQ
       </section>
 
       {/* FINAL CTA */}
-      <section className="bg-[#030712] px-4 py-24 sm:px-6 sm:py-28 lg:px-8">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-[#080b12] px-6 py-12 text-center sm:px-10 sm:py-16">
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-red-500/10 px-6 py-12 text-center sm:px-10 sm:py-16">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
             <Play className="h-5 w-5" />
           </div>
@@ -717,7 +744,7 @@ FAQ
             <span className="block text-red-500">YouTube content</span>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
+          <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
             Start with your idea, choose a tool and build your next piece of
             YouTube content with TubeKit.
           </p>
