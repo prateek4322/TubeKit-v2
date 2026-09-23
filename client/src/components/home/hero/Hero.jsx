@@ -273,7 +273,11 @@ function Hero({ onToolSelect }) {
                   disabled={!query.trim()}
                   className="group/search flex min-h-14 items-center justify-center gap-2 rounded-xl border-2 border-red-500 bg-red-500 px-7 text-sm font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/35 disabled:cursor-not-allowed disabled:border-slate-700 disabled:bg-slate-800 disabled:text-slate-500 disabled:shadow-none"
                 >
-                  <Search className="h-5 w-5 text-red-100" />
+                 <Search
+  className="mr-3 h-5 w-5 shrink-0 !text-red-500"
+  stroke="red"
+  strokeWidth={2.5}
+/>
                   <span>Generate</span>
                 </button>
               </div>
@@ -283,36 +287,7 @@ function Hero({ onToolSelect }) {
           <p className="mt-4 text-center text-xs font-medium text-slate-500 sm:text-sm">
             Select an AI tool, enter your topic and start creating.
           </p>
-        </div>
-
-        {/* Feature chips */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5">
-          {[
-            ["AI Content", "red", Sparkles],
-            ["YouTube SEO", "blue", Zap],
-            ["Smart Ideas", "green", Wand2],
-            ["Fast Generation", "yellow", Play],
-          ].map(([label, color, Icon]) => {
-            const classes =
-              color === "red"
-                ? "border-red-500/25 bg-red-500/5 text-red-300"
-                : color === "green"
-                  ? "border-green-500/25 bg-green-500/5 text-green-300"
-                  : color === "yellow"
-                    ? "border-yellow-400/25 bg-yellow-400/5 text-yellow-300"
-                    : "border-blue-500/25 bg-blue-500/5 text-blue-300";
-
-            return (
-              <span
-                key={label}
-                className={`inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-xs font-semibold backdrop-blur-sm ${classes}`}
-              >
-                <Icon className="h-3.5 w-3.5" />
-                {label}
-              </span>
-            );
-          })}
-        </div>
+        </div>  
 
         {/* Tool count */}
         <div className="mt-12 flex items-center justify-center gap-3 text-xs text-slate-500">
