@@ -305,60 +305,7 @@ const ActiveTool = activeTool
           </div>
         </section>
       )}
-{/* =====================================================
-          TRUST / BENEFITS
-      ====================================================== */}
-      <section className="bg-[#030712] px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              number: "01",
-              title: "AI-powered workflow",
-              text: "Create ideas faster without starting every task from a blank page.",
-              color: "red",
-            },
-            {
-              number: "02",
-              title: "Creator-focused",
-              text: "Tools are designed around practical YouTube content workflows.",
-              color: "green",
-            },
-            {
-              number: "03",
-              title: "Simple inputs",
-              text: "Give TubeKit your topic and focus on reviewing the result.",
-              color: "yellow",
-            },
-            {
-              number: "04",
-              title: "One creator hub",
-              text: "Keep ideation, SEO support and creator utilities together.",
-              color: "blue",
-            },
-          ].map((item) => {
-            const s = rgbyStyles[item.color];
 
-            return (
-              <div
-                key={item.number}
-                className={`rounded-3xl border-2 bg-[#070b18] p-6 shadow-lg transition duration-300 hover:-translate-y-1 hover:bg-[#0a0f1f] hover:shadow-2xl ${s.border} ${s.glow}`}
-              >
-                <span className={`text-xs font-black tracking-[0.2em] ${s.text}`}>
-                  {item.number}
-                </span>
-
-                <h3 className="mt-5 text-lg font-bold text-white">
-                  {item.title}
-                </h3>
-
-                <p className="mt-3 text-sm leading-7 text-slate-400">
-                  {item.text}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
 
       {/* =====================================================
           SEARCH
@@ -370,33 +317,7 @@ const ActiveTool = activeTool
         </div>
       </section>
 
-      {/* =====================================================
-          STATS
-      ====================================================== */}
-      <section className="bg-[#050816] px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-4 lg:grid-cols-4">
-          {[
-            ["17+", "Creator tools", "red"],
-            ["AI", "Powered workflows", "green"],
-            ["SEO", "Content support", "yellow"],
-            ["24/7", "Self-serve access", "blue"],
-          ].map(([value, label, color]) => {
-            const s = rgbyStyles[color];
-
-            return (
-              <div
-                key={label}
-                className={`rounded-3xl border-2 bg-[#070b18] px-5 py-7 text-center shadow-lg ${s.border}`}
-              >
-                <div className={`text-4xl font-black ${s.text}`}>{value}</div>
-                <div className="mt-2 text-sm font-medium text-slate-400">
-                  {label}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      
 {/* =====================================================
           ESSENTIAL CREATOR TOOLS
       ====================================================== */}
