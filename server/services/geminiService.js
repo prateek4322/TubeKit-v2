@@ -15,11 +15,8 @@ const ai = new GoogleGenAI({
   apiKey,
 });
 
-const sleep = (ms) =>
-  new Promise((resolve) => setTimeout(resolve, ms));
-
 /**
- * Check whether an error is temporary and worth retrying.
+ * Retry only temporary Gemini errors.
  */
 function isRetryableError(error) {
   const status =
@@ -38,7 +35,6 @@ function isRetryableError(error) {
     status === "UNAVAILABLE" ||
     message.includes("unavailable") ||
     message.includes("high demand") ||
-    message.includes("temporarily") ||
     message.includes("rate limit") ||
     message.includes("too many requests")
   );
@@ -47,52 +43,89 @@ function isRetryableError(error) {
 export async function generateAI(prompt) {
   const start = Date.now();
 
-  const maxAttempts = 3;
+  try {
+    console.log("Gemini request started");
 
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    try {
-      console.log(
-        `Gemini request started - attempt ${attempt}/${maxAttempts}`
-      );
+    const response = await ai.models.generateContent({
+      model: "gemini-3.5-flash-lite",
+      contents: prompt,
 
-      const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash-lite",
-        contents: prompt,
-      });
+      config: {
+        thinkingConfig: {
+          thinkingLevel: "minimal",
+        },
+      },
+    });
 
-      console.log(
-        `Gemini response received in ${
-          Date.now() - start
-        }ms`
-      );
+    const result = response.text?.trim();
 
-      return response.text;
+    console.log(
+      `Gemini response received in ${
+        Date.now() - start
+      }ms`
+    );
 
-    } catch (error) {
-      const retryable = isRetryableError(error);
-
-      console.error(
-        `Gemini API Error - attempt ${attempt}:`,
-        error?.message || error
-      );
-
-      // Permanent error or last attempt
-      if (!retryable || attempt === maxAttempts) {
-        throw error;
-      }
-
-      // Exponential backoff:
-      // 1st retry -> 1.5 sec
-      // 2nd retry -> 3 sec
-      const delay = attempt * 1500;
-
-      console.log(
-        `Gemini temporarily unavailable. Retrying in ${delay}ms...`
-      );
-
-      await sleep(delay);
+    if (!result) {
+      throw new Error("Gemini returned an empty response.");
     }
-  }
 
-  throw new Error("Gemini request failed after multiple attempts.");
+    return result;
+
+  } catch (error) {
+    console.error(
+      "Gemini API Error:",
+      error?.message || error
+    );
+
+    /*
+     * One fast retry only.
+     * This prevents long waiting when Gemini is temporarily busy.
+     */
+    if (isRetryableError(error)) {
+      console.log(
+        "Gemini temporarily unavailable. Retrying once..."
+      );
+
+      try {
+        const retryResponse =
+          await ai.models.generateContent({
+            model: "gemini-3.5-flash-lite",
+            contents: prompt,
+
+            config: {
+              thinkingConfig: {
+                thinkingLevel: "minimal",
+              },
+            },
+          });
+
+        const retryResult =
+          retryResponse.text?.trim();
+
+        console.log(
+          `Gemini retry completed in ${
+            Date.now() - start
+          }ms`
+        );
+
+        if (!retryResult) {
+          throw new Error(
+            "Gemini returned an empty response."
+          );
+        }
+
+        return retryResult;
+
+      } catch (retryError) {
+        console.error(
+          "Gemini retry failed:",
+          retryError?.message || retryError
+        );
+
+        throw retryError;
+      }
+    }
+
+    throw error;
+  }
 }
