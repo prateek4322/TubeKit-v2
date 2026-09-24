@@ -13,11 +13,13 @@ export const generate = async (req, res) => {
       });
     }
 
-    // Build AI prompt
+    // Build optimized AI prompt
     const prompt = buildPrompt(tool, data);
 
     // Generate AI response
-    const result = await generateAI(prompt);
+    // Pass tool so Gemini service can use
+    // tool-specific output limits.
+    const result = await generateAI(prompt, tool);
 
     return res.status(200).json({
       success: true,
@@ -36,9 +38,7 @@ export const generate = async (req, res) => {
       error?.message || error || ""
     ).toLowerCase();
 
-    /*
-     * Gemini temporarily unavailable
-     */
+    // Gemini temporarily unavailable
     if (
       status === 503 ||
       status === "UNAVAILABLE" ||
@@ -54,9 +54,7 @@ export const generate = async (req, res) => {
       });
     }
 
-    /*
-     * Rate limit
-     */
+    // Rate limit
     if (
       status === 429 ||
       errorMessage.includes("rate limit") ||
@@ -70,9 +68,7 @@ export const generate = async (req, res) => {
       });
     }
 
-    /*
-     * Authentication / API key issue
-     */
+    // Authentication / API key issue
     if (
       status === 401 ||
       status === 403 ||
@@ -86,9 +82,7 @@ export const generate = async (req, res) => {
       });
     }
 
-    /*
-     * Generic server error
-     */
+    // Generic server error
     return res.status(500).json({
       success: false,
       errorType: "GENERATION_FAILED",
