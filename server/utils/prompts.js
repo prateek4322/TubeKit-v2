@@ -1,165 +1,158 @@
 const prompts = {
-  "title-generator": ({ topic, language, tone, count }) => `
-Generate ${count} viral and SEO-optimized YouTube titles.
+  "title-generator": ({ topic, language = "English", tone = "Professional", count = 10 }) => `
+Generate ${count} YouTube titles for:
 
 Topic: ${topic}
 Language: ${language}
 Tone: ${tone}
 
 Rules:
-- Make titles highly clickable.
-- Keep each title under 70 characters.
-- Use curiosity where appropriate.
-- Return one title per line.
+- SEO-friendly and highly clickable.
+- Under 70 characters each.
+- Use curiosity when natural.
+- One title per line.
 - No numbering.
-- No explanation.
+- No explanations.
 `,
 
-  "description-generator": ({ topic, language, tone }) => `
-Write an SEO-optimized YouTube description.
+  "description-generator": ({ topic, language = "English", tone = "Professional" }) => `
+Write a YouTube description for:
 
 Topic: ${topic}
 Language: ${language}
 Tone: ${tone}
 
-Requirements:
-- Around 150–250 words.
-- Include important SEO keywords naturally.
-- Add a strong hook in the beginning.
-- End with a Call-To-Action (Like, Comment & Subscribe).
+Rules:
+- 150-200 words.
+- Strong hook in the first 2 sentences.
+- Naturally include relevant SEO keywords.
+- End with a Like, Comment and Subscribe CTA.
 - Return only the description.
 `,
 
   "tags-generator": ({ topic }) => `
-Generate 30 SEO-optimized YouTube tags.
+Generate 30 relevant YouTube SEO tags for:
 
 Topic: ${topic}
 
-Rules:
-- Return only tags.
-- Separate each tag with commas.
-- No numbering.
-- No explanation.
+Return only comma-separated tags.
+No numbering.
+No explanation.
 `,
 
   "hashtag-generator": ({ topic }) => `
-Generate 20 trending YouTube hashtags.
+Generate 20 relevant YouTube hashtags for:
 
 Topic: ${topic}
 
 Rules:
-- Return one hashtag per line.
-- Start every line with #.
+- One hashtag per line.
+- Every line starts with #.
 - No numbering.
 - No explanation.
 `,
 
   "keyword-generator": ({ topic }) => `
-Generate 30 high-search-volume YouTube SEO keywords.
+Generate 30 relevant YouTube SEO keywords for:
 
 Topic: ${topic}
 
 Rules:
-- Return one keyword per line.
+- Prioritize relevant search intent.
+- One keyword per line.
 - No numbering.
 - No explanation.
 `,
 
   "thumbnail-generator": ({ topic }) => `
-Generate 10 highly clickable YouTube thumbnail ideas.
+Generate 10 YouTube thumbnail concepts for:
 
 Topic: ${topic}
 
-Requirements:
-- Short and attention-grabbing.
-- Focus on high CTR.
-- Mention colors, expressions, or visual concepts where helpful.
+Rules:
+- Short and highly clickable.
+- Focus on CTR.
+- Mention visual elements, expressions, text or colors when useful.
 - One idea per line.
 - No numbering.
 - No explanation.
 `,
 
-  "script-generator": ({ topic, language, tone }) => `
-You are an expert YouTube script writer.
-
-Create a complete YouTube video script.
+  "script-generator": ({ topic, language = "English", tone = "Professional" }) => `
+Create a YouTube video script.
 
 Topic: ${topic}
-
 Language: ${language}
-
 Tone: ${tone}
 
 Structure:
+Hook
+Introduction
+Main Content
+Key Takeaways
+CTA
 
-1. Powerful Hook (10–20 sec)
-
-2. Introduction
-
-3. Main Content
-   - Divide into clear sections
-   - Explain in detail
-
-4. Key Takeaways
-
-5. Call To Action
-
-Requirements:
-- Around 1200–1800 words.
+Rules:
+- Approximately 1000-1400 words.
+- Clear sections.
+- Natural and engaging.
 - Easy to understand.
-- Human-like writing.
-- Engaging throughout.
+- Avoid unnecessary repetition.
 - Return only the script.
 `,
 
   "hook-generator": ({ topic }) => `
-Generate 20 highly engaging YouTube hooks.
+Generate 20 engaging YouTube hooks for:
 
 Topic: ${topic}
 
 Rules:
 - One hook per line.
+- Maximum 20 words each.
+- Strong curiosity and attention.
 - No numbering.
-- Maximum 20 words.
-- Highly clickable.
+- No explanation.
 `,
 
- "outline-generator": ({ topic }) => `
-Create a complete YouTube video outline.
+  "outline-generator": ({ topic }) => `
+Create a YouTube video outline.
 
 Topic: ${topic}
 
 Structure:
-1. Hook
-2. Introduction
-3. Main Point 1
-4. Main Point 2
-5. Main Point 3
-6. Summary
-7. CTA
+Hook
+Introduction
+Main Point 1
+Main Point 2
+Main Point 3
+Summary
+CTA
 
 Return only the outline.
 `,
+
   "shorts-generator": ({ topic }) => `
-Generate 20 viral YouTube Shorts ideas.
+Generate 20 YouTube Shorts ideas for:
 
 Topic: ${topic}
 
 Rules:
+- Short and engaging.
 - One idea per line.
 - No numbering.
-- Highly engaging.
+- No explanation.
 `,
 
   "community-post-generator": ({ topic }) => `
-Generate 10 engaging YouTube Community Posts.
+Generate 10 engaging YouTube Community Posts for:
 
 Topic: ${topic}
 
 Rules:
+- Encourage audience interaction.
 - One post per line.
-- Encourage comments.
 - No numbering.
+- No explanation.
 `,
 };
 
