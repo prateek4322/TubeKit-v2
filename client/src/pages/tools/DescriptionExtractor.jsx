@@ -222,7 +222,8 @@ function DescriptionExtractor({ query = "" }) {
             initialTopic: query,
           }}
         />
-{/* ===================================================
+
+        {/* ===================================================
             VIDEO INFO
             =================================================== */}
 
@@ -323,6 +324,160 @@ function DescriptionExtractor({ query = "" }) {
             </div>
           </div>
         )}
+
+        {/* ===================================================
+            SEO CONTENT
+            =================================================== */}
+
+        <section className="mt-16 space-y-12">
+          <div>
+            <SectionHeading color="red">
+              Free YouTube Description Extractor
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              TubeKit's free YouTube Description Extractor helps
+              creators retrieve the available description associated
+              with a YouTube video. Enter a YouTube video URL and the
+              available description is displayed in an easy-to-read
+              format.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-300">
+              YouTube descriptions can contain useful information
+              such as keywords, links, calls to action, timestamps,
+              social profiles, and additional video context.
+            </p>
+          </div>
+
+          <div>
+            <SectionHeading color="yellow">
+              How to Use the YouTube Description Extractor
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              Extracting an available YouTube description takes only
+              a few steps:
+            </p>
+
+            <ol className="mt-5 list-decimal space-y-3 pl-6 leading-8 text-slate-300">
+              <li>Copy the URL of the YouTube video.</li>
+              <li>Paste the URL into the extractor.</li>
+              <li>
+                Click the{" "}
+                <strong className="text-white">
+                  Extract YouTube Description
+                </strong>{" "}
+                button.
+              </li>
+              <li>Review the available description.</li>
+              <li>Use Copy Description to copy the text.</li>
+            </ol>
+          </div>
+
+          <div>
+            <SectionHeading color="green">
+              Supported YouTube URL Formats
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              TubeKit supports common YouTube URL formats, including:
+            </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-5">
+                <p className="font-semibold text-red-400">
+                  Standard Watch URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/watch?v=VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                <p className="font-semibold text-yellow-300">
+                  Short URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://youtu.be/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
+                <p className="font-semibold text-green-400">
+                  Shorts URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/shorts/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+                <p className="font-semibold text-blue-400">
+                  Embed URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/embed/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-5">
+                <p className="font-semibold text-red-400">
+                  Live URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/live/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                <p className="font-semibold text-yellow-300">
+                  Mobile URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://m.youtube.com/watch?v=VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
+                <p className="font-semibold text-green-400">
+                  WWW URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/watch?v=VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+                <p className="font-semibold text-blue-400">
+                  URL With Extra Parameters
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/watch?v=VIDEO_ID&feature=share
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <SectionHeading color="blue">
+              What Is a YouTube Description Extractor?
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              A YouTube Description Extractor is a tool that retrieves
+              the available description associated with a YouTube
+              video. A description can provide context about the
+              video and may include links, keywords, timestamps, and
+              calls to action.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-300">
+              Creators can use description extraction as part of
+              their content research, competitor review, and YouTube
+              optimization workflow.
+            </p>
+          </div>
 
           <div>
             <SectionHeading color="red">
@@ -435,7 +590,7 @@ function DescriptionExtractor({ query = "" }) {
               service.
             </p>
 
-<p className="mt-4 leading-8 text-slate-300">
+            <p className="mt-4 leading-8 text-slate-300">
               If a video is private, unavailable, deleted, invalid,
               or cannot be accessed, the extractor may not return a
               description.
