@@ -154,7 +154,6 @@ function HashtagExtractor({ query = "" }) {
     }
   };
 
-
   /* =========================================================
      FAQ
      ========================================================= */
@@ -331,6 +330,140 @@ function HashtagExtractor({ query = "" }) {
           />
         )}
 
+
+        {/* ===================================================
+            SEO CONTENT
+            =================================================== */}
+
+        <section className="mt-16 space-y-12">
+          <div>
+            <SectionHeading color="red">
+              Free YouTube Hashtag Extractor
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              TubeKit's free YouTube Hashtag Extractor helps creators
+              retrieve available hashtags associated with a YouTube
+              video. Enter a YouTube video URL and the available
+              hashtags are displayed in an easy-to-copy list.
+            </p>
+
+            <p className="mt-4 leading-8 text-slate-300">
+              YouTube hashtags can be useful for content research and
+              understanding topics associated with a video.
+            </p>
+          </div>
+
+          <div>
+            <SectionHeading color="yellow">
+              How to Use the YouTube Hashtag Extractor
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              Extracting available YouTube hashtags takes only a few
+              steps:
+            </p>
+
+            <ol className="mt-5 list-decimal space-y-3 pl-6 leading-8 text-slate-300">
+              <li>Copy the URL of the YouTube video.</li>
+              <li>Paste the URL into the extractor.</li>
+              <li>
+                Click the{" "}
+                <strong className="text-white">
+                  Extract YouTube Hashtags
+                </strong>{" "}
+                button.
+              </li>
+              <li>Review the available hashtags.</li>
+              <li>Copy individual hashtags or use Copy All.</li>
+            </ol>
+          </div>
+
+          <div>
+            <SectionHeading color="green">
+              Supported YouTube URL Formats
+            </SectionHeading>
+
+            <p className="mt-5 leading-8 text-slate-300">
+              TubeKit supports common YouTube URL formats, including:
+            </p>
+
+            <div className="mt-6 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-5">
+                <p className="font-semibold text-red-400">
+                  Standard Watch URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/watch?v=VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                <p className="font-semibold text-yellow-300">
+                  Short URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://youtu.be/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
+                <p className="font-semibold text-green-400">
+                  Shorts URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/shorts/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+                <p className="font-semibold text-blue-400">
+                  Embed URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/embed/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-5">
+                <p className="font-semibold text-red-400">
+                  Live URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/live/VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                <p className="font-semibold text-yellow-300">
+                  Mobile URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://m.youtube.com/watch?v=VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
+                <p className="font-semibold text-green-400">
+                  WWW URL
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/watch?v=VIDEO_ID
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
+                <p className="font-semibold text-blue-400">
+                  URL With Extra Parameters
+                </p>
+                <p className="mt-2 break-all text-sm text-slate-300">
+                  https://www.youtube.com/watch?v=VIDEO_ID&feature=share
+                </p>
+              </div>
+            </div>
+          </div>
+<div>
+            <SectionHeading color="blue">
               What Is a YouTube Hashtag Extractor?
             </SectionHeading>
 
@@ -366,7 +499,8 @@ function HashtagExtractor({ query = "" }) {
               </li>
             </ul>
           </div>
-<div>
+
+          <div>
             <SectionHeading color="yellow">
               How to Use Extracted Hashtags for YouTube Research
             </SectionHeading>
