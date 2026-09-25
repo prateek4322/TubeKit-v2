@@ -82,7 +82,7 @@ function ToolCard({ tool }) {
           group-hover:gap-3
         "
       >
-        Learn more
+        Open Tool
 
         <ArrowRight
           size={20}
