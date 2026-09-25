@@ -1,4 +1,13 @@
-import { getChannelInfo } from "../services/youtubeService.js";
+import {
+  getChannelInfo,
+  getYouTubeVideoTags,
+} from "../services/youtubeService.js";
+
+/*
+|--------------------------------------------------------------------------
+| Monetization Analyzer
+|--------------------------------------------------------------------------
+*/
 
 export const monetizationAnalyzer = async (req, res) => {
   try {
@@ -57,7 +66,8 @@ export const monetizationAnalyzer = async (req, res) => {
         subscribers,
         views,
         videos,
-        publishedAt: info.snippet.publishedAt,
+        publishedAt:
+          info.snippet.publishedAt,
         age: channelAge,
       },
 
@@ -73,6 +83,116 @@ export const monetizationAnalyzer = async (req, res) => {
     res.status(500).json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+/*
+|--------------------------------------------------------------------------
+| YouTube Tag Extractor
+|--------------------------------------------------------------------------
+*/
+
+export const extractVideoTags = async (
+  req,
+  res
+) => {
+  try {
+    const { url } = req.query;
+
+    /*
+    ---------------------------------------
+    Validate URL
+    ---------------------------------------
+    */
+
+    if (!url) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Please enter a YouTube video URL.",
+      });
+    }
+
+    /*
+    ---------------------------------------
+    Get YouTube Tags
+    ---------------------------------------
+    */
+
+    const data =
+      await getYouTubeVideoTags(url);
+
+    /*
+    ---------------------------------------
+    Success Response
+    ---------------------------------------
+    */
+
+    return res.status(200).json({
+      success: true,
+
+      data: {
+        videoId: data.videoId,
+
+        videoUrl: data.videoUrl,
+
+        title: data.title,
+
+        channelTitle:
+          data.channelTitle,
+
+        channelId:
+          data.channelId,
+
+        tags: data.tags,
+      },
+    });
+
+  } catch (error) {
+
+    console.error(
+      "YouTube Tag Extractor Error:",
+      error
+    );
+
+    /*
+    ---------------------------------------
+    Error Status
+    ---------------------------------------
+    */
+
+    let status = 500;
+
+    if (
+      error.message ===
+        "YouTube URL is required" ||
+      error.message ===
+        "Invalid YouTube URL" ||
+      error.message ===
+        "Invalid YouTube video ID"
+    ) {
+      status = 400;
+    }
+
+    if (
+      error.message ===
+      "Video not found or unavailable"
+    ) {
+      status = 404;
+    }
+
+    /*
+    ---------------------------------------
+    Error Response
+    ---------------------------------------
+    */
+
+    return res.status(status).json({
+      success: false,
+      message:
+        error.message ||
+        "Failed to extract YouTube tags.",
     });
   }
 };
