@@ -20,9 +20,70 @@ import Hero from "@/components/home/hero/Hero";
 import BlogGrid from "@/components/blog/BlogGrid";
 import blogPosts from "@/data/blogPosts";
 
+// AI Tools
+import TitleGenerator from "@/pages/tools/TitleGenerator";
+import DescriptionGenerator from "@/pages/tools/DescriptionGenerator";
+import TagsGenerator from "@/pages/tools/TagsGenerator";
+import ScriptGenerator from "@/pages/tools/ScriptGenerator";
+import HashtagGenerator from "@/pages/tools/HashtagGenerator";
+import KeywordGenerator from "@/pages/tools/KeywordGenerator";
+import HookGenerator from "@/pages/tools/HookGenerator";
+import OutlineGenerator from "@/pages/tools/OutlineGenerator";
+import ShortsGenerator from "@/pages/tools/ShortsGenerator";
+import ThumbnailGenerator from "@/pages/tools/ThumbnailGenerator";
+
+// Essential URL Tools
+import TagExtractor from "@/pages/tools/TagExtractor";
+import HashtagExtractor from "@/pages/tools/HashtagExtractor";
+import DescriptionExtractor from "@/pages/tools/DescriptionExtractor";
+import ShadowbanDetector from "@/pages/tools/ShadowbanDetector";
+import ChannelAnalyzer from "@/pages/tools/ChannelAnalyzer";
+import SEOAnalyzer from "@/pages/tools/SEOAnalyzer";
+import CommentReader from "@/pages/tools/CommentReader";
+import VideoIdExtractor from "@/pages/tools/VideoIdExtractor";
+import ThumbnailDownloader from "@/pages/tools/ThumbnailDownloader";
+import ChannelIdFinder from "@/pages/tools/ChannelIdFinder";
+import MonetizationChecker from "@/pages/tools/MonetizationChecker";
+
+// Calculator Tools
+import CPMCalculator from "@/pages/tools/CPMCalculator";
+import RPMCalculator from "@/pages/tools/RPMCalculator";
+import MoneyCalculator from "@/pages/tools/MoneyCalculator";
+
+
 // Tools
 
-const toolComponents = {};
+const toolComponents = {
+  // AI tools
+  "/tools/title-generator": TitleGenerator,
+  "/tools/description-generator": DescriptionGenerator,
+  "/tools/tags-generator": TagsGenerator,
+  "/tools/script-generator": ScriptGenerator,
+  "/tools/hashtag-generator": HashtagGenerator,
+  "/tools/keyword-generator": KeywordGenerator,
+  "/tools/hook-generator": HookGenerator,
+  "/tools/outline-generator": OutlineGenerator,
+  "/tools/shorts-generator": ShortsGenerator,
+  "/tools/thumbnail-generator": ThumbnailGenerator,
+
+  // Essential URL tools
+  "/tools/tag-extractor": TagExtractor,
+  "/tools/hashtag-extractor": HashtagExtractor,
+  "/tools/description-extractor": DescriptionExtractor,
+  "/tools/shadowban-detector": ShadowbanDetector,
+  "/tools/channel-analyzer": ChannelAnalyzer,
+  "/tools/seo-analyzer": SEOAnalyzer,
+  "/tools/comment-reader": CommentReader,
+  "/tools/video-id-extractor": VideoIdExtractor,
+  "/tools/thumbnail-downloader": ThumbnailDownloader,
+  "/tools/channel-id-finder": ChannelIdFinder,
+  "/tools/monetization-checker": MonetizationChecker,
+
+  // Calculators
+  "/tools/cpm-calculator": CPMCalculator,
+  "/tools/rpm-calculator": RPMCalculator,
+  "/tools/money-calculator": MoneyCalculator,
+};
 
 const rgby = {
   red: {
@@ -347,15 +408,23 @@ function Home() {
     .slice(0, 3);
 
   const handleToolSelect = (tool, query) => {
-    setActiveTool(tool);
-    setToolQuery(query?.trim() || "");
+    const value = String(query || "").trim();
 
-    setTimeout(() => {
-      toolSectionRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-    }, 100);
+    if (!tool?.path || !toolComponents[tool.path] || !value) {
+      return;
+    }
+
+    setActiveTool(tool);
+    setToolQuery(value);
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        toolSectionRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 80);
+    });
   };
 
   const ActiveTool = activeTool ? toolComponents[activeTool.path] : null;
@@ -398,8 +467,8 @@ function Home() {
               )}
             </div>
 
-            <div className="bg-[#070b18] p-2 sm:p-4">
-              <ActiveTool query={toolQuery} />
+            <div className="rounded-2xl bg-[#070b18]/80 p-1 sm:p-2">
+              <ActiveTool key={`${activeTool.path}-${toolQuery}`} query={toolQuery} />
             </div>
           </div>
         </section>
@@ -653,7 +722,7 @@ function Home() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+{/* HOW IT WORKS */}
       <section
         id="how-it-works"
         className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
