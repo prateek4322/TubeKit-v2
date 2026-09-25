@@ -54,7 +54,6 @@ import ChannelAnalyzer from "@/pages/tools/ChannelAnalyzer";
 import SEOAnalyzer from "@/pages/tools/SEOAnalyzer";
 import CommentReader from "@/pages/tools/CommentReader";
 
-
 /* =========================================================
    HERO SEARCH QUERY WRAPPERS
    ========================================================= */
@@ -166,15 +165,9 @@ function ShortsGeneratorWithQuery() {
 function AppRoutes() {
   return (
     <BrowserRouter>
-
-      {/* Scroll page to top whenever route/search changes */}
       <ScrollToTop />
 
       <Routes>
-
-        {/* =================================================
-            MAIN LAYOUT
-            ================================================= */}
 
         <Route element={<MainLayout />}>
 
@@ -182,65 +175,28 @@ function AppRoutes() {
               MAIN PAGES
               ========================= */}
 
-          <Route
-            path="/"
-            element={<Home />}
-          />
-
-          <Route
-            path="/about"
-            element={<About />}
-          />
-
-          <Route
-            path="/contact"
-            element={<Contact />}
-          />
-
-          <Route
-            path="/faq"
-            element={<FAQ />}
-          />
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
 
           {/* =========================
               BLOG
               ========================= */}
 
-          <Route
-            path="/blog"
-            element={<Blog />}
-          />
-
-          <Route
-            path="/blog/:slug"
-            element={<BlogPost />}
-          />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
 
           {/* =========================
               LEGAL
               ========================= */}
 
-          <Route
-            path="/privacy-policy"
-            element={<PrivacyPolicy />}
-          />
+          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/disclaimer" element={<Disclaimer />} />
+          <Route path="/cookie-policy" element={<CookiePolicy />} />
 
-          <Route
-            path="/terms"
-            element={<Terms />}
-          />
-
-          <Route
-            path="/disclaimer"
-            element={<Disclaimer />}
-          />
-
-          <Route
-            path="/cookie-policy"
-            element={<CookiePolicy />}
-          />
-
-{/* =========================
+          {/* =========================
               YOUTUBE UTILITY TOOLS
               ========================= */}
 
@@ -258,10 +214,21 @@ function AppRoutes() {
             path="/tools/thumbnail-downloader"
             element={<ThumbnailDownloader />}
           />
-<Route
-  path="/tools/tag-extractor"
-  element={<TagExtractor />}
-/>
+
+          <Route
+            path="/tools/tag-extractor"
+            element={<TagExtractor />}
+          />
+
+          <Route
+            path="/tools/hashtag-extractor"
+            element={<HashtagExtractor />}
+          />
+
+          <Route
+            path="/tools/description-extractor"
+            element={<DescriptionExtractor />}
+          />
 
           {/* =========================
               AI GENERATORS
@@ -318,7 +285,31 @@ function AppRoutes() {
             element={<ShortsGeneratorWithQuery />}
           />
 
-{/* =========================
+          {/* =========================
+              ANALYSIS / CHANNEL TOOLS
+              ========================= */}
+
+          <Route
+            path="/tools/shadowban-detector"
+            element={<ShadowbanDetector />}
+          />
+
+          <Route
+            path="/tools/channel-analyzer"
+            element={<ChannelAnalyzer />}
+          />
+
+          <Route
+            path="/tools/seo-analyzer"
+            element={<SEOAnalyzer />}
+          />
+
+          <Route
+            path="/tools/comment-reader"
+            element={<CommentReader />}
+          />
+
+          {/* =========================
               CALCULATORS
               ========================= */}
 
@@ -350,15 +341,11 @@ function AppRoutes() {
               404
               ========================= */}
 
-          <Route
-            path="*"
-            element={<NotFound />}
-          />
+          <Route path="*" element={<NotFound />} />
 
         </Route>
 
       </Routes>
-
     </BrowserRouter>
   );
 }
