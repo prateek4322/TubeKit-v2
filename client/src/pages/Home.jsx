@@ -500,7 +500,7 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className="group block min-h-[240px] w-full rounded-2xl border border-transparent bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
+                  className="group block min-h-[240px] w-full rounded-2xl border border-white/10 bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/60 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.10)] focus-visible:border-red-500/70 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.14)] active:border-red-500/70 active:shadow-[0_0_35px_rgba(239,68,68,0.16)] sm:min-h-[255px] sm:p-8"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div
@@ -560,7 +560,7 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className="group block min-h-[240px] w-full rounded-2xl border border-transparent bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
+                  className="group block min-h-[240px] w-full rounded-2xl border border-white/10 bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/60 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.10)] focus-visible:border-red-500/70 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.14)] active:border-red-500/70 active:shadow-[0_0_35px_rgba(239,68,68,0.16)] sm:min-h-[255px] sm:p-8"
                 >
                   <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${s.icon} transition-all duration-300 group-hover:scale-105 sm:h-16 sm:w-16`}>
                     <Icon className="h-7 w-7" />
@@ -631,7 +631,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`group rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
+                  className={`group rounded-2xl border border-white/10 bg-[#0b0b0d] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow}`}
                 >
                   <div className={`mb-5 h-1.5 w-10 rounded-full ${s.icon.split(" ")[0]}`} />
                   <h3 className="text-lg font-bold text-white">{title}</h3>
@@ -642,97 +642,51 @@ function Home() {
           </div>
         </div>
       </section>
+
 {/* BENEFITS */}
-<section className="bg-[#030712] px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
-  <div className="mx-auto max-w-6xl">
-    <div className="mx-auto max-w-4xl text-center">
-  <h2 className="text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
-    Benefits of Using <span className="text-red-500">TubeKit</span>
-  </h2>
-</div>
-
-    <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:gap-5">
-      {[
-        [
-          "Improved Content Workflow",
-          "Keep common planning and optimization tasks together in one focused workspace.",
-          "red",
-          BarChart3,
-        ],
-        [
-          "Less Tool Switching",
-          "Move between creator tasks without rebuilding your workflow from scratch.",
-          "green",
-          Sparkles,
-        ],
-        [
-          "Better Content Planning",
-          "Organize titles, keywords, scripts, hooks and thumbnail ideas before publishing.",
-          "yellow",
-          Lightbulb,
-        ],
-        [
-          "Time-Saving Utilities",
-          "Use practical calculators and YouTube utilities for common creator tasks.",
-          "blue",
-          Wand2,
-        ],
-      ].map(([title, text, color, Icon]) => {
-        const s = rgby[color];
-
-        return (
-          <div
-            key={title}
-            tabIndex={0}
-            className={`
-              group
-              min-h-[180px]
-              rounded-2xl
-              border border-white/10
-              bg-[#0b0b0d]
-              p-5
-              outline-none
-              transition-all duration-300
-              hover:-translate-y-1
-              hover:border-red-500/40
-              hover:bg-[#101014]
-              focus:border-red-500/60
-              focus:bg-[#101014]
-              ${s.active}
-              ${s.glow}
-              sm:min-h-[190px]
-              sm:p-6
-            `}
-          >
-            {/* Icon */}
-            <div
-              className={`
-                flex h-11 w-11 items-center justify-center
-                rounded-xl
-                ${s.icon}
-                transition-transform duration-300
-                group-hover:scale-105
-              `}
-            >
-              <Icon className="h-5 w-5" />
-            </div>
-
-            {/* Content */}
-            <div className="mt-5">
-              <h3 className="text-lg font-extrabold leading-tight text-white sm:text-xl">
-                {title}
-              </h3>
-
-              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500 sm:text-[15px] sm:leading-7">
-                {text}
-              </p>
-            </div>
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+        <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+              Benefits of Using <span className="text-red-500">TubeKit</span>
+            </h2>
           </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
+
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2">
+            {[
+              ["Improved Content Workflow", "Keep common planning and optimization tasks together in one focused workspace.", "red", BarChart3],
+              ["Less Tool Switching", "Move between creator tasks without rebuilding your workflow from scratch.", "green", Sparkles],
+              ["Better Content Planning", "Organize titles, keywords, scripts, hooks and thumbnail ideas before publishing.", "yellow", Lightbulb],
+              ["Time-Saving Utilities", "Use practical calculators and YouTube utilities for common creator tasks.", "blue", Wand2],
+            ].map(([title, text, color, Icon]) => {
+              const s = rgby[color];
+
+              return (
+                <div
+                  key={title}
+                  tabIndex={0}
+                  className={`group min-h-[180px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[190px] sm:p-6`}
+                >
+                  <div
+                    className={`flex h-11 w-11 items-center justify-center rounded-xl ${s.icon} transition-transform duration-300 group-hover:scale-105`}
+                  >
+                    <Icon className="h-5 w-5" />
+                  </div>
+
+                  <div className="mt-5">
+                    <h3 className="text-lg font-extrabold leading-tight text-white sm:text-xl">
+                      {title}
+                    </h3>
+                    <p className="mt-2 text-sm leading-6 text-slate-500 sm:text-[15px] sm:leading-7">
+                      {text}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
 
 {/* COMMON USE CASES */}
       <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
@@ -836,7 +790,7 @@ function Home() {
             ].map((item, index) => (
               <div
                 key={item}
-                className="flex gap-3 rounded-xl bg-red-500/10 p-4"
+                className="flex gap-3 rounded-xl border border-white/10 bg-[#0b0b0d] p-4 transition-all duration-300 hover:border-red-500/40 hover:bg-[#101014]"
               >
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
                 <span className="text-sm leading-6 text-slate-500">{item}</span>
@@ -877,7 +831,7 @@ function Home() {
                           : faq.color === "yellow"
                             ? "border-yellow-400/40"
                             : "border-blue-500/40"
-                      : "border-transparent"
+                      : "border-white/10"
                   }`}
                 >
                   <button
@@ -929,7 +883,7 @@ function Home() {
             </p>
           </div>
 
-          <div className="mx-auto mt-12 max-w-6xl">
+          <div className="mx-auto mt-12 max-w-6xl rounded-3xl border border-white/10 bg-[#0b0b0d] p-3 sm:p-5">
             <BlogGrid posts={latestBlogPosts} />
           </div>
 
@@ -947,7 +901,7 @@ function Home() {
 
       {/* FINAL CTA */}
       <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="mx-auto max-w-5xl rounded-3xl bg-red-500/10 px-6 py-12 text-center sm:px-10 sm:py-16">
+        <div className="mx-auto max-w-5xl rounded-3xl border border-white/10 bg-[#0b0b0d] px-6 py-12 text-center transition-all duration-300 hover:border-red-500/40 sm:px-10 sm:py-16">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
             <Play className="h-5 w-5" />
           </div>
