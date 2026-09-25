@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AlertTriangle,
@@ -22,12 +22,13 @@ import api from "@/services/api";
 import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 
-function MonetizationChecker() {
+function MonetizationChecker({ query = "" }) {
   const [channel, setChannel] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
   const [inputError, setInputError] = useState("");
+  const generatedForRef = useRef("");
 
   const faqs = [
     {
@@ -48,17 +49,12 @@ function MonetizationChecker() {
     {
       question: "Can I know the exact watch hours or Shorts views from a public channel?",
       answer:
-        "Usually not. Exact qualifying watch hours and qualifying Shorts views are creator-side metrics. TubeKit can display them only when they are actually available from the connected analysis response; otherwise it clearly marks them as unavailable or estimated.",
+        "Usually not. Exact qualifying watch hours and qualifying Shorts views are creator-side metrics. TubeKit can display them only when they are actually available from the analysis response.",
     },
     {
       question: "Does reaching 1,000 subscribers automatically enable ads?",
       answer:
         "No. Numerical thresholds are only part of the process. YouTube also reviews policy compliance, channel content and other eligibility conditions for the relevant YPP features.",
-    },
-    {
-      question: "What should I do if my channel is close to monetization?",
-      answer:
-        "Use the readiness checklist to identify missing public signals, keep content original and policy-compliant, improve channel consistency, and verify the latest requirements in YouTube Studio and official YouTube documentation.",
     },
     {
       question: "Is the TubeKit YouTube Monetization Checker free?",
@@ -67,8 +63,8 @@ function MonetizationChecker() {
     },
   ];
 
-  const analyzeChannel = async () => {
-    const value = channel.trim();
+  const analyzeChannel = async (inputValue = channel) => {
+    const value = String(inputValue || "").trim();
 
     if (!value) {
       setInputError("Please enter a YouTube channel URL or supported channel identifier.");
@@ -81,7 +77,6 @@ function MonetizationChecker() {
       setLoading(true);
       setResult(null);
       setCopied(false);
-      setInputError("");
 
       const response = await api.post("/youtube/monetization-analyzer", {
         channel: value,
@@ -90,11 +85,11 @@ function MonetizationChecker() {
       if (response.data.success) {
         setResult(response.data);
       } else {
-        alert(response.data.message || "Unable to analyze this channel.");
+        setInputError(response.data.message || "Unable to analyze this channel.");
       }
     } catch (error) {
       console.error("MONETIZATION CHECKER ERROR:", error);
-      alert(
+      setInputError(
         error.response?.data?.message ||
           error.message ||
           "Channel not found or unable to analyze the channel."
@@ -104,7 +99,18 @@ function MonetizationChecker() {
     }
   };
 
+  useEffect(() => {
+    const value = String(query || "").trim();
+
+    if (!value || value === generatedForRef.current) return;
+
+    generatedForRef.current = value;
+    setChannel(value);
+    analyzeChannel(value);
+  }, [query]);
+
   const reset = () => {
+    generatedForRef.current = "";
     setChannel("");
     setResult(null);
     setCopied(false);
@@ -124,18 +130,49 @@ function MonetizationChecker() {
   const readiness = result?.readiness || result?.eligibility || {};
   const checks = result?.checks || result?.monetizationChecks || [];
   const recommendations = result?.recommendations || [];
-  const revenue = result?.revenue || result?.earning || {};
-  const content = result?.content || {};
-  const branding = result?.branding || {};
 
   const subscribers = toNumber(
     channelData.subscribers ?? stats.subscribers ?? channelData.subscriberCount
   );
-  const views = toNumber(channelData.views ?? stats.views ?? channelData.viewCount);
-  const videos = toNumber(channelData.videos ?? stats.videos ?? channelData.videoCount);
+  const views = toNumber(
+    channelData.views ?? stats.views ?? channelData.viewCount
+  );
+  const videos = toNumber(
+    channelData.videos ?? stats.videos ?? channelData.videoCount
+  );
+
+  const publishedAt = channelData.publishedAt || channelData.createdAt;
+  const joinedDate = publishedAt ? new Date(publishedAt) : null;
+  const validJoinedDate =
+    joinedDate && !Number.isNaN(joinedDate.getTime()) ? joinedDate : null;
+
+  const channelAge = validJoinedDate
+    ? Math.max(
+        0,
+        Math.floor(
+          (Date.now() - validJoinedDate.getTime()) /
+            (1000 * 60 * 60 * 24 * 365.25)
+        )
+      )
+    : toNumber(channelData.age);
+
+  const avgViewsPerVideo =
+    views !== null && videos ? Math.round(views / videos) : null;
+
+  const statusText =
+    analysis.status ||
+    readiness.status ||
+    result?.status ||
+    "Estimated status unavailable";
+
+  const confidence = toNumber(analysis.confidence);
+  const score =
+    toNumber(analysis.score ?? readiness.score ?? result?.score) ?? null;
+
   const watchHours = toNumber(
     result?.watchHours ?? stats.watchHours ?? analysis.watchHours
   );
+
   const shortsViews = toNumber(
     result?.shortsViews ?? stats.shortsViews ?? analysis.shortsViews
   );
@@ -144,18 +181,102 @@ function MonetizationChecker() {
   const watchHourProgress = progress(watchHours, 4000);
   const shortsProgress = progress(shortsViews, 10000000);
 
-  const statusText =
-    analysis.status ||
-    readiness.status ||
-    result?.status ||
-    "Estimated status unavailable";
-
-  const score =
-    toNumber(analysis.score ?? readiness.score ?? result?.score) ??
-    null;
-
   const normalizedChecks = normalizeItems(checks);
   const normalizedRecommendations = normalizeItems(recommendations);
+
+  const dailyViews =
+    views !== null && channelAge !== null
+      ? Math.max(0, Math.round(views / Math.max(channelAge, 1) / 365))
+      : null;
+
+  const monthlyViews =
+    dailyViews !== null ? Math.round(dailyViews * 30) : null;
+
+  const yearlyViews =
+    dailyViews !== null ? Math.round(dailyViews * 365) : null;
+
+  const revenueRows = useMemo(() => {
+    const estimate = (viewCount, cpm) =>
+      viewCount === null
+        ? null
+        : Math.round((viewCount / 1000) * cpm);
+
+    return [
+      {
+        label: "Estimated Earnings (Low)",
+        daily: estimate(dailyViews, 2),
+        monthly: estimate(monthlyViews, 2),
+        yearly: estimate(yearlyViews, 2),
+      },
+      {
+        label: "Estimated Earnings (Mid)",
+        daily: estimate(dailyViews, 6),
+        monthly: estimate(monthlyViews, 6),
+        yearly: estimate(yearlyViews, 6),
+      },
+      {
+        label: "Estimated Earnings (High)",
+        daily: estimate(dailyViews, 10),
+        monthly: estimate(monthlyViews, 10),
+        yearly: estimate(yearlyViews, 10),
+      },
+      {
+        label: "Estimated Daily / Monthly / Yearly Views",
+        daily: dailyViews,
+        monthly: monthlyViews,
+        yearly: yearlyViews,
+        viewsRow: true,
+      },
+    ];
+  }, [dailyViews, monthlyViews, yearlyViews]);
+
+  const keyInsights = useMemo(() => {
+    const items = [];
+
+    if (channelAge !== null) {
+      items.push(`Channel age: ${channelAge} year${channelAge === 1 ? "" : "s"}.`);
+    }
+
+    if (avgViewsPerVideo !== null) {
+      items.push(`Average views per video: ${formatNumber(avgViewsPerVideo)}.`);
+    }
+
+    if (subscribers !== null) {
+      items.push(
+        subscribers >= 1000
+          ? "Subscriber count meets the common 1,000-subscriber ad-revenue threshold."
+          : `Subscriber progress: ${formatNumber(subscribers)} of 1,000 subscribers.`
+      );
+    }
+
+    if (views !== null && videos) {
+      items.push(
+        `Public view-to-video data is available across ${formatNumber(videos)} videos.`
+      );
+    }
+
+    if (confidence !== null) {
+      items.push(`Analysis confidence returned by the backend: ${confidence}%.`);
+    }
+
+    if (score !== null) {
+      items.push(`Readiness score returned by the analysis: ${score}%.`);
+    }
+
+    if (!items.length) {
+      items.push("No additional public insights were returned by the analysis.");
+    }
+
+    return items;
+  }, [
+    channelAge,
+    avgViewsPerVideo,
+    subscribers,
+    views,
+    videos,
+    confidence,
+    score,
+  ]);
 
   const reportText = useMemo(() => {
     if (!result) return "";
@@ -170,17 +291,12 @@ function MonetizationChecker() {
       `Subscribers: ${formatNumber(subscribers)}`,
       `Total Views: ${formatNumber(views)}`,
       `Videos: ${formatNumber(videos)}`,
-      `Public Watch Hours: ${watchHours !== null ? formatNumber(watchHours) : "Unavailable"}`,
-      `Public Shorts Views: ${shortsViews !== null ? formatNumber(shortsViews) : "Unavailable"}`,
+      `Joined Date: ${validJoinedDate ? validJoinedDate.toLocaleDateString() : "Unavailable"}`,
+      `Channel Age: ${channelAge !== null ? `${channelAge} years` : "Unavailable"}`,
+      `Average Views / Video: ${formatNumber(avgViewsPerVideo)}`,
       "",
-      "Important: This is an estimate based on available information. It is not an official YPP decision.",
-      "",
-      normalizedRecommendations.length
-        ? `Recommendations:\n${normalizedRecommendations.map((item) => `- ${item}`).join("\n")}`
-        : "",
-    ]
-      .filter(Boolean)
-      .join("\n");
+      "Important: Revenue figures are estimates based on assumed CPM ranges. They are not official YouTube revenue.",
+    ].join("\n");
   }, [
     result,
     channelData.name,
@@ -190,9 +306,9 @@ function MonetizationChecker() {
     subscribers,
     views,
     videos,
-    watchHours,
-    shortsViews,
-    normalizedRecommendations,
+    validJoinedDate,
+    channelAge,
+    avgViewsPerVideo,
   ]);
 
   const copyReport = async () => {
@@ -211,15 +327,15 @@ function MonetizationChecker() {
     <>
       <SEO
         title="YouTube Monetization Checker | Check YPP Eligibility Free"
-        description="Check a YouTube channel's estimated monetization readiness using available public channel data. Review YPP thresholds, progress, channel statistics, readiness checks and monetization signals with TubeKit."
-        keywords="YouTube monetization checker, YouTube YPP checker, YouTube monetization eligibility checker, YouTube Partner Program checker, YPP eligibility, YouTube monetization requirements, YouTube channel monetization checker, YouTube monetization calculator"
+        description="Check a YouTube channel's estimated monetization readiness using available public channel data. Review channel statistics, monetization signals, threshold progress and estimated revenue with TubeKit."
+        keywords="YouTube monetization checker, YouTube YPP checker, YouTube monetization eligibility checker, YouTube Partner Program checker, YPP eligibility, YouTube monetization requirements"
         canonical="/tools/monetization-checker"
         faqs={faqs}
       />
 
       <ToolLayout>
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 text-center">
+        <div className="mx-auto w-full max-w-6xl px-3 sm:px-5 lg:px-8">
+          <div className="mb-10 text-center sm:mb-12">
             <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm font-bold text-red-400">
               <CircleDollarSign size={17} />
               YouTube Creator Tool
@@ -232,15 +348,15 @@ function MonetizationChecker() {
             </h1>
 
             <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-400 sm:text-lg">
-              Analyze a public YouTube channel, review monetization readiness,
-              compare available metrics with common YPP thresholds, and find
-              the areas that need attention.
+              Analyze a public YouTube channel, review monetization signals,
+              compare available metrics with common YPP thresholds, and view
+              an estimated earnings matrix.
             </p>
           </div>
 
-          <div className="relative overflow-hidden rounded-3xl border border-blue-500/20 bg-[#090b12] p-5 shadow-2xl shadow-blue-500/5 sm:p-8">
-            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
-            <div className="pointer-events-none absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-red-500/10 blur-3xl" />
+          <section className="relative overflow-hidden rounded-3xl border border-blue-500/20 bg-[#090b12] p-4 shadow-2xl shadow-blue-500/5 sm:p-7 lg:p-8">
+            <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-blue-500/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-20 h-64 w-64 rounded-full bg-red-500/10 blur-3xl" />
 
             <div className="relative">
               <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -286,8 +402,8 @@ function MonetizationChecker() {
               </div>
 
               <p className="mt-3 text-xs leading-6 text-slate-500 sm:text-sm">
-                Supports public channel URLs, handles and supported channel identifiers.
-                Press Enter to analyze.
+                Supports public channel URLs, handles and supported channel
+                identifiers. Press Enter to analyze.
               </p>
 
               {inputError && (
@@ -300,11 +416,11 @@ function MonetizationChecker() {
                 </p>
               )}
 
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {[
                   ["Public Data", "No private Studio access"],
                   ["YPP Signals", "Threshold progress"],
-                  ["Action Plan", "Clear next steps"],
+                  ["Revenue View", "Estimated CPM range"],
                 ].map(([title, text]) => (
                   <div
                     key={title}
@@ -351,21 +467,26 @@ function MonetizationChecker() {
                 </button>
               </div>
             </div>
-          </div>
+          </section>
 
+          {/* Existing TubeKit loader preserved */}
           {loading && (
-            <div className="mt-8 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-6">
+            <div className="mt-8 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-5 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-blue-400">
                   <RefreshCw size={23} className="animate-spin" />
                 </div>
                 <div>
-                  <p className="font-black text-white">Analyzing public channel data</p>
+                  <p className="font-black text-white">
+                    Analyzing public channel data
+                  </p>
                   <p className="mt-1 text-sm text-slate-400">
-                    Reading available statistics and preparing the monetization readiness report.
+                    Reading available statistics and preparing the monetization
+                    readiness report.
                   </p>
                 </div>
               </div>
+
               <div className="mt-5 h-2 overflow-hidden rounded-full bg-slate-800">
                 <div className="h-full w-2/3 animate-pulse rounded-full bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500" />
               </div>
@@ -373,69 +494,77 @@ function MonetizationChecker() {
           )}
 
           {result && (
-            <div className="mt-10 space-y-7">
+            <div className="mt-8 space-y-6 sm:mt-10 sm:space-y-7">
+              {/* Channel profile */}
               <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
-                <div className="relative">
-                  {channelData.banner && (
-                    <img
-                      src={channelData.banner}
-                      alt={`${channelData.name || "YouTube"} channel banner`}
-                      className="h-36 w-full object-cover opacity-80 sm:h-52"
-                    />
-                  )}
+                {channelData.banner && (
+                  <img
+                    src={channelData.banner}
+                    alt={`${channelData.name || "YouTube"} channel banner`}
+                    className="h-32 w-full object-cover opacity-80 sm:h-48"
+                  />
+                )}
 
-                  <div className={`${channelData.banner ? "-mt-10 sm:-mt-14" : ""} relative p-5 sm:p-8`}>
-                    <div className="flex flex-col gap-5 sm:flex-row sm:items-end">
-                      {channelData.thumbnail && (
-                        <img
-                          src={channelData.thumbnail}
-                          alt={`${channelData.name || "YouTube"} channel profile`}
-                          className="h-24 w-24 rounded-full border-4 border-[#090b12] object-cover shadow-xl sm:h-28 sm:w-28"
-                        />
-                      )}
+                <div
+                  className={`relative p-5 sm:p-7 ${
+                    channelData.banner ? "-mt-8 sm:-mt-12" : ""
+                  }`}
+                >
+                  <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+                    {channelData.thumbnail && (
+                      <img
+                        src={channelData.thumbnail}
+                        alt={`${channelData.name || "YouTube"} channel profile`}
+                        className="h-24 w-24 rounded-full border-4 border-[#090b12] object-cover shadow-xl sm:h-28 sm:w-28"
+                      />
+                    )}
 
-                      <div className="min-w-0 flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h2 className="break-words text-2xl font-black text-white sm:text-3xl">
-                            {channelData.name || "YouTube Channel"}
-                          </h2>
-                          {channelData.handle && (
-                            <span className="text-sm font-semibold text-slate-500">
-                              {channelData.handle}
-                            </span>
-                          )}
-                        </div>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="break-words text-2xl font-black text-white sm:text-3xl">
+                          {channelData.name || "YouTube Channel"}
+                        </h2>
 
-                        {channelData.id && (
-                          <p className="mt-2 break-all text-xs text-slate-500">
-                            Channel ID: {channelData.id}
-                          </p>
-                        )}
-
-                        {channelData.description && (
-                          <p className="mt-4 max-w-4xl whitespace-pre-line text-sm leading-7 text-slate-400">
-                            {channelData.description}
-                          </p>
+                        {channelData.handle && (
+                          <span className="text-sm font-semibold text-slate-500">
+                            {channelData.handle}
+                          </span>
                         )}
                       </div>
 
-                      {channelData.url && (
-                        <a
-                          href={channelData.url}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-400 transition hover:border-red-500/50"
-                        >
-                          Open Channel
-                          <ExternalLink size={16} />
-                        </a>
+                      {channelData.id && (
+                        <p className="mt-2 break-all text-xs text-slate-500">
+                          Channel ID: {channelData.id}
+                        </p>
+                      )}
+
+                      {channelData.description && (
+                        <p className="mt-3 max-w-4xl whitespace-pre-line text-sm leading-7 text-slate-400">
+                          {channelData.description}
+                        </p>
                       )}
                     </div>
+
+                    {(channelData.url || channelData.id) && (
+                      <a
+                        href={
+                          channelData.url ||
+                          `https://www.youtube.com/channel/${channelData.id}`
+                        }
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm font-bold text-red-400 transition hover:border-red-500/50"
+                      >
+                        Open Channel
+                        <ExternalLink size={16} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </section>
 
-              <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {/* Screenshot-style statistics */}
+              <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
                 <StatCard
                   title="Subscribers"
                   value={formatNumber(subscribers)}
@@ -449,91 +578,226 @@ function MonetizationChecker() {
                   color="yellow"
                 />
                 <StatCard
-                  title="Videos"
+                  title="Total Videos"
                   value={formatNumber(videos)}
                   icon={Video}
                   color="green"
                 />
                 <StatCard
-                  title="Readiness Score"
-                  value={score !== null ? `${score}%` : "N/A"}
-                  icon={BarChart3}
+                  title="Joined Date"
+                  value={
+                    validJoinedDate
+                      ? validJoinedDate.getFullYear()
+                      : "N/A"
+                  }
+                  subValue={
+                    validJoinedDate
+                      ? validJoinedDate.toLocaleDateString(undefined, {
+                          month: "long",
+                          year: "numeric",
+                        })
+                      : "Unavailable"
+                  }
+                  icon={ShieldCheck}
                   color="blue"
+                />
+                <StatCard
+                  title="Channel Age"
+                  value={channelAge !== null ? `${channelAge} years` : "N/A"}
+                  icon={BarChart3}
+                  color="red"
+                />
+                <StatCard
+                  title="Avg Views / Video"
+                  value={formatNumber(avgViewsPerVideo)}
+                  icon={Eye}
+                  color="yellow"
                 />
               </section>
 
-              <section className="grid gap-5 lg:grid-cols-2">
-                <div className="rounded-3xl border border-green-500/20 bg-green-500/5 p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-400">
-                      <CircleDollarSign size={22} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-wider text-green-400">
-                        Estimated Assessment
-                      </p>
-                      <h3 className="mt-1 text-2xl font-black text-white">
-                        {statusText}
-                      </h3>
-                    </div>
+              {/* Monetization status */}
+              <section className="rounded-3xl border border-green-500/30 bg-green-500/5 p-5 shadow-[0_0_35px_rgba(34,197,94,0.05)] sm:p-6">
+                <div className="flex items-start gap-4">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-500/15 text-green-400">
+                    {statusLooksPositive(statusText) ? (
+                      <CheckCircle2 size={23} />
+                    ) : (
+                      <Info size={23} />
+                    )}
                   </div>
 
-                  {analysis.message && (
-                    <p className="mt-5 text-sm leading-7 text-slate-300">
-                      {analysis.message}
+                  <div className="min-w-0">
+                    <p className="text-sm font-black text-slate-300">
+                      Monetization Status
                     </p>
-                  )}
+                    <h3 className="mt-1 break-words text-xl font-black text-green-400 sm:text-2xl">
+                      {statusText}
+                    </h3>
 
-                  {analysis.confidence !== undefined && (
-                    <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4">
-                      <div className="flex items-center justify-between gap-4 text-sm">
-                        <span className="text-slate-400">Analysis confidence</span>
-                        <span className="font-black text-white">
-                          {analysis.confidence}%
-                        </span>
-                      </div>
-                      <ProgressBar value={analysis.confidence} color="green" />
-                    </div>
-                  )}
+                    <p className="mt-1 text-xs leading-6 text-slate-500 sm:text-sm">
+                      This is an estimated public-data signal. Official YPP
+                      status is visible only to the channel owner inside
+                      YouTube.
+                    </p>
+                  </div>
                 </div>
 
-                <div className="rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+                {confidence !== null && (
+                  <div className="mt-5">
+                    <div className="flex items-center justify-between gap-3 text-xs">
+                      <span className="font-bold text-slate-500">
+                        Analysis confidence
+                      </span>
+                      <span className="font-black text-green-400">
+                        {confidence}%
+                      </span>
+                    </div>
+                    <ProgressBar value={confidence} color="green" />
+                  </div>
+                )}
+              </section>
+
+              {/* Estimated revenue matrix */}
+              <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
+                <div className="p-5 sm:p-7">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-500/10 text-yellow-400">
-                      <Info size={22} />
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-yellow-400/10 text-yellow-400">
+                      <Wallet size={22} />
                     </div>
                     <div>
                       <p className="text-xs font-black uppercase tracking-wider text-yellow-400">
-                        Important
+                        Estimated Earnings
                       </p>
-                      <h3 className="mt-1 text-xl font-black text-white">
-                        Public-data estimate only
+                      <h3 className="text-xl font-black text-white sm:text-2xl">
+                        Revenue Matrix
                       </h3>
                     </div>
                   </div>
-                  <p className="mt-5 text-sm leading-7 text-slate-300">
-                    TubeKit cannot see private YouTube Studio, Earn, AdSense,
-                    application or internal review information. A public
-                    analysis cannot prove actual YPP approval or rejection.
-                  </p>
+
+                  <div className="mt-6 overflow-x-auto rounded-2xl border border-white/10">
+                    <table className="min-w-[620px] w-full text-left">
+                      <thead className="bg-white/[0.03]">
+                        <tr className="text-xs font-black text-slate-300">
+                          <th className="px-4 py-4 sm:px-5">Metric</th>
+                          <th className="px-4 py-4 sm:px-5">Daily</th>
+                          <th className="px-4 py-4 sm:px-5">Monthly</th>
+                          <th className="px-4 py-4 sm:px-5">Yearly</th>
+                        </tr>
+                      </thead>
+
+                      <tbody>
+                        {revenueRows.map((row) => (
+                          <tr
+                            key={row.label}
+                            className="border-t border-white/10 text-xs sm:text-sm"
+                          >
+                            <td className="px-4 py-4 font-semibold text-slate-400 sm:px-5">
+                              {row.label}
+                            </td>
+                            <td
+                              className={`px-4 py-4 font-black sm:px-5 ${
+                                row.viewsRow
+                                  ? "text-slate-200"
+                                  : "text-white"
+                              }`}
+                            >
+                              {formatMoneyOrViews(row.daily, row.viewsRow)}
+                            </td>
+                            <td
+                              className={`px-4 py-4 font-black sm:px-5 ${
+                                row.viewsRow
+                                  ? "text-slate-200"
+                                  : "text-white"
+                              }`}
+                            >
+                              {formatMoneyOrViews(row.monthly, row.viewsRow)}
+                            </td>
+                            <td
+                              className={`px-4 py-4 font-black sm:px-5 ${
+                                row.viewsRow
+                                  ? "text-red-400"
+                                  : "text-red-400"
+                              }`}
+                            >
+                              {formatMoneyOrViews(row.yearly, row.viewsRow)}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="mt-4 rounded-2xl bg-white/[0.05] p-4">
+                    <p className="text-xs leading-6 text-slate-400">
+                      <span className="font-black text-slate-300">
+                        Assumptions:
+                      </span>{" "}
+                      CPM range $2-$10 per 1,000 views. Views-based estimates
+                      use available public channel views and channel age. Actual
+                      earnings vary by audience, geography, content type,
+                      advertiser demand and YouTube revenue share. This is an
+                      estimate only, not official revenue.
+                    </p>
+                  </div>
+                </div>
+              </section>
+{/* Key insights */}
+              <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
+                    <Sparkles size={21} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-black uppercase tracking-wider text-blue-400">
+                      Analysis
+                    </p>
+                    <h3 className="text-xl font-black text-white sm:text-2xl">
+                      Key Insights
+                    </h3>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid gap-3">
+                  {keyInsights.map((item, index) => (
+                    <div
+                      key={`${item}-${index}`}
+                      className="flex items-start gap-3 rounded-xl bg-white/[0.02] px-3 py-3"
+                    >
+                      <span
+                        className={`mt-1 shrink-0 ${
+                          index >= 2 ? "text-green-400" : "text-blue-400"
+                        }`}
+                      >
+                        {index >= 2 ? (
+                          <CheckCircle2 size={15} />
+                        ) : (
+                          <Info size={15} />
+                        )}
+                      </span>
+                      <p className="text-sm leading-6 text-slate-400">
+                        {item}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </section>
 
-              <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-6 sm:p-8">
+              {/* YPP progress */}
+              <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
                 <div className="mb-7">
                   <p className="text-xs font-black uppercase tracking-wider text-blue-400">
                     YPP Progress
                   </p>
-                  <h3 className="mt-1 text-2xl font-black text-white">
+                  <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
                     Common monetization thresholds
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-slate-500">
-                    Progress is shown only when the required metric is available.
-                    Public channel data does not always expose qualifying metrics.
+                    Progress is shown only when the required metric is
+                    available from the analysis response.
                   </p>
                 </div>
 
-                <div className="grid gap-5 lg:grid-cols-3">
+                <div className="grid gap-4 lg:grid-cols-3">
                   <ThresholdCard
                     title="Subscribers"
                     current={subscribers}
@@ -562,9 +826,12 @@ function MonetizationChecker() {
                   />
                 </div>
 
-                <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+                <div className="mt-5 rounded-2xl border border-yellow-500/10 bg-yellow-500/5 p-4">
                   <div className="flex gap-3">
-                    <AlertTriangle className="mt-0.5 shrink-0 text-yellow-400" size={19} />
+                    <AlertTriangle
+                      className="mt-0.5 shrink-0 text-yellow-400"
+                      size={19}
+                    />
                     <p className="text-sm leading-7 text-slate-400">
                       Watch hours and Shorts views shown as unavailable are not
                       treated as zero. Exact qualifying metrics are normally
@@ -574,99 +841,51 @@ function MonetizationChecker() {
                 </div>
               </section>
 
-              {(normalizedChecks.length > 0 || readiness.checks) && (
-                <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-6 sm:p-8">
-                  <div className="mb-7">
+              {normalizedChecks.length > 0 && (
+                <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
+                  <div className="mb-6">
                     <p className="text-xs font-black uppercase tracking-wider text-green-400">
                       Readiness Checklist
                     </p>
-                    <h3 className="mt-1 text-2xl font-black text-white">
+                    <h3 className="mt-1 text-xl font-black text-white sm:text-2xl">
                       Monetization signals
                     </h3>
                   </div>
 
-                  <div className="grid gap-4 md:grid-cols-2">
-                    {(normalizedChecks.length
-                      ? normalizedChecks
-                      : normalizeItems(readiness.checks)
-                    ).map((item, index) => (
+                  <div className="grid gap-3 md:grid-cols-2">
+                    {normalizedChecks.map((item, index) => (
                       <CheckItem key={`${item}-${index}`} value={item} />
                     ))}
                   </div>
                 </section>
               )}
 
-              {(content || branding) && (
-                <section className="grid gap-5 lg:grid-cols-2">
-                  <AnalysisPanel
-                    title="Content Signals"
-                    icon={Video}
-                    color="green"
-                    data={content}
-                  />
-                  <AnalysisPanel
-                    title="Channel & Branding Signals"
-                    icon={ShieldCheck}
-                    color="blue"
-                    data={branding}
-                  />
-                </section>
-              )}
-{Object.keys(revenue).length > 0 && (
-                <section className="rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-6 sm:p-8">
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-400/10 text-yellow-400">
-                      <Wallet size={22} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-wider text-yellow-400">
-                        Revenue Signals
-                      </p>
-                      <h3 className="text-2xl font-black text-white">
-                        Available monetization data
-                      </h3>
-                    </div>
-                  </div>
-
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {Object.entries(revenue)
-                      .filter(([, value]) => value !== undefined && value !== null)
-                      .slice(0, 9)
-                      .map(([key, value]) => (
-                        <MetricTile
-                          key={key}
-                          label={humanize(key)}
-                          value={formatValue(value)}
-                        />
-                      ))}
-                  </div>
-                </section>
-              )}
-
               {normalizedRecommendations.length > 0 && (
-                <section className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
+                <section className="rounded-3xl border border-red-500/20 bg-red-500/5 p-5 sm:p-7">
                   <div className="flex items-center gap-3">
                     <Sparkles className="text-red-400" size={22} />
                     <div>
                       <p className="text-xs font-black uppercase tracking-wider text-red-400">
                         Action Plan
                       </p>
-                      <h3 className="text-2xl font-black text-white">
+                      <h3 className="text-xl font-black text-white sm:text-2xl">
                         Recommended next steps
                       </h3>
                     </div>
                   </div>
 
-                  <div className="mt-6 grid gap-4">
+                  <div className="mt-6 grid gap-3">
                     {normalizedRecommendations.map((item, index) => (
                       <div
                         key={`${item}-${index}`}
-                        className="flex gap-4 rounded-2xl border border-white/10 bg-black/20 p-5"
+                        className="flex gap-4 rounded-2xl border border-white/10 bg-black/20 p-4"
                       >
                         <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-sm font-black text-red-400">
                           {index + 1}
                         </div>
-                        <p className="text-sm leading-7 text-slate-300">{item}</p>
+                        <p className="text-sm leading-7 text-slate-300">
+                          {item}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -675,7 +894,9 @@ function MonetizationChecker() {
 
               <section className="flex flex-col gap-3 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
                 <div>
-                  <h3 className="font-black text-white">Save your monetization report</h3>
+                  <h3 className="font-black text-white">
+                    Save your monetization report
+                  </h3>
                   <p className="mt-1 text-sm text-slate-400">
                     Copy the current public-data assessment for your records.
                   </p>
@@ -693,43 +914,43 @@ function MonetizationChecker() {
             </div>
           )}
 
-          <section className="mt-16 space-y-12">
+<section className="mt-14 space-y-10 sm:mt-16 sm:space-y-12">
             <SectionHeading
               first="YouTube Monetization"
               second="Checker"
               secondColor="yellow"
             />
 
-            <div>
+            <div className="mx-auto max-w-4xl">
               <p className="leading-8 text-slate-400">
-                TubeKit's YouTube Monetization Checker is designed to turn
-                available public channel information into a practical
-                monetization-readiness report. Instead of showing only a
-                single status, the updated checker can surface channel
-                statistics, threshold progress, available readiness signals,
-                revenue data, recommendations and important data limitations.
+                TubeKit's YouTube Monetization Checker turns available public
+                channel information into a practical monetization-readiness
+                report. It shows channel statistics, estimated status,
+                threshold progress, revenue estimates and key insights.
               </p>
               <p className="mt-4 leading-8 text-slate-400">
-                The tool should be treated as an analysis assistant, not an
-                official YouTube Partner Program decision. Private Studio
-                metrics and internal YPP review information are not exposed by
-                normal public channel data.
+                The tool is an analysis assistant, not an official YouTube
+                Partner Program decision. Private Studio metrics and internal
+                YPP review information are not exposed by normal public channel
+                data.
               </p>
             </div>
 
-<div>
-              <SectionHeading first="What This" second="Tool Analyzes" secondColor="blue" />
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div>
+              <SectionHeading
+                first="What This"
+                second="Tool Analyzes"
+                secondColor="blue"
+              />
+
+              <div className="mx-auto mt-6 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[
                   ["Channel statistics", "Subscribers, total views and public video count."],
                   ["YPP threshold progress", "Compares available metrics with common thresholds."],
-                  ["Readiness signals", "Displays available checks returned by the analysis."],
-                  ["Content signals", "Uses returned content data when available."],
-                  ["Branding signals", "Reviews returned profile and branding fields when available."],
-                  ["Revenue signals", "Shows available monetization-related metrics from the analysis."],
-                  ["Recommendations", "Turns returned findings into practical next steps."],
-                  ["Report export", "Copy the current assessment as a text report."],
-                  ["Data limitations", "Clearly separates unavailable private metrics from zero values."],
+                  ["Monetization status", "Shows the estimated public-data signal returned by the analysis."],
+                  ["Revenue matrix", "Displays low, mid and high CPM-based estimates."],
+                  ["Key insights", "Summarizes the main channel metrics in a clean report."],
+                  ["Data limitations", "Separates unavailable private metrics from zero values."],
                 ].map(([title, description]) => (
                   <div
                     key={title}
@@ -745,8 +966,13 @@ function MonetizationChecker() {
             </div>
 
             <div>
-              <SectionHeading first="Common YouTube" second="YPP Thresholds" secondColor="green" />
-              <div className="grid gap-5 md:grid-cols-2">
+              <SectionHeading
+                first="Common YouTube"
+                second="YPP Thresholds"
+                secondColor="green"
+              />
+
+              <div className="mx-auto mt-6 grid max-w-5xl gap-5 md:grid-cols-2">
                 <InfoBox
                   color="red"
                   title="Ad Revenue Route"
@@ -760,7 +986,8 @@ function MonetizationChecker() {
                   text="Expanded YPP access can have lower thresholds for selected fan-funding and Shopping features. Requirements depend on region and feature."
                 />
               </div>
-              <p className="mt-5 text-sm leading-7 text-slate-500">
+
+              <p className="mx-auto mt-5 max-w-5xl text-sm leading-7 text-slate-500">
                 Thresholds and feature availability can change. Always verify
                 the current requirements in YouTube Studio and official YouTube
                 documentation before applying.
@@ -768,9 +995,14 @@ function MonetizationChecker() {
             </div>
 
             <div>
-              <SectionHeading first="Why Public Data" second="Has Limits" secondColor="yellow" />
-              <div className="rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-6">
-                <div className="grid gap-5 md:grid-cols-2">
+              <SectionHeading
+                first="Why Public Data"
+                second="Has Limits"
+                secondColor="yellow"
+              />
+
+              <div className="mx-auto mt-6 max-w-5xl rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-5 sm:p-6">
+                <div className="grid gap-4 md:grid-cols-2">
                   <LimitItem
                     title="Private Studio metrics"
                     text="Qualifying watch hours and certain Shorts metrics are creator-side analytics and may not be publicly available."
@@ -780,8 +1012,8 @@ function MonetizationChecker() {
                     text="A public API response cannot reveal YouTube's internal policy review, application status or approval decision."
                   />
                   <LimitItem
-                    title="Policy compliance"
-                    text="Content may require human or platform-side review for monetization policy compliance."
+                    title="Revenue estimates"
+                    text="Public views do not reveal exact creator earnings. The matrix uses an assumed CPM range only."
                   />
                   <LimitItem
                     title="Feature-specific rules"
@@ -791,32 +1023,66 @@ function MonetizationChecker() {
               </div>
             </div>
 
-            <div>
-              <SectionHeading first="How to Use" second="Monetization Checker" secondColor="red" />
-              <ol className="mt-5 list-decimal space-y-3 pl-6 text-slate-400">
+<div>
+              <SectionHeading
+                first="How to Use"
+                second="Monetization Checker"
+                secondColor="red"
+              />
+
+              <ol className="mx-auto mt-5 max-w-4xl list-decimal space-y-3 pl-6 text-slate-400">
                 <li>Copy a public YouTube channel URL or supported identifier.</li>
                 <li>Paste it into the checker above.</li>
                 <li>Click Check Monetization or press Enter.</li>
-                <li>Review the channel statistics and estimated assessment.</li>
-                <li>Check threshold progress and available readiness signals.</li>
-                <li>Review recommendations and save the report if needed.</li>
-                <li>Verify the latest YPP requirements inside YouTube Studio before applying.</li>
+                <li>Review the channel statistics and estimated status.</li>
+                <li>Check threshold progress and the revenue matrix.</li>
+                <li>Review the key insights and save the report if needed.</li>
               </ol>
             </div>
 
             <div>
-              <SectionHeading first="More YouTube" second="Creator Tools" secondColor="blue" />
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <ToolLink to="/tools/money-calculator" color="red" title="YouTube Money Calculator" text="Estimate potential earnings from views and RPM." />
-                <ToolLink to="/tools/rpm-calculator" color="yellow" title="YouTube RPM Calculator" text="Calculate estimated revenue per 1,000 views." />
-                <ToolLink to="/tools/cpm-calculator" color="green" title="YouTube CPM Calculator" text="Calculate advertising-related CPM estimates." />
-                <ToolLink to="/tools/channel-analyzer" color="blue" title="Channel Analyzer" text="Review public channel information and optimization signals." />
+              <SectionHeading
+                first="More YouTube"
+                second="Creator Tools"
+                secondColor="blue"
+              />
+
+              <div className="mx-auto mt-6 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <ToolLink
+                  to="/tools/money-calculator"
+                  color="red"
+                  title="YouTube Money Calculator"
+                  text="Estimate potential earnings from views and RPM."
+                />
+                <ToolLink
+                  to="/tools/rpm-calculator"
+                  color="yellow"
+                  title="YouTube RPM Calculator"
+                  text="Calculate estimated revenue per 1,000 views."
+                />
+                <ToolLink
+                  to="/tools/cpm-calculator"
+                  color="green"
+                  title="YouTube CPM Calculator"
+                  text="Calculate advertising-related CPM estimates."
+                />
+                <ToolLink
+                  to="/tools/channel-analyzer"
+                  color="blue"
+                  title="Channel Analyzer"
+                  text="Review public channel information and optimization signals."
+                />
               </div>
             </div>
 
             <div>
-              <SectionHeading first="Frequently Asked Questions" second="About Monetization" secondColor="blue" />
-              <div className="mt-7 space-y-5">
+              <SectionHeading
+                first="Frequently Asked Questions"
+                second="About Monetization"
+                secondColor="blue"
+              />
+
+              <div className="mx-auto mt-7 max-w-5xl space-y-4">
                 {faqs.map((faq, index) => (
                   <div
                     key={index}
@@ -825,20 +1091,24 @@ function MonetizationChecker() {
                     <h3 className="text-lg font-black text-white">
                       {faq.question}
                     </h3>
-                    <p className="mt-3 leading-7 text-slate-400">{faq.answer}</p>
+                    <p className="mt-3 leading-7 text-slate-400">
+                      {faq.answer}
+                    </p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="rounded-3xl border border-blue-500/30 bg-blue-500/5 p-7 text-center">
+            <div className="rounded-3xl border border-blue-500/30 bg-blue-500/5 p-6 text-center sm:p-7">
               <h2 className="text-2xl font-black text-white">
                 Check a YouTube Channel's Monetization Readiness
               </h2>
               <p className="mx-auto mt-3 max-w-2xl leading-7 text-slate-400">
                 Analyze available public channel data and review the signals
-                that can help you understand your current monetization position.
+                that can help you understand the channel's current monetization
+                position.
               </p>
+
               <button
                 type="button"
                 onClick={() =>
@@ -868,32 +1138,46 @@ function SectionHeading({ first, second, secondColor = "red" }) {
   };
 
   return (
-    <h2 className="text-3xl font-black tracking-tight sm:text-4xl">
+    <h2 className="text-center text-3xl font-black tracking-tight sm:text-4xl">
       <span className="text-red-400">{first}</span>{" "}
       <span className={colors[secondColor] || colors.red}>{second}</span>
     </h2>
   );
 }
 
-function StatCard({ title, value, icon: Icon, color }) {
+function StatCard({ title, value, subValue, icon: Icon, color }) {
   const styles = {
-    red: "border-red-500/20 bg-red-500/5 text-red-400",
-    yellow: "border-yellow-500/20 bg-yellow-500/5 text-yellow-400",
-    green: "border-green-500/20 bg-green-500/5 text-green-400",
-    blue: "border-blue-500/20 bg-blue-500/5 text-blue-400",
+    red: "border-red-500/15 bg-red-500/[0.035] text-red-400",
+    yellow: "border-yellow-500/15 bg-yellow-500/[0.035] text-yellow-400",
+    green: "border-green-500/15 bg-green-500/[0.035] text-green-400",
+    blue: "border-blue-500/15 bg-blue-500/[0.035] text-blue-400",
   };
 
   return (
-    <div className={`rounded-2xl border p-5 ${styles[color] || styles.blue}`}>
-      <div className="flex items-center justify-between gap-3">
-        <p className="text-sm font-bold text-slate-400">{title}</p>
-        <Icon size={19} />
+    <div
+      className={`min-w-0 rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.035] sm:p-5 ${
+        styles[color] || styles.blue
+      }`}
+    >
+      <div className="flex min-w-0 items-center justify-between gap-2">
+        <p className="min-w-0 truncate text-xs font-bold text-slate-400 sm:text-sm">
+          {title}
+        </p>
+        <Icon className="shrink-0" size={18} />
       </div>
-      <p className="mt-4 break-words text-2xl font-black text-white">{value}</p>
+
+      <p className="mt-3 break-words text-xl font-black text-red-400 sm:text-2xl">
+        {value}
+      </p>
+
+      {subValue && (
+        <p className="mt-1 text-xs text-slate-500">
+          {subValue}
+        </p>
+      )}
     </div>
   );
 }
-
 function ThresholdCard({
   title,
   current,
@@ -937,7 +1221,7 @@ function ThresholdCard({
       ) : (
         <>
           <div className="mt-5 flex items-end justify-between gap-3">
-            <p className="text-2xl font-black text-white">
+            <p className="text-xl font-black text-white sm:text-2xl">
               {formatNumber(current)}
             </p>
             <p className="text-xs font-bold text-slate-500">
@@ -953,8 +1237,10 @@ function ThresholdCard({
           </div>
 
           <div className="mt-3 flex items-center justify-between text-xs">
-            <span className={`font-black ${style.text}`}>{percentage}%</span>
-            <span className="text-slate-500">{note}</span>
+            <span className={`font-black ${style.text}`}>
+              {Math.round(percentage)}%
+            </span>
+            <span className="text-right text-slate-500">{note}</span>
           </div>
         </>
       )}
@@ -974,14 +1260,19 @@ function ProgressBar({ value, color = "blue" }) {
     <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
       <div
         className={`h-full rounded-full ${bars[color] || bars.blue}`}
-        style={{ width: `${Math.max(0, Math.min(100, Number(value) || 0))}%` }}
+        style={{
+          width: `${Math.max(0, Math.min(100, Number(value) || 0))}%`,
+        }}
       />
     </div>
   );
 }
 
 function CheckItem({ value }) {
-  const text = typeof value === "string" ? value : value?.label || value?.name || "Check";
+  const text =
+    typeof value === "string"
+      ? value
+      : value?.label || value?.name || "Check";
 
   const passed =
     typeof value === "object"
@@ -997,68 +1288,15 @@ function CheckItem({ value }) {
       ) : (
         <Info className="mt-0.5 shrink-0 text-blue-400" size={19} />
       )}
+
       <div className="min-w-0">
         <p className="font-bold text-white">{text}</p>
         {typeof value === "object" && value?.message && (
-          <p className="mt-1 text-sm leading-6 text-slate-500">{value.message}</p>
+          <p className="mt-1 text-sm leading-6 text-slate-500">
+            {value.message}
+          </p>
         )}
       </div>
-    </div>
-  );
-}
-
-function AnalysisPanel({ title, icon: Icon, color, data }) {
-  const iconColors = {
-    red: "text-red-400",
-    yellow: "text-yellow-400",
-    green: "text-green-400",
-    blue: "text-blue-400",
-  };
-
-  const entries = Object.entries(data || {}).filter(
-    ([, value]) =>
-      value !== undefined &&
-      value !== null &&
-      typeof value !== "object"
-  );
-
-  if (!entries.length) {
-    return (
-      <div className="rounded-3xl border border-slate-800 bg-[#090b12] p-6">
-        <div className="flex items-center gap-3">
-          <Icon className={iconColors[color] || iconColors.blue} size={21} />
-          <h3 className="text-xl font-black text-white">{title}</h3>
-        </div>
-        <p className="mt-5 text-sm leading-7 text-slate-500">
-          No additional {title.toLowerCase()} were returned by the analysis.
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="rounded-3xl border border-slate-800 bg-[#090b12] p-6">
-      <div className="flex items-center gap-3">
-        <Icon className={iconColors[color] || iconColors.blue} size={21} />
-        <h3 className="text-xl font-black text-white">{title}</h3>
-      </div>
-
-      <div className="mt-6 grid gap-3 sm:grid-cols-2">
-        {entries.slice(0, 10).map(([key, value]) => (
-          <MetricTile key={key} label={humanize(key)} value={formatValue(value)} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function MetricTile({ label, value }) {
-  return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4">
-      <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-        {label}
-      </p>
-      <p className="mt-2 break-words text-base font-black text-white">{value}</p>
     </div>
   );
 }
@@ -1100,7 +1338,9 @@ function ToolLink({ to, color, title, text }) {
   return (
     <Link
       to={to}
-      className={`rounded-2xl border p-5 transition hover:-translate-y-1 ${styles[color] || styles.blue}`}
+      className={`rounded-2xl border p-5 transition hover:-translate-y-1 ${
+        styles[color] || styles.blue
+      }`}
     >
       <h3 className="font-black">{title}</h3>
       <p className="mt-2 text-sm leading-6 text-slate-400">{text}</p>
@@ -1134,6 +1374,7 @@ function normalizeItems(items) {
     .map((item) => {
       if (typeof item === "string") return item;
       if (!item || typeof item !== "object") return "";
+
       return (
         item.message ||
         item.label ||
@@ -1148,13 +1389,17 @@ function normalizeItems(items) {
 
 function toNumber(value) {
   if (value === undefined || value === null || value === "") return null;
+
   const number = Number(String(value).replace(/,/g, ""));
   return Number.isFinite(number) ? number : null;
 }
 
 function progress(current, target) {
   if (current === null || current === undefined || !target) return 0;
-  return Math.max(0, Math.min(100, (Number(current) / Number(target)) * 100));
+  return Math.max(
+    0,
+    Math.min(100, (Number(current) / Number(target)) * 100)
+  );
 }
 
 function formatNumber(value) {
@@ -1166,18 +1411,37 @@ function formatNumber(value) {
   return number.toLocaleString();
 }
 
-function formatValue(value) {
-  if (typeof value === "boolean") return value ? "Yes" : "No";
-  if (Array.isArray(value)) return value.join(", ");
-  if (typeof value === "object") return JSON.stringify(value);
-  return String(value);
+function formatMoneyOrViews(value, viewsRow = false) {
+  if (value === null || value === undefined) return "N/A";
+  return viewsRow ? formatCompact(value) : `$${formatCompact(value)}`;
 }
 
-function humanize(value) {
-  return String(value)
-    .replace(/([a-z])([A-Z])/g, "$1 $2")
-    .replace(/[_-]+/g, " ")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+function formatCompact(value) {
+  if (value === null || value === undefined) return "N/A";
+
+  const number = Number(value);
+  if (!Number.isFinite(number)) return String(value);
+
+  if (number >= 1000000) {
+    return `${(number / 1000000).toFixed(1).replace(/\.0$/, "")}M`;
+  }
+
+  if (number >= 1000) {
+    return `${(number / 1000).toFixed(1).replace(/\.0$/, "")}K`;
+  }
+
+  return number.toLocaleString();
+}
+
+function statusLooksPositive(status) {
+  const value = String(status || "").toLowerCase();
+
+  return (
+    value.includes("monetized") ||
+    value.includes("eligible") ||
+    value.includes("likely") ||
+    value.includes("approved")
+  );
 }
 
 export default MonetizationChecker;
