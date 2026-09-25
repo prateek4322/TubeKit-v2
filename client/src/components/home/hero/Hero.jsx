@@ -85,7 +85,7 @@ function Hero({ onToolSelect }) {
   };
 
   return (
-    <section className="relative isolate overflow-visible bg-[#030712]">
+    <section className="relative isolate overflow-hidden bg-[#030712]">
       <BackgroundEffects />
 
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -206,9 +206,9 @@ function Hero({ onToolSelect }) {
                   {isOpen && (
                     <div
                       role="listbox"
-                      className="absolute left-0 right-0 top-[calc(100%+8px)] z-[999] overflow-hidden rounded-2xl border border-blue-500/30 bg-[#080d1d] p-2 shadow-2xl shadow-black/60"
+                      className="absolute left-0 right-0 top-[calc(100%+8px)] z-[100] max-h-[70vh] overflow-hidden rounded-2xl border border-blue-500/30 bg-[#080d1d] p-2 shadow-2xl shadow-black/60 sm:max-h-[520px]"
                     >
-                      <div className="max-h-[62vh] overflow-y-auto overscroll-contain touch-pan-y py-2 sm:max-h-[420px]">
+                      <div className="max-h-[62vh] overflow-y-auto overscroll-contain pt-1 pr-1 sm:max-h-[460px]">
                         {essentialTools.map((tool) => {
                           const active = selectedTool.path === tool.path;
 
@@ -219,7 +219,7 @@ function Hero({ onToolSelect }) {
                               role="option"
                               aria-selected={active}
                               onClick={() => handleToolSelect(tool)}
-                              className={`flex min-h-14 w-full items-center justify-between rounded-xl px-4 py-3.5 text-left transition-all sm:min-h-16 sm:px-4 sm:py-4 ${
+                              className={`flex min-h-12 w-full items-center justify-between rounded-xl px-3.5 py-3.5 text-left transition-all sm:min-h-14 sm:px-4 sm:py-4 ${
                                 active
                                   ? "bg-blue-500/12 text-blue-300"
                                   : "text-slate-300 hover:bg-white/[0.045] hover:text-white"
@@ -231,7 +231,7 @@ function Hero({ onToolSelect }) {
                                     active ? "bg-blue-400" : "bg-slate-700"
                                   }`}
                                 />
-                                <span className="text-base font-semibold sm:text-[17px]">
+                                <span className="text-sm font-medium">
                                   {tool.name}
                                 </span>
                               </span>
