@@ -642,47 +642,97 @@ function Home() {
           </div>
         </div>
       </section>
-
 {/* BENEFITS */}
-      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="mx-auto max-w-6xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
-              Benefits of Using <span className="text-red-500">TubeKit</span>
-            </h2>
+<section className="bg-[#030712] px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
+  <div className="mx-auto max-w-6xl">
+    <div className="mx-auto max-w-4xl">
+      <h2 className="text-left text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+        Benefits of Using <span className="text-red-500">TubeKit</span>
+      </h2>
+    </div>
+
+    <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:gap-5">
+      {[
+        [
+          "Improved Content Workflow",
+          "Keep common planning and optimization tasks together in one focused workspace.",
+          "red",
+          BarChart3,
+        ],
+        [
+          "Less Tool Switching",
+          "Move between creator tasks without rebuilding your workflow from scratch.",
+          "green",
+          Sparkles,
+        ],
+        [
+          "Better Content Planning",
+          "Organize titles, keywords, scripts, hooks and thumbnail ideas before publishing.",
+          "yellow",
+          Lightbulb,
+        ],
+        [
+          "Time-Saving Utilities",
+          "Use practical calculators and YouTube utilities for common creator tasks.",
+          "blue",
+          Wand2,
+        ],
+      ].map(([title, text, color, Icon]) => {
+        const s = rgby[color];
+
+        return (
+          <div
+            key={title}
+            tabIndex={0}
+            className={`
+              group
+              min-h-[180px]
+              rounded-2xl
+              border border-white/10
+              bg-[#0b0b0d]
+              p-5
+              outline-none
+              transition-all duration-300
+              hover:-translate-y-1
+              hover:border-red-500/40
+              hover:bg-[#101014]
+              focus:border-red-500/60
+              focus:bg-[#101014]
+              ${s.active}
+              ${s.glow}
+              sm:min-h-[190px]
+              sm:p-6
+            `}
+          >
+            {/* Icon */}
+            <div
+              className={`
+                flex h-11 w-11 items-center justify-center
+                rounded-xl
+                ${s.icon}
+                transition-transform duration-300
+                group-hover:scale-105
+              `}
+            >
+              <Icon className="h-5 w-5" />
+            </div>
+
+            {/* Content */}
+            <div className="mt-5">
+              <h3 className="text-lg font-extrabold leading-tight text-white sm:text-xl">
+                {title}
+              </h3>
+
+              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-500 sm:text-[15px] sm:leading-7">
+                {text}
+              </p>
+            </div>
           </div>
-
-          <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2">
-            {[
-              ["Improved Content Workflow", "Keep common planning and optimization tasks together in one focused workspace.", "red", BarChart3],
-              ["Less Tool Switching", "Move between creator tasks without rebuilding your workflow from scratch.", "green", Sparkles],
-              ["Better Content Planning", "Organize titles, keywords, scripts, hooks and thumbnail ideas before publishing.", "yellow", Lightbulb],
-              ["Time-Saving Utilities", "Use practical calculators and YouTube utilities for common creator tasks.", "blue", Wand2],
-            ].map(([title, text, color, Icon]) => {
-              const s = rgby[color];
-
-              return (
-                <div
-                  key={title}
-                  tabIndex={0}
-                  className={`group flex gap-5 rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
-                >
-                  <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${s.icon}`}
-                  >
-                    <Icon className="h-5 w-5" />
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-white">{title}</h3>
-                    <p className="mt-2 text-sm leading-7 text-slate-500">{text}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
 {/* COMMON USE CASES */}
       <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
