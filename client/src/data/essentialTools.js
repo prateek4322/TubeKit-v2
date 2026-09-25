@@ -1,7 +1,7 @@
 export const essentialTools = [
   {
     id: 1,
-    icon: "ðŸ’°",
+    icon: "money",
     title: "Money Calculator",
     description:
       "Estimate YouTube earnings using views, CPM, RPM, and other creator revenue inputs.",
@@ -9,7 +9,7 @@ export const essentialTools = [
   },
   {
     id: 2,
-    icon: "ðŸ“ˆ",
+    icon: "monetization",
     title: "Monetization Checker",
     description:
       "Analyze public YouTube channel information and review basic monetization indicators.",
@@ -17,7 +17,7 @@ export const essentialTools = [
   },
   {
     id: 3,
-    icon: "ðŸ’µ",
+    icon: "cpm",
     title: "CPM Calculator",
     description:
       "Calculate estimated CPM from views and advertising revenue to understand ad performance.",
@@ -25,7 +25,7 @@ export const essentialTools = [
   },
   {
     id: 4,
-    icon: "ðŸ’¹",
+    icon: "rpm",
     title: "RPM Calculator",
     description:
       "Calculate estimated YouTube RPM and understand revenue per thousand views.",
@@ -33,7 +33,7 @@ export const essentialTools = [
   },
   {
     id: 5,
-    icon: "ðŸ†”",
+    icon: "channel",
     title: "Channel ID Finder",
     description:
       "Find a YouTube channel ID from a channel URL, handle, channel name, or supported input.",
@@ -41,7 +41,7 @@ export const essentialTools = [
   },
   {
     id: 6,
-    icon: "ðŸŽ¥",
+    icon: "video",
     title: "Video ID Extractor",
     description:
       "Extract the YouTube video ID from standard, Shorts, shortened, and embed URLs.",
@@ -49,7 +49,7 @@ export const essentialTools = [
   },
   {
     id: 7,
-    icon: "ðŸ–¼ï¸",
+    icon: "downloader",
     title: "Thumbnail Downloader",
     description:
       "Get available YouTube thumbnail image URLs from a video URL for quick access and reference.",
@@ -57,7 +57,7 @@ export const essentialTools = [
   },
   {
     id: 8,
-    icon: "ðŸ·ï¸",
+    icon: "tagExtractor",
     title: "YouTube Tag Extractor",
     description:
       "Extract available tags from a YouTube video and copy individual or all returned tags.",
