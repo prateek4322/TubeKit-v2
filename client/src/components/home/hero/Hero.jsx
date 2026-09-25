@@ -3,19 +3,43 @@ import { Search, ChevronDown, Sparkles, Wand2, Check } from "lucide-react";
 import BackgroundEffects from "./BackgroundEffects";
 
 const aiTools = [
-  { name: "AI Title Generator", path: "/tools/title-generator" },
-  { name: "AI Description Generator", path: "/tools/description-generator" },
-  { name: "AI Tags Generator", path: "/tools/tags-generator" },
-  { name: "AI Script Generator", path: "/tools/script-generator" },
-  { name: "AI Hashtag Generator", path: "/tools/hashtag-generator" },
-  { name: "AI Keyword Generator", path: "/tools/keyword-generator" },
-  { name: "AI Hook Generator", path: "/tools/hook-generator" },
-  { name: "AI Outline Generator", path: "/tools/outline-generator" },
-  { name: "AI Shorts Generator", path: "/tools/shorts-generator" },
-  { name: "AI Thumbnail Generator", path: "/tools/thumbnail-generator" },
+  { name: "AI Title Generator", path: "/tools/title-generator", type: "ai" },
+  { name: "AI Description Generator", path: "/tools/description-generator", type: "ai" },
+  { name: "AI Tags Generator", path: "/tools/tags-generator", type: "ai" },
+  { name: "AI Script Generator", path: "/tools/script-generator", type: "ai" },
+  { name: "AI Hashtag Generator", path: "/tools/hashtag-generator", type: "ai" },
+  { name: "AI Keyword Generator", path: "/tools/keyword-generator", type: "ai" },
+  { name: "AI Hook Generator", path: "/tools/hook-generator", type: "ai" },
+  { name: "AI Outline Generator", path: "/tools/outline-generator", type: "ai" },
+  { name: "AI Shorts Generator", path: "/tools/shorts-generator", type: "ai" },
+  { name: "AI Thumbnail Generator", path: "/tools/thumbnail-generator", type: "ai" },
 ];
 
-const rotatingWords = ["Titles", "Scripts", "Hooks", "Keywords", "Descriptions", "Hashtags", "Thumbnails"];
+const essentialTools = [
+  { name: "YouTube Tag Extractor", path: "/tools/tag-extractor", type: "essential" },
+  { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor", type: "essential" },
+  { name: "YouTube Description Extractor", path: "/tools/description-extractor", type: "essential" },
+  { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector", type: "essential" },
+  { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer", type: "essential" },
+  { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer", type: "essential" },
+  { name: "YouTube Comment Reader", path: "/tools/comment-reader", type: "essential" },
+  { name: "Video ID Extractor", path: "/tools/video-id-extractor", type: "essential" },
+  { name: "Thumbnail Downloader", path: "/tools/thumbnail-downloader", type: "essential" },
+  { name: "Channel ID Finder", path: "/tools/channel-id-finder", type: "essential" },
+  { name: "Monetization Checker", path: "/tools/monetization-checker", type: "essential" },
+];
+
+const searchTools = [...aiTools, ...essentialTools];
+
+const rotatingWords = [
+  "Titles",
+  "Scripts",
+  "Hooks",
+  "Keywords",
+  "Descriptions",
+  "Hashtags",
+  "Thumbnails",
+];
 
 function Hero({ onToolSelect }) {
   const [selectedTool, setSelectedTool] = useState(aiTools[0]);
@@ -29,6 +53,7 @@ function Hero({ onToolSelect }) {
     const timer = setInterval(() => {
       setWordIndex((current) => (current + 1) % rotatingWords.length);
     }, 2200);
+
     return () => clearInterval(timer);
   }, []);
 
@@ -38,7 +63,9 @@ function Hero({ onToolSelect }) {
         setIsOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleOutsideClick);
+
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
@@ -51,13 +78,21 @@ function Hero({ onToolSelect }) {
     }
 
     setError("");
+
     if (!selectedTool) return;
+
     onToolSelect(selectedTool, value);
   };
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") handleSearch();
     if (event.key === "Escape") setIsOpen(false);
+  };
+
+  const handleToolSelect = (tool) => {
+    setSelectedTool(tool);
+    setIsOpen(false);
+    setError("");
   };
 
   return (
@@ -98,7 +133,9 @@ function Hero({ onToolSelect }) {
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:mt-7 sm:text-base sm:leading-8 lg:text-lg">
-            Generate titles, scripts, hooks, keywords, descriptions, hashtags and thumbnail concepts with a premium AI toolkit built for YouTube creators.
+            Generate titles, scripts, hooks, keywords, descriptions, hashtags
+            and thumbnail concepts with a premium AI toolkit built for YouTube
+            creators.
           </p>
         </div>
 
@@ -114,6 +151,7 @@ function Hero({ onToolSelect }) {
                     style={{ color: "#ef4444", stroke: "#ef4444" }}
                     strokeWidth={2.5}
                   />
+
                   <input
                     type="text"
                     value={query}
@@ -122,10 +160,19 @@ function Hero({ onToolSelect }) {
                       if (error) setError("");
                     }}
                     onKeyDown={handleKeyDown}
-                    placeholder="Enter your topic, niche or video idea..."
-                    aria-label="Enter your topic, niche or video idea"
+                    placeholder={
+                      selectedTool?.type === "essential"
+                        ? "Paste a YouTube URL..."
+                        : "Enter your topic, niche or video idea..."
+                    }
+                    aria-label={
+                      selectedTool?.type === "essential"
+                        ? "Paste a YouTube URL"
+                        : "Enter your topic, niche or video idea"
+                    }
                     className="min-w-0 w-full bg-transparent text-xs font-medium text-white outline-none placeholder:text-slate-500 sm:text-sm lg:text-base"
                   />
+
                   {query && (
                     <button
                       type="button"
@@ -157,17 +204,21 @@ function Hero({ onToolSelect }) {
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-blue-500/25 bg-blue-500/10 sm:h-9 sm:w-9">
                         <Wand2 className="h-3.5 w-3.5 text-blue-400 sm:h-4 sm:w-4" />
                       </span>
+
                       <span className="min-w-0">
                         <span className="block text-[9px] font-bold uppercase tracking-[0.14em] text-slate-500 sm:text-[10px]">
-                          Select AI Tool
+                          Select Tool
                         </span>
                         <span className="mt-0.5 block truncate text-xs font-semibold text-white sm:text-sm">
                           {selectedTool.name}
                         </span>
                       </span>
                     </span>
+
                     <ChevronDown
-                      className={`ml-2 h-4 w-4 shrink-0 text-blue-400 transition-transform duration-300 sm:h-5 sm:w-5 ${isOpen ? "rotate-180" : ""}`}
+                      className={`ml-2 h-4 w-4 shrink-0 text-blue-400 transition-transform duration-300 sm:h-5 sm:w-5 ${
+                        isOpen ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
 
@@ -179,16 +230,21 @@ function Hero({ onToolSelect }) {
                       <div className="flex items-center justify-between border-b border-white/10 px-3 py-3">
                         <div>
                           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
-                            AI Generation
+                            TubeKit Tools
                           </p>
                           <p className="mt-1 text-xs text-slate-500">
-                            Choose what you want to create
+                            AI generation and URL tools
                           </p>
                         </div>
+
                         <Sparkles className="h-4 w-4 text-yellow-400" />
                       </div>
 
-                      <div className="max-h-72 overflow-y-auto pt-2">
+                      <div className="max-h-80 overflow-y-auto pt-2">
+                        <div className="px-3 pb-1 pt-1 text-[9px] font-black uppercase tracking-[0.18em] text-red-400">
+                          AI Generation
+                        </div>
+
                         {aiTools.map((tool) => {
                           const active = selectedTool.path === tool.path;
 
@@ -198,10 +254,7 @@ function Hero({ onToolSelect }) {
                               type="button"
                               role="option"
                               aria-selected={active}
-                              onClick={() => {
-                                setSelectedTool(tool);
-                                setIsOpen(false);
-                              }}
+                              onClick={() => handleToolSelect(tool)}
                               className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-all ${
                                 active
                                   ? "bg-blue-500/12 text-blue-300"
@@ -209,10 +262,59 @@ function Hero({ onToolSelect }) {
                               }`}
                             >
                               <span className="flex items-center gap-3">
-                                <span className={`h-2 w-2 rounded-full ${active ? "bg-blue-400" : "bg-slate-700"}`} />
-                                <span className="text-sm font-medium">{tool.name}</span>
+                                <span
+                                  className={`h-2 w-2 rounded-full ${
+                                    active ? "bg-blue-400" : "bg-slate-700"
+                                  }`}
+                                />
+                                <span className="text-sm font-medium">
+                                  {tool.name}
+                                </span>
                               </span>
-                              {active && <Check className="h-4 w-4 text-blue-400" />}
+
+                              {active && (
+                                <Check className="h-4 w-4 text-blue-400" />
+                              )}
+                            </button>
+                          );
+                        })}
+
+                        <div className="my-2 border-t border-white/10" />
+
+                        <div className="px-3 pb-1 pt-1 text-[9px] font-black uppercase tracking-[0.18em] text-green-400">
+                          Essential URL Tools
+                        </div>
+
+                        {essentialTools.map((tool) => {
+                          const active = selectedTool.path === tool.path;
+
+                          return (
+                            <button
+                              key={tool.path}
+                              type="button"
+                              role="option"
+                              aria-selected={active}
+                              onClick={() => handleToolSelect(tool)}
+                              className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-all ${
+                                active
+                                  ? "bg-green-500/12 text-green-300"
+                                  : "text-slate-300 hover:bg-white/[0.045] hover:text-white"
+                              }`}
+                            >
+                              <span className="flex items-center gap-3">
+                                <span
+                                  className={`h-2 w-2 rounded-full ${
+                                    active ? "bg-green-400" : "bg-slate-700"
+                                  }`}
+                                />
+                                <span className="text-sm font-medium">
+                                  {tool.name}
+                                </span>
+                              </span>
+
+                              {active && (
+                                <Check className="h-4 w-4 text-green-400" />
+                              )}
                             </button>
                           );
                         })}
@@ -232,7 +334,9 @@ function Hero({ onToolSelect }) {
                       style={{ color: "#ffffff", stroke: "#ffffff" }}
                       strokeWidth={2.5}
                     />
-                    <span>Generate</span>
+                    <span>
+                      {selectedTool?.type === "essential" ? "Open Tool" : "Generate"}
+                    </span>
                   </button>
                 </div>
               </div>
@@ -244,7 +348,9 @@ function Hero({ onToolSelect }) {
                   </p>
                 ) : (
                   <p className="text-center text-[10px] font-medium leading-4 text-slate-500 sm:text-xs">
-                    Enter a topic, keyword, URL, or video idea and select an AI tool to get started.
+                    {selectedTool?.type === "essential"
+                      ? "Paste a YouTube URL and select an essential tool to continue."
+                      : "Enter a topic, keyword, URL, or video idea and select an AI tool to get started."}
                   </p>
                 )}
               </div>
@@ -254,7 +360,7 @@ function Hero({ onToolSelect }) {
 
         <div className="mt-9 flex items-center justify-center gap-2.5 text-[10px] text-slate-500 sm:mt-12 sm:gap-3 sm:text-xs">
           <span className="h-px w-8 bg-white/10 sm:w-16" />
-          <span>10 AI generation tools</span>
+          <span>21 creator tools</span>
           <span className="h-px w-8 bg-white/10 sm:w-16" />
         </div>
       </div>
