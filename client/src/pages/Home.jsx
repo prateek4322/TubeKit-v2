@@ -51,12 +51,6 @@ const rgby = {
   },
 };
 
-const premiumCard =
-  "rounded-2xl border border-transparent bg-sky-400/10 shadow-[0_12px_40px_rgba(56,189,248,0.05)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-sky-300/12 hover:shadow-[0_20px_55px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:outline-none focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)]";
-
-const toolCard =
-  "group block min-h-[240px] w-full rounded-2xl border border-transparent bg-sky-400/10 p-7 shadow-[0_12px_40px_rgba(56,189,248,0.05)] backdrop-blur-sm outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-sky-300/12 hover:shadow-[0_20px_55px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8";
-
 const essentialTools = [
   {
     name: "YouTube Tag Extractor",
@@ -437,11 +431,11 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className={toolCard}
+                  className="group block min-h-[240px] w-full rounded-2xl border border-transparent bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-xl border border-white/5 ${s.icon}`}
+                      className={`flex h-11 w-11 items-center justify-center rounded-xl ${s.icon}`}
                     >
                       <Icon className="h-5 w-5" />
                     </div>
@@ -451,18 +445,19 @@ function Home() {
                     />
                   </div>
 
-                  <h3 className="mt-5 text-lg font-bold leading-tight text-white sm:text-xl">
+                  <h3 className="mt-7 text-xl font-extrabold leading-tight tracking-tight text-white transition-colors duration-300 group-hover:text-red-500 sm:text-2xl">
                     {tool.name}
                   </h3>
 
-                  <p className="mt-3 text-sm leading-6 text-slate-500">
+                  <p className="mt-4 max-w-xl text-sm leading-6 text-slate-400 sm:text-base sm:leading-7">
                     {tool.description}
                   </p>
 
-                  <span
-                    className="mt-6 inline-flex items-center gap-2 text-base font-semibold text-red-500 transition-all duration-300 group-hover:gap-3 sm:text-lg"
-                  >
+                  <span className="mt-6 inline-flex items-center gap-2 text-base font-semibold text-red-500 transition-all duration-300 group-hover:gap-3 sm:text-lg">
                     Open tool
+                    <ArrowRight
+                      className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+                    />
                   </span>
                 </a>
               );
@@ -496,7 +491,7 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className={toolCard}
+                  className="group block min-h-[240px] w-full rounded-2xl border border-transparent bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
                 >
                   <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${s.icon} transition-all duration-300 group-hover:scale-105 sm:h-16 sm:w-16`}>
                     <Icon className="h-7 w-7" />
@@ -526,27 +521,25 @@ function Home() {
       {/* ABOUT */}
       <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-6xl text-center">
-          <div className={`${premiumCard} mx-auto max-w-5xl p-7 sm:p-10 lg:p-12`}>
-            <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
-              About TubeKit
-            </span>
+          <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
+            About TubeKit
+          </span>
 
-            <h2 className="mt-5 text-[clamp(1.7rem,6vw,3.75rem)] font-black leading-tight tracking-tight text-white">
-              Understanding <span className="text-red-500">TubeKit</span>
-            </h2>
+          <h2 className="mt-5 text-[clamp(1.7rem,6vw,3.75rem)] font-black leading-tight tracking-tight text-white">
+            Understanding <span className="text-red-500">TubeKit</span>
+          </h2>
 
-            <p className="mx-auto mt-6 max-w-4xl text-sm leading-7 text-slate-400 sm:text-base sm:leading-8 lg:text-lg">
-              TubeKit is a creator-focused toolkit for planning, creating and
-              optimizing YouTube content. It brings common creator tasks into one
-              simple workspace so you can spend less time switching between tools
-              and more time improving your content.
-            </p>
-          </div>
+          <p className="mx-auto mt-6 max-w-4xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
+            TubeKit is a creator-focused toolkit for planning, creating and
+            optimizing YouTube content. It brings common creator tasks into one
+            simple workspace so you can spend less time switching between tools
+            and more time improving your content.
+          </p>
         </div>
       </section>
 
       {/* KEY FEATURES */}
-     <section className="bg-[#050816] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-12">
+      <section className="bg-[#050816] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 text-[clamp(1.45rem,5vw,3rem)] font-black leading-tight text-white">
@@ -569,7 +562,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`${premiumCard} p-6 ${s.active} ${s.glow}`}
+                  className={`group rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <div className={`mb-5 h-1.5 w-10 rounded-full ${s.icon.split(" ")[0]}`} />
                   <h3 className="text-lg font-bold text-white">{title}</h3>
@@ -603,7 +596,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`${premiumCard} flex gap-5 p-6 ${s.active} ${s.glow}`}
+                  className={`group flex gap-5 rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <div
                     className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-xl ${s.icon}`}
@@ -622,7 +615,7 @@ function Home() {
         </div>
       </section>
 
-      {/* COMMON USE CASES */}
+{/* COMMON USE CASES */}
       <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-4xl text-center">
@@ -649,7 +642,7 @@ function Home() {
                 <div
                   key={title}
                   tabIndex={0}
-                  className={`${premiumCard} p-6 ${s.active} ${s.glow}`}
+                  className={`rounded-2xl border border-red-500/20 bg-red-500/10 p-6 transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <h3 className="text-lg font-bold text-white">{title}</h3>
                   <p className="mt-3 text-sm leading-7 text-slate-500">{text}</p>
@@ -659,7 +652,8 @@ function Home() {
           </div>
         </div>
       </section>
-{/* HOW IT WORKS */}
+
+      {/* HOW IT WORKS */}
       <section
         id="how-it-works"
         className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
@@ -683,7 +677,7 @@ function Home() {
                 <div
                   key={step.number}
                   tabIndex={0}
-                  className={`${premiumCard} p-6 text-center ${s.active} ${s.glow}`}
+                  className={`rounded-2xl border border-red-500/20 bg-red-500/10 p-6 text-center transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] ${s.active} ${s.glow}`}
                 >
                   <div className={`text-sm font-black tracking-[0.18em] ${s.text}`}>
                     {step.number}
@@ -723,7 +717,7 @@ function Home() {
             ].map((item, index) => (
               <div
                 key={item}
-                className="group flex gap-3 rounded-2xl border border-transparent bg-sky-400/10 p-5 shadow-[0_12px_35px_rgba(56,189,248,0.05)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-sky-300/12"
+                className="flex gap-3 rounded-xl bg-red-500/10 p-4"
               >
                 <Check className="mt-0.5 h-4 w-4 shrink-0 text-red-400" />
                 <span className="text-sm leading-6 text-slate-500">{item}</span>
@@ -755,7 +749,7 @@ function Home() {
               return (
                 <div
                   key={faq.question}
-                  className={`rounded-2xl border bg-sky-400/10 shadow-[0_12px_40px_rgba(56,189,248,0.05)] backdrop-blur-sm transition duration-300 ${
+                  className={`rounded-2xl border bg-red-500/10 transition duration-300 ${
                     isOpen
                       ? faq.color === "red"
                         ? "border-red-500/40"
@@ -795,7 +789,7 @@ function Home() {
         </div>
       </section>
 
-{/* LATEST BLOG - AFTER THE MAIN CONTENT */}
+      {/* LATEST BLOG - AFTER THE MAIN CONTENT */}
       <section
         id="latest-blog"
         className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
@@ -834,7 +828,7 @@ function Home() {
 
       {/* FINAL CTA */}
       <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-transparent bg-sky-400/10 px-6 py-12 text-center shadow-[0_20px_70px_rgba(56,189,248,0.07)] backdrop-blur-sm transition-all duration-300 hover:border-red-500/50 sm:px-10 sm:py-16">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-red-500/10 px-6 py-12 text-center sm:px-10 sm:py-16">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
             <Play className="h-5 w-5" />
           </div>
