@@ -13,6 +13,16 @@ import {
   Sparkles,
   Target,
   Wand2,
+  Tags,
+  Image,
+  Calculator,
+  CircleDollarSign,
+  KeyRound,
+  Video,
+  MessageCircle,
+  ShieldCheck,
+  ScanSearch,
+  FileSearch,
 } from "lucide-react";
 
 import SEO from "@/components/common/SEO";
@@ -23,43 +33,8 @@ import BlogGrid from "@/components/blog/BlogGrid";
 import blogPosts from "@/data/blogPosts";
 
 // Tools
-import TitleGenerator from "@/pages/tools/TitleGenerator";
-import DescriptionGenerator from "@/pages/tools/DescriptionGenerator";
-import TagsGenerator from "@/pages/tools/TagsGenerator";
-import ScriptGenerator from "@/pages/tools/ScriptGenerator";
-import HashtagGenerator from "@/pages/tools/HashtagGenerator";
-import KeywordGenerator from "@/pages/tools/KeywordGenerator";
-import HookGenerator from "@/pages/tools/HookGenerator";
-import OutlineGenerator from "@/pages/tools/OutlineGenerator";
-import ShortsGenerator from "@/pages/tools/ShortsGenerator";
-import ThumbnailGenerator from "@/pages/tools/ThumbnailGenerator";
-import MonetizationChecker from "@/pages/tools/MonetizationChecker";
-import MoneyCalculator from "@/pages/tools/MoneyCalculator";
-import CPMCalculator from "@/pages/tools/CPMCalculator";
-import RPMCalculator from "@/pages/tools/RPMCalculator";
-import ChannelIdFinder from "@/pages/tools/ChannelIdFinder";
-import VideoIdExtractor from "@/pages/tools/VideoIdExtractor";
-import ThumbnailDownloader from "@/pages/tools/ThumbnailDownloader";
 
-const toolComponents = {
-  "/tools/title-generator": TitleGenerator,
-  "/tools/description-generator": DescriptionGenerator,
-  "/tools/tags-generator": TagsGenerator,
-  "/tools/script-generator": ScriptGenerator,
-  "/tools/hashtag-generator": HashtagGenerator,
-  "/tools/keyword-generator": KeywordGenerator,
-  "/tools/hook-generator": HookGenerator,
-  "/tools/outline-generator": OutlineGenerator,
-  "/tools/shorts-generator": ShortsGenerator,
-  "/tools/thumbnail-generator": ThumbnailGenerator,
-  "/tools/monetization-checker": MonetizationChecker,
-  "/tools/money-calculator": MoneyCalculator,
-  "/tools/cpm-calculator": CPMCalculator,
-  "/tools/rpm-calculator": RPMCalculator,
-  "/tools/channel-id-finder": ChannelIdFinder,
-  "/tools/video-id-extractor": VideoIdExtractor,
-  "/tools/thumbnail-downloader": ThumbnailDownloader,
-};
+const toolComponents = {};
 
 const rgby = {
   red: {
@@ -90,60 +65,102 @@ const rgby = {
 
 const essentialTools = [
   {
-    name: "AI Title Generator",
-    path: "/tools/title-generator",
+    name: "YouTube Tag Extractor",
+    path: "/tools/tag-extractor",
     color: "red",
-    icon: Sparkles,
-    description: "Create clear and engaging YouTube title ideas around your topic and audience.",
+    icon: Tags,
+    description: "Extract available tags from a YouTube video and copy individual or all returned tags.",
   },
   {
-    name: "AI Description Generator",
-    path: "/tools/description-generator",
-    color: "blue",
-    icon: FileText,
-    description: "Generate useful description drafts with context, keywords and calls to action.",
-  },
-  {
-    name: "YouTube Tags Generator",
-    path: "/tools/tags-generator",
+    name: "YouTube Hashtag Extractor",
+    path: "/tools/hashtag-extractor",
     color: "green",
     icon: Hash,
-    description: "Build relevant tag ideas around your video's topic and search context.",
+    description: "Extract useful hashtags from a video's available title and description content.",
   },
   {
-    name: "AI Script Writer",
-    path: "/tools/script-generator",
-    color: "yellow",
-    icon: Wand2,
-    description: "Turn a simple video idea into a structured script with hooks and sections.",
-  },
-  {
-    name: "Hashtag Generator",
-    path: "/tools/hashtag-generator",
-    color: "red",
-    icon: Hash,
-    description: "Generate relevant hashtag ideas for videos, Shorts and creator campaigns.",
-  },
-  {
-    name: "Keyword Generator",
-    path: "/tools/keyword-generator",
+    name: "YouTube Description Extractor",
+    path: "/tools/description-extractor",
     color: "blue",
-    icon: Search,
-    description: "Explore keyword ideas around your topic and the search intent of viewers.",
+    icon: FileSearch,
+    description: "Extract and copy the public description of a YouTube video for quick reference.",
   },
   {
-    name: "Hook Generator",
-    path: "/tools/hook-generator",
-    color: "green",
-    icon: Target,
-    description: "Create focused opening hooks that give viewers a clear reason to continue.",
-  },
-  {
-    name: "Thumbnail Idea Generator",
-    path: "/tools/thumbnail-generator",
+    name: "YouTube Shadowban Detector",
+    path: "/tools/shadowban-detector",
     color: "yellow",
-    icon: Lightbulb,
-    description: "Explore thumbnail concepts before designing your final visual.",
+    icon: ShieldCheck,
+    description: "Review public channel signals and checks related to visibility and reach concerns.",
+  },
+  {
+    name: "YouTube Channel Analyzer",
+    path: "/tools/channel-analyzer",
+    color: "red",
+    icon: BarChart3,
+    description: "Analyze public channel information, statistics, SEO signals, branding and optimization areas.",
+  },
+  {
+    name: "YouTube SEO Analyzer",
+    path: "/tools/seo-analyzer",
+    color: "blue",
+    icon: ScanSearch,
+    description: "Review available video SEO signals including title, description, tags, keywords and metadata.",
+  },
+  {
+    name: "YouTube Comment Reader",
+    path: "/tools/comment-reader",
+    color: "green",
+    icon: MessageCircle,
+    description: "Read available video comments and review comment-level engagement signals.",
+  },
+  {
+    name: "Video ID Extractor",
+    path: "/tools/video-id-extractor",
+    color: "yellow",
+    icon: Video,
+    description: "Extract YouTube video IDs from standard, Shorts, embed, live and shortened URLs.",
+  },
+  {
+    name: "Thumbnail Downloader",
+    path: "/tools/thumbnail-downloader",
+    color: "blue",
+    icon: Image,
+    description: "Get available YouTube thumbnail image URLs from a video URL for quick access.",
+  },
+  {
+    name: "Channel ID Finder",
+    path: "/tools/channel-id-finder",
+    color: "red",
+    icon: KeyRound,
+    description: "Find a YouTube channel ID from a supported channel URL, handle or channel input.",
+  },
+  {
+    name: "Monetization Checker",
+    path: "/tools/monetization-checker",
+    color: "green",
+    icon: CircleDollarSign,
+    description: "Review public channel signals, YPP threshold progress and monetization readiness indicators.",
+  },
+  {
+    name: "CPM Calculator",
+    path: "/tools/cpm-calculator",
+    color: "yellow",
+    icon: Calculator,
+    description: "Calculate estimated CPM from views and advertising revenue inputs.",
+  },
+  {
+    name: "RPM Calculator",
+    path: "/tools/rpm-calculator",
+    color: "blue",
+    icon: Calculator,
+    description: "Calculate estimated YouTube RPM and revenue per thousand views.",
+  },
+  {
+    name: "Money Calculator",
+    path: "/tools/money-calculator",
+    color: "red",
+    icon: CircleDollarSign,
+    description: "Estimate potential YouTube earnings using views, CPM, RPM and creator revenue inputs.",
   },
 ];
 
@@ -339,12 +356,12 @@ function Home() {
             </h2>
 
             <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
-              Powerful tools for titles, descriptions, keywords, scripts,
-              hooks, hashtags and thumbnails in one simple workspace.
+              Practical YouTube utilities, extractors, analyzers and calculators
+              organized in one creator-focused workspace.
             </p>
           </div>
 
-          <div className="mx-auto mt-12 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto mt-12 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {essentialTools.map((tool) => {
               const s = rgby[tool.color];
               const Icon = tool.icon;
@@ -353,7 +370,7 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className={`group rounded-2xl border border-red-500/20 bg-red-500/10 p-5 outline-none transition duration-300 hover:-translate-y-1 hover:bg-[#0b0f18] hover:shadow-2xl sm:p-6 ${s.active} ${s.glow}`}
+                  className="group rounded-2xl border border-transparent bg-[#0b0b0b] p-5 outline-none transition duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] active:border-red-500/80 active:shadow-[0_0_35px_rgba(239,68,68,0.16)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.16)] sm:p-6"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div
@@ -387,10 +404,23 @@ function Home() {
         </div>
       </section>
 
-      {/* FEATURED TOOLS */}
-      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
+      {/* FEATURED AI TOOLS */}
+      <section
+        id="ai-tools"
+        className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12"
+      >
         <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+              <span className="text-red-500">Featured</span> AI Tools
+            </h2>
+            <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
+              AI-powered tools for generating titles, descriptions, tags, scripts,
+              hooks, keywords, hashtags, outlines and thumbnail ideas.
+            </p>
+          </div>
+
+          <div className="mx-auto mt-12 max-w-6xl">
             <FeaturedTools />
           </div>
         </div>
@@ -571,7 +601,7 @@ function Home() {
         </div>
       </section>
 
-      {/* BEST PRACTICES */}
+{/* BEST PRACTICES */}
       <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-28 lg:px-12">
         <div className="mx-auto max-w-4xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
