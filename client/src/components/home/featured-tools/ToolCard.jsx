@@ -30,7 +30,6 @@ const iconMap = {
   hook: Target,
   outline: List,
   shorts: Film,
-
   money: CircleDollarSign,
   monetization: ChartNoAxesCombined,
   cpm: Calculator,
@@ -48,37 +47,36 @@ function ToolCard({ tool }) {
     <Link
       to={tool.path}
       className="
-        group block
-        min-h-[240px]
+        group
+        flex
+        min-h-[230px]
         w-full
+        flex-col
         rounded-2xl
-        border border-slate-800
+        border
+        border-slate-800
         bg-[#0b0b0b]
-        p-7
+        p-6
         outline-none
-        transition-all duration-300
-
+        transition-all
+        duration-300
         hover:-translate-y-1
         hover:border-red-500/70
         hover:bg-[#0e0e0e]
         hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)]
-
         focus:border-red-500
         focus:shadow-[0_0_35px_rgba(239,68,68,0.18)]
-
         active:border-red-500
-        active:shadow-[0_0_35px_rgba(239,68,68,0.22)]
-
-        sm:min-h-[255px]
-        sm:p-8
+        sm:min-h-[245px]
+        sm:p-7
       "
     >
       {/* Icon */}
       <div
         className="
           flex
-          h-14
-          w-14
+          h-12
+          w-12
           shrink-0
           items-center
           justify-center
@@ -89,42 +87,34 @@ function ToolCard({ tool }) {
           text-red-500
           transition-all
           duration-300
-
           group-hover:border-red-500/40
           group-hover:bg-red-500/15
           group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]
-
-          sm:h-16
-          sm:w-16
+          sm:h-14
+          sm:w-14
         "
       >
         <Icon
-          size={29}
+          size={26}
           strokeWidth={1.8}
-          className="
-            transition-transform
-            duration-300
-            group-hover:scale-110
-          "
+          className="transition-transform duration-300 group-hover:scale-110"
         />
       </div>
 
       {/* Title */}
       <h3
         className="
-          mt-7
-          text-xl
+          mt-5
+          text-lg
           font-extrabold
           leading-tight
           tracking-tight
           text-white
           transition-colors
           duration-300
-
           group-hover:text-red-500
-          group-focus:text-red-500
-
-          sm:text-2xl
+          sm:mt-6
+          sm:text-xl
         "
       >
         {tool.title}
@@ -133,46 +123,39 @@ function ToolCard({ tool }) {
       {/* Description */}
       <p
         className="
-          mt-4
-          max-w-xl
+          mt-3
+          min-h-[48px]
           text-sm
           leading-6
           text-slate-400
-
-          sm:text-base
-          sm:leading-7
+          sm:text-[15px]
+          sm:leading-6
         "
       >
         {tool.description}
       </p>
 
-      {/* Learn More */}
+      {/* Bottom Action */}
       <div
         className="
-          mt-6
-          inline-flex
+          mt-auto
+          flex
           items-center
           gap-2
-          text-base
+          pt-5
+          text-sm
           font-semibold
           text-red-500
           transition-all
           duration-300
-
           group-hover:gap-3
-
-          sm:text-lg
+          sm:text-base
         "
       >
         Learn more
-
         <ArrowRight
-          size={20}
-          className="
-            transition-transform
-            duration-300
-            group-hover:translate-x-1
-          "
+          size={18}
+          className="transition-transform duration-300 group-hover:translate-x-1"
         />
       </div>
     </Link>
