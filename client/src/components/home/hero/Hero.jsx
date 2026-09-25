@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Search, ChevronDown, Sparkles, Wand2, Check, X } from "lucide-react";
 import BackgroundEffects from "./BackgroundEffects";
 
@@ -253,104 +254,108 @@ function Hero({ onToolSelect }) {
       </div>
 
       {/* TOOL SELECTOR POPUP */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 z-[200] flex items-center justify-center bg-black/65 px-4 py-6 backdrop-blur-sm sm:px-6"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Select a YouTube creator tool"
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) {
-              setIsOpen(false);
-            }
-          }}
-        >
+      {isOpen &&
+        createPortal(
           <div
-            ref={selectorRef}
-            className="relative flex w-full max-w-2xl flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-[#17191b] shadow-[0_30px_100px_rgba(0,0,0,0.65)] sm:max-h-[78vh] sm:rounded-[1.75rem]"
-            onMouseDown={(event) => event.stopPropagation()}
+            className="fixed inset-0 z-[9999] flex h-[100dvh] w-screen items-center justify-center overflow-hidden bg-black/70 px-4 py-5 backdrop-blur-sm sm:px-6 sm:py-8"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Select a YouTube creator tool"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) {
+                setIsOpen(false);
+              }
+            }}
           >
-            {/* Popup header */}
-            <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4 sm:px-7 sm:py-5">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-400">
-                  YouTube Creator Tools
-                </p>
-                <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">
-                  Select a Tool
-                </h2>
-                <p className="mt-1 text-xs text-slate-500 sm:text-sm">
-                  Choose a tool to switch your creator workflow.
-                </p>
+            <div
+              ref={selectorRef}
+              className="relative flex max-h-[calc(100dvh-40px)] w-full max-w-2xl flex-col overflow-hidden rounded-[1.5rem] border border-white/15 bg-[#17191b] shadow-[0_30px_100px_rgba(0,0,0,0.75)] sm:max-h-[calc(100dvh-64px)] sm:rounded-[1.75rem]"
+              onMouseDown={(event) => event.stopPropagation()}
+            >
+              {/* Popup header */}
+              <div className="flex shrink-0 items-center justify-between border-b border-white/10 px-5 py-4 sm:px-7 sm:py-5">
+                <div className="min-w-0 pr-4">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-400">
+                    YouTube Creator Tools
+                  </p>
+
+                  <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">
+                    Select a Tool
+                  </h2>
+
+                  <p className="mt-1 text-xs text-slate-500 sm:text-sm">
+                    Choose a tool to switch your creator workflow.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  aria-label="Close tool selector"
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-400 transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setIsOpen(false)}
-                aria-label="Close tool selector"
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] text-slate-400 transition hover:border-red-500/40 hover:bg-red-500/10 hover:text-red-400"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
+              {/* Tool list */}
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-2.5 sm:p-3">
+                {essentialTools.map((tool) => {
+                  const active = selectedTool.path === tool.path;
 
-            {/* Tool list */}
-            <div className="min-h-0 overflow-y-auto overscroll-contain p-2.5 sm:p-3">
-              {essentialTools.map((tool) => {
-                const active = selectedTool.path === tool.path;
-
-                return (
-                  <button
-                    key={tool.path}
-                    type="button"
-                    role="option"
-                    aria-selected={active}
-                    onClick={() => handleToolSelect(tool)}
-                    className={`group flex min-h-[68px] w-full items-center justify-between border-b border-white/[0.08] px-3.5 py-3.5 text-left transition-all duration-200 last:border-b-0 sm:min-h-[76px] sm:px-5 sm:py-4 ${
-                      active
-                        ? "bg-white/[0.045] text-white"
-                        : "text-slate-200 hover:bg-white/[0.035]"
-                    }`}
-                  >
-                    <span className="flex min-w-0 items-center gap-3.5 sm:gap-4">
-                      <span
-                        className={`h-2.5 w-2.5 shrink-0 rounded-full transition-all ${
-                          active
-                            ? "bg-fuchsia-400 shadow-[0_0_14px_rgba(232,121,249,0.8)]"
-                            : "border-2 border-slate-400 bg-transparent"
-                        }`}
-                      />
-
-                      <span className="min-w-0 text-base font-bold sm:text-lg">
-                        {tool.name}
-                      </span>
-                    </span>
-
-                    <span
-                      className={`ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 transition-all ${
+                  return (
+                    <button
+                      key={tool.path}
+                      type="button"
+                      role="option"
+                      aria-selected={active}
+                      onClick={() => handleToolSelect(tool)}
+                      className={`group flex min-h-[68px] w-full items-center justify-between border-b border-white/[0.08] px-3.5 py-3.5 text-left transition-all duration-200 last:border-b-0 sm:min-h-[76px] sm:px-5 sm:py-4 ${
                         active
-                          ? "border-fuchsia-400 bg-fuchsia-400/10 shadow-[0_0_18px_rgba(232,121,249,0.18)]"
-                          : "border-slate-400 group-hover:border-white"
+                          ? "bg-white/[0.045] text-white"
+                          : "text-slate-200 hover:bg-white/[0.035]"
                       }`}
                     >
-                      {active && (
-                        <Check className="h-4 w-4 text-fuchsia-300" />
-                      )}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                      <span className="flex min-w-0 items-center gap-3.5 sm:gap-4">
+                        <span
+                          className={`h-2.5 w-2.5 shrink-0 rounded-full transition-all ${
+                            active
+                              ? "bg-fuchsia-400 shadow-[0_0_14px_rgba(232,121,249,0.8)]"
+                              : "border-2 border-slate-400 bg-transparent"
+                          }`}
+                        />
 
-            {/* Popup footer */}
-            <div className="shrink-0 border-t border-white/10 px-5 py-3.5 sm:px-7">
-              <p className="text-center text-[10px] font-medium text-slate-500 sm:text-xs">
-                {essentialTools.length} essential creator tools available
-              </p>
+                        <span className="min-w-0 truncate text-base font-bold sm:text-lg">
+                          {tool.name}
+                        </span>
+                      </span>
+
+                      <span
+                        className={`ml-4 flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 transition-all ${
+                          active
+                            ? "border-fuchsia-400 bg-fuchsia-400/10 shadow-[0_0_18px_rgba(232,121,249,0.18)]"
+                            : "border-slate-400 group-hover:border-white"
+                        }`}
+                      >
+                        {active && (
+                          <Check className="h-4 w-4 text-fuchsia-300" />
+                        )}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Popup footer */}
+              <div className="shrink-0 border-t border-white/10 px-5 py-3.5 sm:px-7">
+                <p className="text-center text-[10px] font-medium text-slate-500 sm:text-xs">
+                  {essentialTools.length} essential creator tools available
+                </p>
+              </div>
             </div>
-          </div>
-        </div>
-      )}
+          </div>,
+          document.body
+        )}
 
       <style>{`
         @keyframes heroWord {
