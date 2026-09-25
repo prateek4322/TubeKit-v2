@@ -16,7 +16,6 @@ import {
   Video,
   Wallet,
   XCircle,
-
 } from "lucide-react";
 
 import api from "@/services/api";
@@ -28,6 +27,7 @@ function MonetizationChecker() {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [inputError, setInputError] = useState("");
 
   const faqs = [
     {
@@ -71,14 +71,17 @@ function MonetizationChecker() {
     const value = channel.trim();
 
     if (!value) {
-      alert("Please enter a YouTube channel URL or supported channel identifier.");
+      setInputError("Please enter a YouTube channel URL or supported channel identifier.");
       return;
     }
+
+    setInputError("");
 
     try {
       setLoading(true);
       setResult(null);
       setCopied(false);
+      setInputError("");
 
       const response = await api.post("/youtube/monetization-analyzer", {
         channel: value,
@@ -105,6 +108,7 @@ function MonetizationChecker() {
     setChannel("");
     setResult(null);
     setCopied(false);
+    setInputError("");
   };
 
   const handleKeyDown = (e) => {
@@ -205,7 +209,7 @@ function MonetizationChecker() {
 
   return (
     <>
-<SEO
+      <SEO
         title="YouTube Monetization Checker | Check YPP Eligibility Free"
         description="Check a YouTube channel's estimated monetization readiness using available public channel data. Review YPP thresholds, progress, channel statistics, readiness checks and monetization signals with TubeKit."
         keywords="YouTube monetization checker, YouTube YPP checker, YouTube monetization eligibility checker, YouTube Partner Program checker, YPP eligibility, YouTube monetization requirements, YouTube channel monetization checker, YouTube monetization calculator"
@@ -217,7 +221,7 @@ function MonetizationChecker() {
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
             <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm font-bold text-red-400">
-              <Youtube size={17} />
+              <CircleDollarSign size={17} />
               YouTube Creator Tool
             </div>
 
@@ -264,11 +268,20 @@ function MonetizationChecker() {
                   id="channel-url"
                   type="text"
                   value={channel}
-                  onChange={(e) => setChannel(e.target.value)}
+                  onChange={(e) => {
+                    setChannel(e.target.value);
+                    if (inputError) setInputError("");
+                  }}
                   onKeyDown={handleKeyDown}
                   placeholder="https://youtube.com/@channel"
                   disabled={loading}
-                  className="w-full rounded-2xl border border-slate-700 bg-black/50 py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+                  aria-invalid={Boolean(inputError)}
+                  aria-describedby={inputError ? "channel-input-error" : undefined}
+                  className={`w-full rounded-2xl border bg-black/50 py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base ${
+                    inputError
+                      ? "border-red-500/70 focus:border-red-500 focus:ring-red-500/10"
+                      : "border-slate-700 focus:border-blue-500 focus:ring-blue-500/10"
+                  }`}
                 />
               </div>
 
@@ -276,6 +289,36 @@ function MonetizationChecker() {
                 Supports public channel URLs, handles and supported channel identifiers.
                 Press Enter to analyze.
               </p>
+
+              {inputError && (
+                <p
+                  id="channel-input-error"
+                  role="alert"
+                  className="mt-3 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm font-semibold text-red-400"
+                >
+                  {inputError}
+                </p>
+              )}
+
+              <div className="mt-5 grid gap-3 sm:grid-cols-3">
+                {[
+                  ["Public Data", "No private Studio access"],
+                  ["YPP Signals", "Threshold progress"],
+                  ["Action Plan", "Clear next steps"],
+                ].map(([title, text]) => (
+                  <div
+                    key={title}
+                    className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3"
+                  >
+                    <p className="text-xs font-black uppercase tracking-wider text-slate-500">
+                      {title}
+                    </p>
+                    <p className="mt-1 text-sm font-bold text-slate-200">
+                      {text}
+                    </p>
+                  </div>
+                ))}
+              </div>
 
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <button
@@ -391,7 +434,8 @@ function MonetizationChecker() {
                   </div>
                 </div>
               </section>
-<section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+              <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 <StatCard
                   title="Subscribers"
                   value={formatNumber(subscribers)}
@@ -552,7 +596,6 @@ function MonetizationChecker() {
                 </section>
               )}
 
-
               {(content || branding) && (
                 <section className="grid gap-5 lg:grid-cols-2">
                   <AnalysisPanel
@@ -563,14 +606,13 @@ function MonetizationChecker() {
                   />
                   <AnalysisPanel
                     title="Channel & Branding Signals"
-                    icon={Youtube}
+                    icon={ShieldCheck}
                     color="blue"
                     data={branding}
                   />
                 </section>
               )}
-
-              {Object.keys(revenue).length > 0 && (
+{Object.keys(revenue).length > 0 && (
                 <section className="rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-6 sm:p-8">
                   <div className="flex items-center gap-3">
                     <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-yellow-400/10 text-yellow-400">
@@ -675,7 +717,7 @@ function MonetizationChecker() {
               </p>
             </div>
 
-            <div>
+<div>
               <SectionHeading first="What This" second="Tool Analyzes" secondColor="blue" />
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[
@@ -702,7 +744,7 @@ function MonetizationChecker() {
               </div>
             </div>
 
-<div>
+            <div>
               <SectionHeading first="Common YouTube" second="YPP Thresholds" secondColor="green" />
               <div className="grid gap-5 md:grid-cols-2">
                 <InfoBox
@@ -880,7 +922,8 @@ function ThresholdCard({
   };
 
   const style = styles[color] || styles.blue;
-return (
+
+  return (
     <div className={`rounded-2xl border p-5 ${style.box}`}>
       <p className={`text-sm font-black ${style.text}`}>{title}</p>
 
