@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   ArrowRight,
   BarChart3,
+  BookOpen,
   Check,
   ChevronDown,
   FileText,
@@ -12,16 +13,6 @@ import {
   Sparkles,
   Target,
   Wand2,
-  Tags,
-  Image,
-  Calculator,
-  CircleDollarSign,
-  KeyRound,
-  Video,
-  MessageCircle,
-  ShieldCheck,
-  ScanSearch,
-  FileSearch,
 } from "lucide-react";
 
 import SEO from "@/components/common/SEO";
@@ -32,7 +23,6 @@ import blogPosts from "@/data/blogPosts";
 // Tools
 
 const toolComponents = {};
-
 
 const rgby = {
   red: {
@@ -62,33 +52,177 @@ const rgby = {
 };
 
 const essentialTools = [
-  { name: "YouTube Tag Extractor", path: "/tools/tag-extractor", color: "red", icon: Tags, description: "Extract available tags from a YouTube video and copy individual or all returned tags." },
-  { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor", color: "green", icon: Hash, description: "Extract useful hashtags from a video's available title and description content." },
-  { name: "YouTube Description Extractor", path: "/tools/description-extractor", color: "blue", icon: FileSearch, description: "Extract and copy the public description of a YouTube video for quick reference." },
-  { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector", color: "yellow", icon: ShieldCheck, description: "Review public channel signals and checks related to visibility and reach concerns." },
-  { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer", color: "red", icon: BarChart3, description: "Analyze public channel information, statistics, SEO signals, branding and optimization areas." },
-  { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer", color: "blue", icon: ScanSearch, description: "Review available video SEO signals including title, description, tags, keywords and metadata." },
-  { name: "YouTube Comment Reader", path: "/tools/comment-reader", color: "green", icon: MessageCircle, description: "Read available video comments and review comment-level engagement signals." },
-  { name: "Video ID Extractor", path: "/tools/video-id-extractor", color: "yellow", icon: Video, description: "Extract YouTube video IDs from standard, Shorts, embed, live and shortened URLs." },
-  { name: "Thumbnail Downloader", path: "/tools/thumbnail-downloader", color: "blue", icon: Image, description: "Get available YouTube thumbnail image URLs from a video URL for quick access." },
-  { name: "Channel ID Finder", path: "/tools/channel-id-finder", color: "red", icon: KeyRound, description: "Find a YouTube channel ID from a supported channel URL, handle or channel input." },
-  { name: "Monetization Checker", path: "/tools/monetization-checker", color: "green", icon: CircleDollarSign, description: "Review public channel signals, YPP threshold progress and monetization readiness indicators." },
-  { name: "CPM Calculator", path: "/tools/cpm-calculator", color: "yellow", icon: Calculator, description: "Calculate estimated CPM from views and advertising revenue inputs." },
-  { name: "RPM Calculator", path: "/tools/rpm-calculator", color: "blue", icon: Calculator, description: "Calculate estimated YouTube RPM and revenue per thousand views." },
-  { name: "Money Calculator", path: "/tools/money-calculator", color: "red", icon: CircleDollarSign, description: "Estimate potential YouTube earnings using views, CPM, RPM and creator revenue inputs." },
+  {
+    name: "YouTube Tag Extractor",
+    path: "/tools/tag-extractor",
+    color: "red",
+    icon: Hash,
+    description: "Extract available tags from a YouTube video and copy individual or all returned tags.",
+  },
+  {
+    name: "YouTube Hashtag Extractor",
+    path: "/tools/hashtag-extractor",
+    color: "green",
+    icon: Hash,
+    description: "Extract useful hashtags from a video's available title and description content.",
+  },
+  {
+    name: "YouTube Description Extractor",
+    path: "/tools/description-extractor",
+    color: "blue",
+    icon: FileText,
+    description: "Extract and copy the public description of a YouTube video for quick reference.",
+  },
+  {
+    name: "YouTube Shadowban Detector",
+    path: "/tools/shadowban-detector",
+    color: "yellow",
+    icon: Check,
+    description: "Review public channel signals and checks related to visibility and reach concerns.",
+  },
+  {
+    name: "YouTube Channel Analyzer",
+    path: "/tools/channel-analyzer",
+    color: "red",
+    icon: BarChart3,
+    description: "Analyze public channel information, statistics, SEO signals, branding and optimization areas.",
+  },
+  {
+    name: "YouTube SEO Analyzer",
+    path: "/tools/seo-analyzer",
+    color: "blue",
+    icon: Search,
+    description: "Review available video SEO signals including title, description, tags, keywords and metadata.",
+  },
+  {
+    name: "YouTube Comment Reader",
+    path: "/tools/comment-reader",
+    color: "green",
+    icon: BookOpen,
+    description: "Read available video comments and review comment-level engagement signals.",
+  },
+  {
+    name: "Video ID Extractor",
+    path: "/tools/video-id-extractor",
+    color: "yellow",
+    icon: Play,
+    description: "Extract YouTube video IDs from standard, Shorts, embed, live and shortened URLs.",
+  },
+  {
+    name: "Thumbnail Downloader",
+    path: "/tools/thumbnail-downloader",
+    color: "blue",
+    icon: Lightbulb,
+    description: "Get available YouTube thumbnail image URLs from a video URL for quick access.",
+  },
+  {
+    name: "Channel ID Finder",
+    path: "/tools/channel-id-finder",
+    color: "red",
+    icon: Target,
+    description: "Find a YouTube channel ID from a supported channel URL, handle or channel input.",
+  },
+  {
+    name: "Monetization Checker",
+    path: "/tools/monetization-checker",
+    color: "green",
+    icon: BarChart3,
+    description: "Review public channel signals, YPP threshold progress and monetization readiness indicators.",
+  },
+  {
+    name: "CPM Calculator",
+    path: "/tools/cpm-calculator",
+    color: "yellow",
+    icon: BarChart3,
+    description: "Calculate estimated CPM from views and advertising revenue inputs.",
+  },
+  {
+    name: "RPM Calculator",
+    path: "/tools/rpm-calculator",
+    color: "blue",
+    icon: BarChart3,
+    description: "Calculate estimated YouTube RPM and revenue per thousand views.",
+  },
+  {
+    name: "Money Calculator",
+    path: "/tools/money-calculator",
+    color: "red",
+    icon: BarChart3,
+    description: "Estimate potential YouTube earnings using views, CPM, RPM and creator revenue inputs.",
+  },
 ];
 
-const featuredTools = [
-  { id: 1, icon: Sparkles, title: "AI Title Generator", description: "Create engaging YouTube title ideas around your topic, keywords, and audience.", path: "/tools/title-generator", color: "red" },
-  { id: 2, icon: FileText, title: "AI Description Generator", description: "Generate structured YouTube descriptions with context, keywords, and clear calls to action.", path: "/tools/description-generator", color: "blue" },
-  { id: 3, icon: Tags, title: "AI Tags Generator", description: "Generate relevant YouTube tag ideas based on your video topic and search context.", path: "/tools/tags-generator", color: "green" },
-  { id: 4, icon: Hash, title: "AI Hashtag Generator", description: "Create relevant hashtag ideas for YouTube videos, Shorts, and creator campaigns.", path: "/tools/hashtag-generator", color: "red" },
-  { id: 5, icon: Search, title: "AI Keyword Generator", description: "Explore keyword ideas around your topic and the search intent of your target viewers.", path: "/tools/keyword-generator", color: "blue" },
-  { id: 6, icon: Image, title: "AI Thumbnail Generator", description: "Explore creative thumbnail concepts and visual directions before designing your final thumbnail.", path: "/tools/thumbnail-generator", color: "yellow" },
-  { id: 7, icon: Wand2, title: "AI Script Writer", description: "Turn a simple video idea into a structured script with hooks, sections, and a clear flow.", path: "/tools/script-generator", color: "green" },
-  { id: 8, icon: Target, title: "AI Hook Generator", description: "Create focused opening hooks that capture attention and give viewers a reason to continue.", path: "/tools/hook-generator", color: "red" },
-  { id: 9, icon: FileText, title: "AI Outline Generator", description: "Build organized video outlines with sections and talking points for faster content planning.", path: "/tools/outline-generator", color: "yellow" },
-  { id: 10, icon: Play, title: "AI Shorts Generator", description: "Generate short-form video ideas, structures, and content concepts for YouTube Shorts.", path: "/tools/shorts-generator", color: "blue" },
+const featuredAITools = [
+  {
+    name: "AI Title Generator",
+    path: "/tools/title-generator",
+    color: "red",
+    icon: Wand2,
+    description: "Create engaging YouTube title ideas around your topic, keywords and audience.",
+  },
+  {
+    name: "AI Description Generator",
+    path: "/tools/description-generator",
+    color: "green",
+    icon: FileText,
+    description: "Generate structured YouTube descriptions with context, keywords and clear calls to action.",
+  },
+  {
+    name: "AI Tags Generator",
+    path: "/tools/tags-generator",
+    color: "yellow",
+    icon: Hash,
+    description: "Generate relevant YouTube tag ideas based on your video topic and search context.",
+  },
+  {
+    name: "AI Hashtag Generator",
+    path: "/tools/hashtag-generator",
+    color: "blue",
+    icon: Hash,
+    description: "Create relevant hashtag ideas for YouTube videos, Shorts and creator campaigns.",
+  },
+  {
+    name: "AI Keyword Generator",
+    path: "/tools/keyword-generator",
+    color: "red",
+    icon: Search,
+    description: "Explore keyword ideas around your topic and the search intent of your target viewers.",
+  },
+  {
+    name: "AI Thumbnail Generator",
+    path: "/tools/thumbnail-generator",
+    color: "green",
+    icon: Lightbulb,
+    description: "Explore creative thumbnail concepts and visual directions before designing your final thumbnail.",
+  },
+  {
+    name: "AI Script Writer",
+    path: "/tools/script-generator",
+    color: "yellow",
+    icon: FileText,
+    description: "Turn a simple video idea into a structured script with hooks, sections and a clear flow.",
+  },
+  {
+    name: "AI Hook Generator",
+    path: "/tools/hook-generator",
+    color: "blue",
+    icon: Target,
+    description: "Create focused opening hooks that capture attention and give viewers a reason to continue.",
+  },
+  {
+    name: "AI Outline Generator",
+    path: "/tools/outline-generator",
+    color: "red",
+    icon: BookOpen,
+    description: "Build organized video outlines with sections and talking points for faster content planning.",
+  },
+  {
+    name: "AI Shorts Generator",
+    path: "/tools/shorts-generator",
+    color: "green",
+    icon: Play,
+    description: "Generate short-form video ideas, structures and content concepts for YouTube Shorts.",
+  },
 ];
 
 const keyFeatures = [
@@ -201,17 +335,30 @@ const faqs = [
 ];
 
 function Home() {
+  const [activeTool, setActiveTool] = useState(null);
+  const [toolQuery, setToolQuery] = useState("");
   const [openFaq, setOpenFaq] = useState(0);
+
+  const toolSectionRef = useRef(null);
 
   const latestBlogPosts = [...blogPosts]
     .filter((post) => post.category !== "Mobile Reviews")
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 3);
 
-  const handleToolSelect = (tool) => {
-    if (!tool?.path) return;
-    window.location.href = tool.path;
+  const handleToolSelect = (tool, query) => {
+    setActiveTool(tool);
+    setToolQuery(query?.trim() || "");
+
+    setTimeout(() => {
+      toolSectionRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 100);
   };
+
+  const ActiveTool = activeTool ? toolComponents[activeTool.path] : null;
 
   return (
     <>
@@ -226,10 +373,42 @@ function Home() {
       {/* HERO */}
       <Hero onToolSelect={handleToolSelect} />
 
+      {/* ACTIVE TOOL */}
+      {ActiveTool && (
+        <section
+          ref={toolSectionRef}
+          aria-label={`${activeTool.name} tool`}
+          className="relative overflow-hidden bg-[#030712] px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
+        >
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto mb-8 max-w-3xl text-center">
+              <span className="text-xs font-bold uppercase tracking-[0.22em] text-red-400">
+                TubeKit AI Tool
+              </span>
+
+              <h2 className="mt-3 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
+                {activeTool.name}
+              </h2>
+
+              {toolQuery && (
+                <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-400 sm:text-base">
+                  Topic:{" "}
+                  <span className="font-semibold text-white">{toolQuery}</span>
+                </p>
+              )}
+            </div>
+
+            <div className="bg-[#070b18] p-2 sm:p-4">
+              <ActiveTool query={toolQuery} />
+            </div>
+          </div>
+        </section>
+      )}
+
 {/* ESSENTIAL TOOLS */}
       <section
         id="tools"
-        className="bg-[#030712] px-5 py-28 sm:px-8 sm:py-32 lg:px-12"
+        className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
@@ -238,12 +417,12 @@ function Home() {
             </h2>
 
             <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
-              Extract, analyze, check, download and calculate with practical YouTube
-              utilities built for everyday creator workflows.
+              Practical YouTube utilities, extractors, analyzers and calculators
+              organized in one creator-focused workspace.
             </p>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mx-auto mt-12 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {essentialTools.map((tool) => {
               const s = rgby[tool.color];
               const Icon = tool.icon;
@@ -252,7 +431,7 @@ function Home() {
                 <a
                   key={tool.path}
                   href={tool.path}
-                  className="group block min-h-[240px] rounded-2xl border border-slate-800 bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus:border-red-500 focus:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
+                  className="group block min-h-[240px] w-full rounded-2xl border border-transparent bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div
@@ -287,39 +466,48 @@ function Home() {
       </section>
 
       {/* FEATURED AI TOOLS */}
-      <section id="ai-tools" className="bg-[#050816] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section
+        id="ai-tools"
+        className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
+      >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
-              AI Creator Studio
-            </span>
-            <h2 className="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="text-3xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
               <span className="text-red-500">Featured</span> AI Tools
             </h2>
-            <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
-              Create titles, descriptions, tags, hashtags, keywords, thumbnails,
-              scripts, hooks, outlines and Shorts ideas with TubeKit's AI tools.
+            <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
+              AI-powered tools for generating titles, descriptions, tags, scripts,
+              hooks, keywords, hashtags, outlines and thumbnail ideas.
             </p>
           </div>
 
-          <div className="mx-auto mt-14 grid max-w-6xl gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {featuredTools.map((tool) => {
+          <div className="mx-auto mt-12 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {featuredAITools.map((tool) => {
+              const s = rgby[tool.color];
               const Icon = tool.icon;
+
               return (
-                <a key={tool.path} href={tool.path} className={card}>
-                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 text-red-500 transition-all duration-300 group-hover:border-red-500/40 group-hover:bg-red-500/15 group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)] sm:h-16 sm:w-16">
-                    <Icon size={29} strokeWidth={1.8} className="transition-transform duration-300 group-hover:scale-110" />
+                <a
+                  key={tool.path}
+                  href={tool.path}
+                  className="group block min-h-[240px] w-full rounded-2xl border border-transparent bg-[#0b0b0b] p-7 outline-none transition-all duration-300 hover:-translate-y-1 hover:border-red-500/70 hover:bg-[#0e0e0e] hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)] focus-visible:border-red-500 focus-visible:shadow-[0_0_35px_rgba(239,68,68,0.18)] active:border-red-500 active:shadow-[0_0_35px_rgba(239,68,68,0.22)] sm:min-h-[255px] sm:p-8"
+                >
+                  <div className={`flex h-14 w-14 shrink-0 items-center justify-center rounded-xl ${s.icon} transition-all duration-300 group-hover:scale-105 sm:h-16 sm:w-16`}>
+                    <Icon className="h-7 w-7" />
                   </div>
+
                   <h3 className="mt-7 text-xl font-extrabold leading-tight tracking-tight text-white transition-colors duration-300 group-hover:text-red-500 sm:text-2xl">
-                    {tool.title}
+                    {tool.name}
                   </h3>
-                  <p className="mt-4 text-sm leading-6 text-slate-400 sm:text-base sm:leading-7">
+
+                  <p className="mt-4 max-w-xl text-sm leading-6 text-slate-400 sm:text-base sm:leading-7">
                     {tool.description}
                   </p>
-                  <div className="mt-6 inline-flex items-center gap-2 text-base font-semibold text-red-500 transition-all duration-300 group-hover:gap-3 sm:text-lg">
+
+                  <span className="mt-6 inline-flex items-center gap-2 text-base font-semibold text-red-500 transition-all duration-300 group-hover:gap-3 sm:text-lg">
                     Learn more
-                    <ArrowRight size={20} className="transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
+                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </span>
                 </a>
               );
             })}
@@ -327,8 +515,10 @@ function Home() {
         </div>
       </section>
 
+      
+
       {/* ABOUT */}
-      <section className="bg-[#050816] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-6xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
             About TubeKit
@@ -338,7 +528,7 @@ function Home() {
             Understanding <span className="text-red-500">TubeKit</span>
           </h2>
 
-          <p className="mx-auto mt-6 max-w-4xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
+          <p className="mx-auto mt-6 max-w-4xl text-sm leading-7 text-slate-500 sm:text-base sm:leading-8 lg:text-lg">
             TubeKit is a creator-focused toolkit for planning, creating and
             optimizing YouTube content. It brings common creator tasks into one
             simple workspace so you can spend less time switching between tools
@@ -348,7 +538,7 @@ function Home() {
       </section>
 
       {/* KEY FEATURES */}
-      <section className="bg-[#050816] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section className="bg-[#050816] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 text-[clamp(1.45rem,5vw,3rem)] font-black leading-tight text-white">
@@ -356,7 +546,7 @@ function Home() {
             </h2>
           </div>
 
-          <div className="mx-auto mt-12 grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-3">
             {[
               ["Instant Creation", "Generate useful starting points for titles, scripts, hooks and content ideas.", "red"],
               ["SEO Support", "Work with keywords, descriptions, tags and hashtags in a focused workflow.", "green"],
@@ -384,7 +574,7 @@ function Home() {
       </section>
 
 {/* BENEFITS */}
-      <section className="bg-[#030712] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
@@ -392,7 +582,7 @@ function Home() {
             </h2>
           </div>
 
-          <div className="mx-auto mt-12 grid max-w-5xl gap-6 sm:grid-cols-2">
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2">
             {[
               ["Improved Content Workflow", "Keep common planning and optimization tasks together in one focused workspace.", "red", BarChart3],
               ["Less Tool Switching", "Move between creator tasks without rebuilding your workflow from scratch.", "green", Sparkles],
@@ -425,7 +615,7 @@ function Home() {
       </section>
 
       {/* COMMON USE CASES */}
-      <section className="bg-[#050816] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-4xl text-center">
             <h2 className="mt-5 text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
@@ -438,7 +628,7 @@ function Home() {
             </p>
           </div>
 
-          <div className="mx-auto mt-12 grid max-w-5xl gap-6 md:grid-cols-2">
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
             {[
               ["Content Creators", "Plan videos, improve metadata and develop stronger content directions.", "red"],
               ["Digital Marketers", "Research topics, organize content ideas and support campaign planning.", "green"],
@@ -465,7 +655,7 @@ function Home() {
       {/* HOW IT WORKS */}
       <section
         id="how-it-works"
-        className="bg-[#030712] px-5 py-28 sm:px-8 sm:py-32 lg:px-12"
+        className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
       >
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-4xl text-center">
@@ -501,7 +691,7 @@ function Home() {
       </section>
 
 {/* BEST PRACTICES */}
-      <section className="bg-[#050816] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-4xl text-center">
           <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
             Best Practices
@@ -538,7 +728,7 @@ function Home() {
 
 
       {/* FAQ */}
-      <section className="bg-[#030712] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
             <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
@@ -550,7 +740,7 @@ function Home() {
             </h2>
           </div>
 
-          <div className="mt-12 space-y-4">
+          <div className="mt-10 space-y-3">
             {faqs.map((faq, index) => {
               const s = rgby[faq.color];
               const isOpen = openFaq === index;
@@ -601,7 +791,7 @@ function Home() {
       {/* LATEST BLOG - AFTER THE MAIN CONTENT */}
       <section
         id="latest-blog"
-        className="bg-[#050816] px-5 py-28 sm:px-8 sm:py-32 lg:px-12"
+        className="bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mx-auto max-w-4xl text-center">
@@ -619,7 +809,7 @@ function Home() {
             </p>
           </div>
 
-          <div className="mx-auto mt-14 max-w-6xl">
+          <div className="mx-auto mt-12 max-w-6xl">
             <BlogGrid posts={latestBlogPosts} />
           </div>
 
@@ -636,8 +826,8 @@ function Home() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="bg-[#030712] px-5 py-28 sm:px-8 sm:py-32 lg:px-12">
-        <div className="mx-auto max-w-5xl rounded-3xl border border-red-500/10 bg-red-500/10 px-6 py-16 text-center sm:px-10 sm:py-20">
+      <section className="bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+        <div className="mx-auto max-w-5xl rounded-3xl bg-red-500/10 px-6 py-12 text-center sm:px-10 sm:py-16">
           <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-red-500/10 text-red-400">
             <Play className="h-5 w-5" />
           </div>
