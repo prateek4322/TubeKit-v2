@@ -189,7 +189,7 @@ function Navbar() {
 
           {/* Blog */}
           <NavLink to="/blog" className={desktopLinkClass}>
-            Blog
+            Blog   
           </NavLink>
         </nav>
 
