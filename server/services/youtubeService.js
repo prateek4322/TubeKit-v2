@@ -44,7 +44,7 @@ async function fetchJson(url) {
   if (!response.ok) {
     throw new Error(
       data.error?.message ||
-      "YouTube API Error"
+        "YouTube API Error"
     );
   }
 
@@ -55,30 +55,188 @@ async function fetchJson(url) {
 |--------------------------------------------------------------------------
 | Extract Video ID
 |--------------------------------------------------------------------------
+| Supported:
+| - youtube.com/watch?v=VIDEO_ID
+| - www.youtube.com/watch?v=VIDEO_ID
+| - m.youtube.com/watch?v=VIDEO_ID
+| - youtu.be/VIDEO_ID
+| - youtube.com/shorts/VIDEO_ID
+| - youtube.com/embed/VIDEO_ID
+| - youtube.com/live/VIDEO_ID
+| - URLs with extra query parameters
+|--------------------------------------------------------------------------
 */
 
 export function extractVideoId(input) {
+  const value = String(input || "").trim();
 
-  const regex =
-    /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^?&/]+)/i;
+  if (!value) {
+    throw new Error("YouTube URL is required");
+  }
 
-  const match = input.match(regex);
+  let url;
 
-  if (!match) {
+  try {
+    /*
+    --------------------------------------------------------
+    Handle URLs without protocol
+    --------------------------------------------------------
+    */
+
+    const normalizedValue =
+      /^https?:\/\//i.test(value)
+        ? value
+        : `https://${value}`;
+
+    url = new URL(normalizedValue);
+
+  } catch {
     throw new Error("Invalid YouTube URL");
   }
 
-  return match[1];
+  /*
+  --------------------------------------------------------
+  Normalize hostname
+  --------------------------------------------------------
+  */
+
+  const hostname = url.hostname
+    .toLowerCase()
+    .replace(/^www\./, "")
+    .replace(/^m\./, "");
+
+  let videoId = null;
+
+  /*
+  --------------------------------------------------------
+  youtube.com
+  --------------------------------------------------------
+  */
+
+  if (
+    hostname === "youtube.com" ||
+    hostname === "youtube-nocookie.com"
+  ) {
+
+    /*
+    ------------------------------------------------------
+    Standard Watch URL
+    https://www.youtube.com/watch?v=VIDEO_ID
+    ------------------------------------------------------
+    */
+
+    if (url.pathname === "/watch") {
+      videoId = url.searchParams.get("v");
+    }
+
+    /*
+    ------------------------------------------------------
+    Shorts URL
+    https://www.youtube.com/shorts/VIDEO_ID
+    ------------------------------------------------------
+    */
+
+    if (
+      !videoId &&
+      url.pathname.startsWith("/shorts/")
+    ) {
+      videoId = url.pathname
+        .split("/")
+        .filter(Boolean)[1];
+    }
+
+    /*
+    ------------------------------------------------------
+    Embed URL
+    https://www.youtube.com/embed/VIDEO_ID
+    ------------------------------------------------------
+    */
+
+    if (
+      !videoId &&
+      url.pathname.startsWith("/embed/")
+    ) {
+      videoId = url.pathname
+        .split("/")
+        .filter(Boolean)[1];
+    }
+
+    /*
+    ------------------------------------------------------
+    Live URL
+    https://www.youtube.com/live/VIDEO_ID
+    ------------------------------------------------------
+    */
+
+    if (
+      !videoId &&
+      url.pathname.startsWith("/live/")
+    ) {
+      videoId = url.pathname
+        .split("/")
+        .filter(Boolean)[1];
+    }
+  }
+
+  /*
+  --------------------------------------------------------
+  youtu.be
+  --------------------------------------------------------
+  */
+
+  if (hostname === "youtu.be") {
+    videoId = url.pathname
+      .split("/")
+      .filter(Boolean)[0];
+  }
+
+  /*
+  --------------------------------------------------------
+  Validate Video ID
+  --------------------------------------------------------
+  */
+
+  if (!videoId) {
+    throw new Error("Invalid YouTube URL");
+  }
+
+  /*
+  YouTube video IDs normally contain exactly
+  11 URL-safe characters.
+  */
+
+  if (
+    !/^[A-Za-z0-9_-]{11}$/.test(
+      videoId
+    )
+  ) {
+    throw new Error(
+      "Invalid YouTube video ID"
+    );
+  }
+
+  return videoId;
 }
+
+/*
+|--------------------------------------------------------------------------
+| Resolve Channel ID
+|--------------------------------------------------------------------------
+*/
+
 export async function resolveChannelId(input) {
 
   const API_KEY = getApiKey();
 
-  let value = input.trim();
+  let value = String(input || "").trim();
 
   console.log("Input:", value);
 
-  value = value.split("?")[0];
+  /*
+  ---------------------------------------
+  Remove trailing slash
+  ---------------------------------------
+  */
 
   value = value.replace(/\/$/, "");
 
@@ -88,7 +246,9 @@ export async function resolveChannelId(input) {
   ---------------------------------------
   */
 
-  if (/^UC[\w-]{22}$/.test(value)) {
+  if (
+    /^UC[\w-]{22}$/.test(value)
+  ) {
     return value;
   }
 
@@ -98,7 +258,9 @@ export async function resolveChannelId(input) {
   ---------------------------------------
   */
 
-  if (value.includes("/channel/")) {
+  if (
+    value.includes("/channel/")
+  ) {
 
     return value
       .split("/channel/")[1]
@@ -115,10 +277,14 @@ export async function resolveChannelId(input) {
   if (value.includes("@")) {
 
     const handle =
-      value.match(/@([^/?]+)/)?.[1];
+      value.match(
+        /@([^/?]+)/
+      )?.[1];
 
     if (!handle) {
-      throw new Error("Invalid Handle");
+      throw new Error(
+        "Invalid Handle"
+      );
     }
 
     console.log(
@@ -126,34 +292,32 @@ export async function resolveChannelId(input) {
       handle
     );
 
-    const data = await fetchJson(
-
-      `${BASE_URL}/channels?part=id&forHandle=${encodeURIComponent(
-        handle
-      )}&key=${API_KEY}`
-
-    );
+    const data =
+      await fetchJson(
+        `${BASE_URL}/channels?part=id&forHandle=${encodeURIComponent(
+          handle
+        )}&key=${API_KEY}`
+      );
 
     if (data.items?.length) {
-
       return data.items[0].id;
-
     }
 
-    const search = await fetchJson(
-
-      `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
-        handle
-      )}&maxResults=1&key=${API_KEY}`
-
-    );
+    const search =
+      await fetchJson(
+        `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
+          handle
+        )}&maxResults=1&key=${API_KEY}`
+      );
 
     if (!search.items?.length) {
-      throw new Error("Channel not found");
+      throw new Error(
+        "Channel not found"
+      );
     }
 
-    return search.items[0].snippet.channelId;
-
+    return search.items[0]
+      .snippet.channelId;
   }
 
   /*
@@ -162,31 +326,40 @@ export async function resolveChannelId(input) {
   ---------------------------------------
   */
 
-  if (
-
-    value.includes("watch?v=") ||
-
-    value.includes("youtu.be/") ||
-
-    value.includes("/shorts/")
-
-  ) {
+  try {
 
     const videoId =
       extractVideoId(value);
 
-    const video = await fetchJson(
-
-      `${BASE_URL}/videos?part=snippet&id=${videoId}&key=${API_KEY}`
-
-    );
+    const video =
+      await fetchJson(
+        `${BASE_URL}/videos?part=snippet&id=${encodeURIComponent(
+          videoId
+        )}&key=${API_KEY}`
+      );
 
     if (!video.items?.length) {
-      throw new Error("Video not found");
+      throw new Error(
+        "Video not found"
+      );
     }
 
-    return video.items[0].snippet.channelId;
+    return video.items[0]
+      .snippet.channelId;
 
+  } catch (error) {
+
+    /*
+    If it isn't a video URL,
+    continue with channel-name search.
+    */
+
+    if (
+      error.message !==
+      "Invalid YouTube URL"
+    ) {
+      throw error;
+    }
   }
 
   /*
@@ -195,23 +368,23 @@ export async function resolveChannelId(input) {
   ---------------------------------------
   */
 
-  const search = await fetchJson(
-
-    `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
-      value
-    )}&maxResults=1&key=${API_KEY}`
-
-  );
+  const search =
+    await fetchJson(
+      `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
+        value
+      )}&maxResults=1&key=${API_KEY}`
+    );
 
   if (!search.items?.length) {
-
-    throw new Error("Channel not found");
-
+    throw new Error(
+      "Channel not found"
+    );
   }
 
-  return search.items[0].snippet.channelId;
-
+  return search.items[0]
+    .snippet.channelId;
 }
+
 /*
 |--------------------------------------------------------------------------
 | Get Channel Info
@@ -230,23 +403,117 @@ export async function getChannelInfo(input) {
     channelId
   );
 
-  const data = await fetchJson(
-
-    `${BASE_URL}/channels?part=snippet,statistics&id=${channelId}&key=${API_KEY}`
-
-  );
+  const data =
+    await fetchJson(
+      `${BASE_URL}/channels?part=snippet,statistics&id=${encodeURIComponent(
+        channelId
+      )}&key=${API_KEY}`
+    );
 
   if (!data.items?.length) {
-
     throw new Error(
       "Channel not found"
     );
-
   }
 
   return data.items[0];
-
 }
+
+/*
+|--------------------------------------------------------------------------
+| Get YouTube Video Tags
+|--------------------------------------------------------------------------
+*/
+
+export async function getYouTubeVideoTags(input) {
+
+  const API_KEY = getApiKey();
+
+  /*
+  Extract Video ID from any supported
+  YouTube URL format.
+  */
+
+  const videoId =
+    extractVideoId(input);
+
+  console.log(
+    "Tag Extractor Video ID:",
+    videoId
+  );
+
+  /*
+  Fetch video snippet.
+  The tags are returned inside:
+  snippet.tags
+  */
+
+  const data =
+    await fetchJson(
+      `${BASE_URL}/videos?part=snippet&id=${encodeURIComponent(
+        videoId
+      )}&key=${API_KEY}`
+    );
+
+  /*
+  ---------------------------------------
+  Video Not Found
+  ---------------------------------------
+  */
+
+  if (!data.items?.length) {
+    throw new Error(
+      "Video not found or unavailable"
+    );
+  }
+
+  const video =
+    data.items[0];
+
+  const snippet =
+    video.snippet || {};
+
+  /*
+  ---------------------------------------
+  Extract Tags
+  ---------------------------------------
+  */
+
+  const tags =
+    Array.isArray(snippet.tags)
+      ? snippet.tags
+      : [];
+
+  console.log(
+    "Extracted Tags:",
+    tags
+  );
+
+  /*
+  ---------------------------------------
+  Return Data
+  ---------------------------------------
+  */
+
+  return {
+    videoId,
+
+    videoUrl:
+      `https://www.youtube.com/watch?v=${videoId}`,
+
+    title:
+      snippet.title || "",
+
+    channelTitle:
+      snippet.channelTitle || "",
+
+    channelId:
+      snippet.channelId || "",
+
+    tags,
+  };
+}
+
 /*
 |--------------------------------------------------------------------------
 | Thumbnail URLs
@@ -256,11 +523,9 @@ export async function getChannelInfo(input) {
 export function getThumbnailUrls(videoId) {
 
   if (!videoId) {
-
     throw new Error(
       "Video ID is required"
     );
-
   }
 
   return {
@@ -278,8 +543,6 @@ export function getThumbnailUrls(videoId) {
       `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
 
     default:
-      `https://img.youtube.com/vi/${videoId}/default.jpg`
-
+      `https://img.youtube.com/vi/${videoId}/default.jpg`,
   };
-
 }
