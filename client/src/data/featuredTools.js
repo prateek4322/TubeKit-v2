@@ -1,7 +1,7 @@
 export const featuredTools = [
   {
     id: 1,
-    icon: "ðŸ¤–",
+    icon: "title",
     title: "AI Title Generator",
     description:
       "Create engaging YouTube title ideas around your topic, keywords, and audience.",
@@ -9,7 +9,7 @@ export const featuredTools = [
   },
   {
     id: 2,
-    icon: "ðŸ“",
+    icon: "description",
     title: "AI Description Generator",
     description:
       "Generate structured YouTube descriptions with context, keywords, and clear calls to action.",
@@ -17,7 +17,7 @@ export const featuredTools = [
   },
   {
     id: 3,
-    icon: "ðŸ·ï¸",
+    icon: "tags",
     title: "AI Tags Generator",
     description:
       "Generate relevant YouTube tag ideas based on your video topic and search context.",
@@ -25,7 +25,7 @@ export const featuredTools = [
   },
   {
     id: 4,
-    icon: "#ï¸âƒ£",
+    icon: "hashtag",
     title: "AI Hashtag Generator",
     description:
       "Create relevant hashtag ideas for YouTube videos, Shorts, and creator campaigns.",
@@ -33,7 +33,7 @@ export const featuredTools = [
   },
   {
     id: 5,
-    icon: "ðŸ”",
+    icon: "keyword",
     title: "AI Keyword Generator",
     description:
       "Explore keyword ideas around your topic and the search intent of your target viewers.",
@@ -41,7 +41,7 @@ export const featuredTools = [
   },
   {
     id: 6,
-    icon: "ðŸ–¼ï¸",
+    icon: "thumbnail",
     title: "AI Thumbnail Generator",
     description:
       "Explore creative thumbnail concepts and visual directions before designing your final thumbnail.",
@@ -49,7 +49,7 @@ export const featuredTools = [
   },
   {
     id: 7,
-    icon: "ðŸ“œ",
+    icon: "script",
     title: "AI Script Writer",
     description:
       "Turn a simple video idea into a structured script with hooks, sections, and a clear flow.",
@@ -57,7 +57,7 @@ export const featuredTools = [
   },
   {
     id: 8,
-    icon: "ðŸŽ¯",
+    icon: "hook",
     title: "AI Hook Generator",
     description:
       "Create focused opening hooks that capture attention and give viewers a reason to continue.",
@@ -65,7 +65,7 @@ export const featuredTools = [
   },
   {
     id: 9,
-    icon: "ðŸ“‘",
+    icon: "outline",
     title: "AI Outline Generator",
     description:
       "Build organized video outlines with sections and talking points for faster content planning.",
@@ -73,7 +73,7 @@ export const featuredTools = [
   },
   {
     id: 10,
-    icon: "ðŸŽ¬",
+    icon: "shorts",
     title: "AI Shorts Generator",
     description:
       "Generate short-form video ideas, structures, and content concepts for YouTube Shorts.",
