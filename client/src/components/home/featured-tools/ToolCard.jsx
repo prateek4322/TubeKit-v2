@@ -1,158 +1,116 @@
-import {
-  ArrowRight,
-  Bot,
-  Calculator,
-  ChartNoAxesCombined,
-  CircleDollarSign,
-  FileText,
-  Film,
-  Hash,
-  Image,
-  KeyRound,
-  List,
-  PenLine,
-  Search,
-  Tags,
-  Target,
-  Type,
-  Video,
-} from "lucide-react";
 import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
 
-const iconMap = {
-  title: Type,
-  description: FileText,
-  tags: Tags,
-  hashtag: Hash,
-  keyword: Search,
-  thumbnail: Image,
-  script: PenLine,
-  hook: Target,
-  outline: List,
-  shorts: Film,
-  money: CircleDollarSign,
-  monetization: ChartNoAxesCombined,
-  cpm: Calculator,
-  rpm: Calculator,
-  channel: KeyRound,
-  video: Video,
-  downloader: Image,
-  tagExtractor: Tags,
+const colorStyles = {
+  red: {
+    icon: "bg-red-500/10 text-red-400",
+    border: "hover:border-red-500/40",
+    glow: "group-hover:bg-red-500/5",
+  },
+  green: {
+    icon: "bg-green-500/10 text-green-400",
+    border: "hover:border-green-500/40",
+    glow: "group-hover:bg-green-500/5",
+  },
+  yellow: {
+    icon: "bg-yellow-500/10 text-yellow-400",
+    border: "hover:border-yellow-500/40",
+    glow: "group-hover:bg-yellow-500/5",
+  },
+  blue: {
+    icon: "bg-blue-500/10 text-blue-400",
+    border: "hover:border-blue-500/40",
+    glow: "group-hover:bg-blue-500/5",
+  },
 };
 
-function ToolCard({ tool }) {
-  const Icon = iconMap[tool.icon] || Bot;
+export default function ToolCard({
+  title,
+  description,
+  icon,
+  color = "blue",
+  path,
+}) {
+  const styles = colorStyles[color] || colorStyles.blue;
 
   return (
     <Link
-      to={tool.path}
-      className="
-        group
-        flex
-        min-h-[250px]
-        w-full
-        flex-col
+      to={path}
+      className={`
+        group relative block overflow-hidden
         rounded-2xl
-        border
-        border-slate-800
-        bg-[#0b0b0b]
+        border border-white/10
+        bg-white/[0.03]
         p-6
-        transition-all
-        duration-300
+        transition-all duration-300
         hover:-translate-y-1
-        hover:border-red-500/70
-        hover:bg-[#0e0e0e]
-        hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)]
-        focus:border-red-500
-        focus:outline-none
-        focus:shadow-[0_0_35px_rgba(239,68,68,0.18)]
-        active:border-red-500
-        sm:min-h-[265px]
-        sm:p-7
-      "
+        hover:bg-white/[0.05]
+        ${styles.border}
+      `}
     >
+      {/* Soft background glow */}
       <div
-        className="
-          flex
-          h-14
-          w-14
-          shrink-0
-          items-center
-          justify-center
-          rounded-xl
-          border
-          border-red-500/20
-          bg-red-500/10
-          text-red-500
-          transition-all
-          duration-300
-          group-hover:border-red-500/40
-          group-hover:bg-red-500/15
-          group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]
-        "
-      >
-        <Icon
-          size={27}
-          strokeWidth={1.8}
-          className="transition-transform duration-300 group-hover:scale-110"
-        />
-      </div>
+        className={`
+          pointer-events-none
+          absolute -right-16 -top-16
+          h-32 w-32
+          rounded-full
+          blur-3xl
+          opacity-0
+          transition-opacity duration-300
+          ${styles.glow}
+        `}
+      />
 
-      <h3
-        className="
-          mt-6
-          text-xl
-          font-extrabold
-          leading-7
-          tracking-tight
-          text-white
-          transition-colors
-          duration-300
-          group-hover:text-red-500
-          sm:text-2xl
-        "
-      >
-        {tool.title}
-      </h3>
+      <div className="relative">
+        {/* Icon */}
+        <div
+          className={`
+            flex h-12 w-12
+            items-center justify-center
+            rounded-xl
+            text-xl font-bold
+            ${styles.icon}
+          `}
+        >
+          {icon}
+        </div>
 
-      <p
-        className="
-          mt-3
-          min-h-[72px]
-          text-sm
-          leading-6
-          text-slate-400
-          sm:text-base
-          sm:leading-7
-        "
-      >
-        {tool.description}
-      </p>
+        {/* Content */}
+        <div className="mt-5">
+          <h3 className="text-lg font-bold text-white">
+            {title}
+          </h3>
 
-      <div
-        className="
-          mt-auto
-          flex
-          items-center
-          gap-2
-          pt-5
-          text-sm
-          font-semibold
-          text-red-500
-          transition-all
-          duration-300
-          group-hover:gap-3
-          sm:text-base
-        "
-      >
-        Learn more
-        <ArrowRight
-          size={19}
-          className="transition-transform duration-300 group-hover:translate-x-1"
-        />
+          <p className="mt-3 text-sm leading-6 text-slate-400">
+            {description}
+          </p>
+        </div>
+
+        {/* Bottom action */}
+        <div className="mt-6 flex items-center justify-between">
+          <span className="text-sm font-semibold text-slate-300 transition-colors group-hover:text-white">
+            Try Tool
+          </span>
+
+          <span
+            className="
+              flex h-9 w-9
+              items-center justify-center
+              rounded-full
+              border border-white/10
+              bg-white/[0.03]
+              text-slate-400
+              transition-all duration-300
+              group-hover:border-white/20
+              group-hover:bg-white/10
+              group-hover:text-white
+            "
+          >
+            <ArrowUpRight size={17} />
+          </span>
+        </div>
       </div>
     </Link>
   );
 }
-
-export default ToolCard;
