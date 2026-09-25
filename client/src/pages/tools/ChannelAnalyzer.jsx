@@ -228,8 +228,7 @@ function ChannelAnalyzer() {
 
   return (
     <>
-
-<SEO
+      <SEO
         title="YouTube Channel Analyzer - Detailed Channel Analysis | TubeKit"
         description="Analyze a YouTube channel with TubeKit. View channel profile, banner, description, subscribers, views, videos, branding, statistics, growth signals, SEO checks and optimization recommendations."
         canonical="/tools/channel-analyzer"
@@ -379,7 +378,7 @@ function ChannelAnalyzer() {
                       </a>
                     )}
 
-<button
+                    <button
                       type="button"
                       onClick={copyReport}
                       className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-bold text-red-300 transition hover:bg-red-500/15"
@@ -552,7 +551,7 @@ function ChannelAnalyzer() {
                     icon="L"
                   />
 
-                  <MetricCard
+                 <MetricCard
                     label="Avg. Comments"
                     value={formatNumber(statistics.averageComments)}
                     helper="Average comments"
@@ -570,7 +569,7 @@ function ChannelAnalyzer() {
                   Profile Information
                 </h3>
 
-<div className="mt-6 space-y-3">
+                <div className="mt-6 space-y-3">
                   {[
                     ["Channel Name", channel.title],
                     ["Handle", channel.handle],
@@ -738,6 +737,145 @@ function ChannelAnalyzer() {
               </div>
             </div>
 
+            {!!result.content && (
+              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-yellow-400">
+                  Content Analysis
+                </p>
+
+                <h3 className="mt-2 text-2xl font-black text-white">
+                  Content & Publishing Signals
+                </h3>
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  <MetricCard
+                    label="Content Score"
+                    value={
+                      result.content?.score !== undefined
+                        ? `${result.content.score}/100`
+                        : "N/A"
+                    }
+                    helper="Content signal score"
+                    icon="C"
+                  />
+<MetricCard
+                    label="Upload Frequency"
+                    value={result.content?.uploadFrequency || "N/A"}
+                    helper="Available analysis"
+                    icon="F"
+                  />
+
+                  <MetricCard
+                    label="Consistency"
+                    value={result.content?.consistency || "N/A"}
+                    helper="Publishing consistency"
+                    icon="R"
+                  />
+
+                  <MetricCard
+                    label="Content Types"
+                    value={result.content?.contentTypes || "N/A"}
+                    helper="Detected content mix"
+                    icon="T"
+                  />
+                </div>
+
+                {!!result.content?.checks?.length && (
+                  <div className="mt-6 grid gap-3 md:grid-cols-2">
+                    {result.content.checks.map((check, index) => (
+                      <div
+                        key={`${check?.label || "content-check"}-${index}`}
+                        className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
+                      >
+                        <span className="mr-2 text-sm font-bold text-green-400">
+                          {check?.passed ? "[OK]" : "[! ]"}
+                        </span>
+
+                        <span className="text-sm font-semibold text-slate-200">
+                          {check?.label || "Content Check"}
+                        </span>
+
+                        {check?.message && (
+                          <p className="mt-2 text-xs leading-5 text-slate-500">
+                            {check.message}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {!!result.checks?.length && (
+              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
+                  Complete Channel Checklist
+                </p>
+
+                <h3 className="mt-2 text-2xl font-black text-white">
+                  Channel Optimization Checks
+                </h3>
+
+                <div className="mt-6 grid gap-3 md:grid-cols-2">
+                  {result.checks.map((check, index) => (
+                    <div
+                      key={`${check?.label || "channel-check"}-${index}`}
+                      className="rounded-2xl border border-white/10 bg-white/[0.025] p-5"
+                    >
+                      <div className="flex items-start gap-3">
+                        <span
+                          className={`mt-0.5 text-sm font-black ${
+                            check?.passed ? "text-green-400" : "text-red-400"
+                          }`}
+                        >
+                          {check?.passed ? "[OK]" : "[! ]"}
+                        </span>
+
+                        <div className="min-w-0">
+                          <p className="text-sm font-bold text-white">
+                            {check?.label || "Channel Check"}
+                          </p>
+
+                          {check?.message && (
+                            <p className="mt-1 text-sm leading-6 text-slate-500">
+                              {check.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {!!result.recommendations?.length && (
+              <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
+                      Channel Recommendations
+                    </p>
+
+                    <h3 className="mt-2 text-2xl font-black text-white">
+                      What You Can Improve
+                    </h3>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={copyReport}
+                    className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-bold text-red-300 transition hover:bg-red-500/15"
+                  >
+                    Copy Full Report
+                  </button>
+                </div>
+
+                <div className="mt-6 space-y-3">
+                  {result.recommendations.map((item, index) => (
+                    <div
+                      key={`${item}-${index}`}
                       className="flex gap-4 rounded-2xl border border-white/10 bg-[#090909] p-5"
                     >
                       <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-sm font-black text-red-400">
@@ -808,7 +946,7 @@ function ChannelAnalyzer() {
           </div>
         )}
 
-<section className="mt-20 border-t border-white/10 pt-16">
+        <section className="mt-20 border-t border-white/10 pt-16">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
               <span className="text-sm font-bold uppercase tracking-[0.18em] text-red-400">
