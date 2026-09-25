@@ -297,7 +297,7 @@ function Navbar() {
               onClick={closeMobileMenu}
               className={mobileLinkClass}
             >
-              Blog
+              Blog    
             </NavLink>
           </div>
         </div>
