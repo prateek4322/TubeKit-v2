@@ -46,6 +46,7 @@ import CPMCalculator from "@/pages/tools/CPMCalculator";
 import RPMCalculator from "@/pages/tools/RPMCalculator";
 import ThumbnailDownloader from "@/pages/tools/ThumbnailDownloader";
 import ChannelIdFinder from "@/pages/tools/ChannelIdFinder";
+import TagExtractor from "@/pages/tools/TagExtractor";
 
 /* =========================================================
    HERO SEARCH QUERY WRAPPERS
@@ -250,6 +251,10 @@ function AppRoutes() {
             path="/tools/thumbnail-downloader"
             element={<ThumbnailDownloader />}
           />
+<Route
+  path="/tools/tag-extractor"
+  element={<TagExtractor />}
+/>
 
           {/* =========================
               AI GENERATORS
