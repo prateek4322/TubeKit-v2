@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Copy, ExternalLink, RotateCcw, Search, Youtube } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import SEO from "@/components/common/SEO";
@@ -39,14 +40,53 @@ function VideoIdExtractor() {
      ========================================================= */
 
   const extractVideoId = () => {
-    const regex =
-      /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^?&/\s]+)/;
+    const input = url.trim();
 
-    const match = url.trim().match(regex);
+    if (!input) {
+      alert("Please enter a YouTube URL");
+      setVideoId("");
+      return;
+    }
 
-    if (match && match[1]) {
-      setVideoId(match[1]);
-    } else {
+    let normalized = input;
+
+    if (!/^https?:\/\//i.test(normalized)) {
+      normalized = `https://${normalized}`;
+    }
+
+    try {
+      const parsed = new URL(normalized);
+      const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+
+      let id = "";
+
+      if (host === "youtu.be") {
+        id = parsed.pathname.split("/").filter(Boolean)[0] || "";
+      } else if (
+        host === "youtube.com" ||
+        host === "m.youtube.com" ||
+        host === "music.youtube.com"
+      ) {
+        if (parsed.pathname === "/watch") {
+          id = parsed.searchParams.get("v") || "";
+        } else if (
+          parsed.pathname.startsWith("/shorts/") ||
+          parsed.pathname.startsWith("/embed/") ||
+          parsed.pathname.startsWith("/live/")
+        ) {
+          id = parsed.pathname.split("/").filter(Boolean)[1] || "";
+        }
+      }
+
+      if (/^[A-Za-z0-9_-]{11}$/.test(id)) {
+        setVideoId(id);
+        return;
+      }
+
+      alert("Invalid YouTube URL");
+      setVideoId("");
+    } catch (error) {
+      console.error("VIDEO ID EXTRACTION ERROR:", error);
       alert("Invalid YouTube URL");
       setVideoId("");
     }
@@ -68,7 +108,7 @@ function VideoIdExtractor() {
     }
   };
 
-  /* =========================================================
+/* =========================================================
      RESET
      ========================================================= */
 
@@ -118,8 +158,7 @@ function VideoIdExtractor() {
         "A YouTube Video ID is commonly used when referencing a specific video in compatible YouTube embed URLs and applications.",
     },
   ];
-
-  /* =========================================================
+/* =========================================================
      BREADCRUMBS
      ========================================================= */
 
@@ -136,12 +175,13 @@ function VideoIdExtractor() {
 
   return (
     <>
-      {/* =====================================================
+
+{/* =====================================================
           SEO
           ===================================================== */}
 
       <SEO
-        title="YouTube Video ID Extractor – Extract Video ID Free | TubeKit"
+        title="YouTube Video ID Extractor â€“ Extract Video ID Free | TubeKit"
         description="Extract a YouTube Video ID from any supported YouTube URL with TubeKit's free Video ID Extractor. Supports YouTube watch, Shorts, embed and youtu.be URLs."
         keywords="YouTube Video ID extractor, YouTube video ID finder, extract YouTube video ID, YouTube ID extractor, video ID finder, YouTube URL ID extractor, YouTube Shorts ID extractor, youtu.be ID extractor"
         canonical="/tools/video-id-extractor"
@@ -164,72 +204,148 @@ function VideoIdExtractor() {
             TOOL
             =================================================== */}
 
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
+        <div className="rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
+          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
+                Creator Utility
+              </p>
+              <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+                Extract Video ID
+              </h2>
+            </div>
+
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+              <Youtube size={22} />
+            </div>
+          </div>
 
           <label
             htmlFor="youtube-video-url"
-            className="mb-2 block font-medium text-white"
+            className="mb-2 block text-sm font-semibold text-slate-300"
           >
             YouTube Video URL
           </label>
 
-          <input
-            id="youtube-video-url"
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                extractVideoId();
-              }
-            }}
-            placeholder="https://youtu.be/xxxxxxxxxxx"
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-white outline-none transition focus:border-blue-500"
-          />
+          <div className="relative">
+            <Search
+              size={19}
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-red-400"
+            />
 
-          <div className="mt-8 flex flex-wrap gap-4">
+            <input
+              id="youtube-video-url"
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  extractVideoId();
+                }
+              }}
+              placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+              className="w-full rounded-2xl border border-blue-500/40 bg-[#050505] py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
+            />
+          </div>
 
+          <p className="mt-3 text-xs leading-5 text-slate-500">
+            Supports watch, youtu.be, Shorts, embed, and live YouTube URLs.
+          </p>
+
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={extractVideoId}
-              className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-500 px-6 py-3 font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.18)] transition hover:bg-red-400"
             >
+              <Search size={18} />
               Extract Video ID
             </button>
 
             <button
               onClick={reset}
-              className="rounded-xl bg-slate-700 px-6 py-3 font-semibold text-white transition hover:bg-slate-600"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3 font-semibold text-slate-300 transition hover:border-blue-500/30 hover:text-white"
             >
+              <RotateCcw size={17} />
               Reset
             </button>
-
           </div>
         </div>
-
-        {/* ===================================================
+{/* ===================================================
             RESULT
             =================================================== */}
 
         {videoId && (
-          <div className="mt-10 rounded-3xl border border-green-500/20 bg-green-500/5 p-8">
+          <div className="mt-10 overflow-hidden rounded-3xl border border-green-500/20 bg-[#090909] shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+            <div className="border-b border-white/10 bg-green-500/5 p-6 sm:p-8">
+              <div className="flex items-center gap-3">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-400">
+                  <Youtube size={22} />
+                </div>
+                <div>
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
+                    Extraction Complete
+                  </p>
+                  <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">
+                    YouTube Video ID
+                  </h2>
+                </div>
+              </div>
+            </div>
 
-            <h2 className="text-xl font-bold text-white">
-              Extracted YouTube Video ID
-            </h2>
+            <div className="p-6 sm:p-8">
+              <div className="rounded-2xl border border-white/10 bg-[#050505] p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                  Extracted ID
+                </p>
 
-            <div className="mt-5 flex flex-col gap-4 rounded-xl border border-slate-800 bg-slate-950 p-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  <code className="break-all text-xl font-black tracking-wide text-green-400 sm:text-2xl">
+                    {videoId}
+                  </code>
 
-              <code className="break-all text-lg font-semibold text-green-400">
-                {videoId}
-              </code>
+                  <button
+                    onClick={copyId}
+                    className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-green-500 px-5 py-3 font-bold text-black transition hover:bg-green-400"
+                  >
+                    <Copy size={17} />
+                    Copy ID
+                  </button>
+                </div>
+              </div>
 
-              <button
-                onClick={copyId}
-                className="rounded-lg bg-green-600 px-4 py-2 font-semibold text-white transition hover:bg-green-500"
-              >
-                Copy ID
-              </button>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-xl border border-red-500/20 bg-red-500/5 p-4">
+                  <p className="text-xs uppercase tracking-wider text-slate-500">
+                    Video URL
+                  </p>
+                  <p className="mt-2 break-all text-sm font-semibold text-slate-300">
+                    {url}
+                  </p>
+                </div>
 
+                <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-4">
+                  <p className="text-xs uppercase tracking-wider text-slate-500">
+                    Watch URL
+                  </p>
+                  <a
+                    href={`https://www.youtube.com/watch?v=${videoId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 flex items-center gap-2 break-all text-sm font-semibold text-blue-400 hover:text-blue-300"
+                  >
+                    https://www.youtube.com/watch?v={videoId}
+                    <ExternalLink size={15} className="shrink-0" />
+                  </a>
+                </div>
+              </div>
+
+              <div className="mt-5 rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-4">
+                <p className="text-sm leading-6 text-yellow-200/80">
+                  The extracted Video ID is the unique 11-character identifier
+                  used to reference this YouTube video in supported URLs,
+                  embeds, tools, and applications.
+                </p>
+              </div>
             </div>
           </div>
         )}
@@ -270,7 +386,7 @@ function VideoIdExtractor() {
             </p>
           </div>
 
-          {/* =================================================
+{/* =================================================
               HOW TO USE
               ================================================= */}
 
@@ -314,8 +430,7 @@ function VideoIdExtractor() {
               </li>
             </ol>
           </div>
-
-          {/* =================================================
+ {/* =================================================
               WHAT IS VIDEO ID
               ================================================= */}
 
@@ -476,167 +591,13 @@ function VideoIdExtractor() {
                 to="/tools/channel-id-finder"
                 className="inline-flex rounded-xl border border-blue-500/30 bg-blue-500/5 px-5 py-3 font-semibold text-blue-400 transition hover:border-blue-400 hover:bg-blue-500/10"
               >
-                Find a YouTube Channel ID →
+                Find a YouTube Channel ID
               </Link>
             </div>
           </div>
 
-          {/* =================================================
-              USE CASES
-              ================================================= */}
-
-          <div>
-            <SectionHeading color="yellow">
-              What Is a YouTube Video ID Used For?
-            </SectionHeading>
-
-            <p className="mt-5 leading-8 text-slate-300">
-              A Video ID can be useful in different YouTube-related
-              workflows and technical applications.
-            </p>
-
-            <ul className="mt-5 list-disc space-y-3 pl-6 leading-8 text-slate-300">
-              <li>
-                Referencing a specific YouTube video.
-              </li>
-
-              <li>
-                Creating or working with YouTube embed URLs.
-              </li>
-
-              <li>
-                Working with compatible YouTube tools and applications.
-              </li>
-
-              <li>
-                Identifying videos in content workflows.
-              </li>
-
-              <li>
-                Using video identifiers in supported integrations.
-              </li>
-
-              <li>
-                Checking a video URL before using it in another tool.
-              </li>
-            </ul>
-          </div>
-
-          {/* =================================================
-              FEATURES
-              ================================================= */}
-
-          <div>
-            <SectionHeading color="green">
-              TubeKit YouTube Video ID Extractor Features
-            </SectionHeading>
-
-            <ul className="mt-6 grid gap-3 text-slate-300 sm:grid-cols-2">
-
-              <li className="rounded-lg border border-red-500/20 bg-red-500/5 p-4">
-                ✓ Extract YouTube Video IDs
-              </li>
-
-              <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4">
-                ✓ Simple URL input
-              </li>
-
-              <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4">
-                ✓ Supports common YouTube URLs
-              </li>
-
-              <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-                ✓ Supports YouTube Shorts URLs
-              </li>
-
-              <li className="rounded-lg border border-red-500/20 bg-red-500/5 p-4">
-                ✓ Supports shortened URLs
-              </li>
-
-              <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4">
-                ✓ Instant results
-              </li>
-
-              <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4">
-                ✓ One-click copying
-              </li>
-
-              <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4">
-                ✓ Free to use
-              </li>
-
-            </ul>
-          </div>
-
-          {/* =================================================
-              TIPS
-              ================================================= */}
-
-          <div>
-            <SectionHeading color="blue">
-              Tips for Extracting a YouTube Video ID
-            </SectionHeading>
-
-            <ul className="mt-6 list-disc space-y-3 pl-6 leading-8 text-slate-300">
-              <li>
-                Copy the complete YouTube video URL when possible.
-              </li>
-
-              <li>
-                Make sure the URL points to a specific video.
-              </li>
-
-              <li>
-                Do not confuse a Video ID with a Channel ID.
-              </li>
-
-              <li>
-                Check the extracted ID before using it in another
-                application.
-              </li>
-
-              <li>
-                Use a supported YouTube URL format for the best result.
-              </li>
-            </ul>
-          </div>
-
-          {/* =================================================
-              RELATED TOOLS
-              ================================================= */}
-
-          <div>
-            <SectionHeading color="red">
-              More Free YouTube Tools
-            </SectionHeading>
-
-            <p className="mt-5 leading-8 text-slate-300">
-              TubeKit provides several free tools for YouTube creators.
-              After extracting a Video ID, you can use these related
-              tools for other creator workflows.
-            </p>
-
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-
-              <Link
-                to="/tools/channel-id-finder"
-                className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5 transition hover:border-blue-400 hover:bg-blue-500/10"
-              >
-                <span className="font-semibold text-blue-400">
-                  YouTube Channel ID Finder →
-                </span>
-
-                <p className="mt-2 text-sm leading-6 text-slate-400">
-                  Find the unique ID associated with a YouTube channel.
-                </p>
-              </Link>
-
-              <Link
-                to="/tools/thumbnail-downloader"
-                className="rounded-xl border border-red-500/20 bg-red-500/5 p-5 transition hover:border-red-400 hover:bg-red-500/10"
-              >
                 <span className="font-semibold text-red-400">
-                  YouTube Thumbnail Downloader →
+                  YouTube Thumbnail Downloader
                 </span>
 
                 <p className="mt-2 text-sm leading-6 text-slate-400">
@@ -649,7 +610,7 @@ function VideoIdExtractor() {
                 className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5 transition hover:border-yellow-300 hover:bg-yellow-400/10"
               >
                 <span className="font-semibold text-yellow-300">
-                  YouTube Title Generator →
+                  YouTube Title Generator
                 </span>
 
                 <p className="mt-2 text-sm leading-6 text-slate-400">
@@ -662,7 +623,7 @@ function VideoIdExtractor() {
                 className="rounded-xl border border-green-500/20 bg-green-500/5 p-5 transition hover:border-green-400 hover:bg-green-500/10"
               >
                 <span className="font-semibold text-green-400">
-                  YouTube Tags Generator →
+                  YouTube Tags Generator
                 </span>
 
                 <p className="mt-2 text-sm leading-6 text-slate-400">
@@ -673,7 +634,7 @@ function VideoIdExtractor() {
             </div>
           </div>
 
-          {/* =================================================
+   {/* =================================================
               RELATED BLOG
               ================================================= */}
 
@@ -694,7 +655,7 @@ function VideoIdExtractor() {
                 className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5 transition hover:border-yellow-300 hover:bg-yellow-400/10"
               >
                 <span className="font-semibold text-yellow-300">
-                  Best YouTube SEO Tools for Creators →
+                  Best YouTube SEO Tools for Creators
                 </span>
 
                 <p className="mt-2 text-sm leading-6 text-slate-400">
@@ -708,7 +669,7 @@ function VideoIdExtractor() {
                 className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5 transition hover:border-blue-400 hover:bg-blue-500/10"
               >
                 <span className="font-semibold text-blue-400">
-                  How to Get More Views on YouTube →
+                  How to Get More Views on YouTube
                 </span>
 
                 <p className="mt-2 text-sm leading-6 text-slate-400">
