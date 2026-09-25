@@ -32,7 +32,7 @@ export const featuredTools = [
   {
     id: 6,
     icon: "🖼️",
-    title: "Thumbnail Ideas",
+    title: "AI Thumbnail Generator",
     path: "/tools/thumbnail-generator",
   },
   {
@@ -44,61 +44,19 @@ export const featuredTools = [
   {
     id: 8,
     icon: "🎯",
-    title: "Hook Generator",
+    title: "AI Hook Generator",
     path: "/tools/hook-generator",
   },
   {
     id: 9,
     icon: "📑",
-    title: "Outline Generator",
+    title: "AI Outline Generator",
     path: "/tools/outline-generator",
   },
   {
     id: 10,
     icon: "🎬",
-    title: "Shorts Generator",
+    title: "AI Shorts Generator",
     path: "/tools/shorts-generator",
-  },
-    {
-    id: 11,
-    icon: "💰",
-    title: "Money Calculator",
-    path: "/tools/money-calculator",
-  },
-  {
-    id: 12,
-    icon: "📈",
-    title: "Monetization Checker",
-    path: "/tools/monetization-checker",
-  },
-  {
-    id: 13,
-    icon: "💵",
-    title: "CPM Calculator",
-    path: "/tools/cpm-calculator",
-  },
-  {
-    id: 14,
-    icon: "💹",
-    title: "RPM Calculator",
-    path: "/tools/rpm-calculator",
-  },
-  {
-    id: 15,
-    icon: "🆔",
-    title: "Channel ID Finder",
-    path: "/tools/channel-id-finder",
-  },
-  {
-    id: 16,
-    icon: "🎥",
-    title: "Video ID Extractor",
-    path: "/tools/video-id-extractor",
-  },
-  {
-    id: 17,
-    icon: "🖼️",
-    title: "Thumbnail Downloader",
-    path: "/tools/thumbnail-downloader",
   },
 ];
