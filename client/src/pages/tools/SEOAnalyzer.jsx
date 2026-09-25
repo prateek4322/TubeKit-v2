@@ -193,8 +193,7 @@ function SEOAnalyzer() {
 
   return (
     <>
-
-<SEO
+      <SEO
         title="YouTube SEO Analyzer - Analyze Video SEO Score | TubeKit"
         description="Analyze a YouTube video with TubeKit's SEO Analyzer. Review title, description, tags, keywords, channel signals, metadata and actionable SEO recommendations."
         canonical="/tools/seo-analyzer"
@@ -350,7 +349,7 @@ function SEOAnalyzer() {
                 helper={`${result.tags?.count ?? 0} available tags`}
                 icon="#"
               />
-<MetricCard
+              <MetricCard
                 label="Keywords"
                 value={`${result.keywords?.score ?? "N/A"}/100`}
                 helper="Keyword relevance signals"
@@ -406,7 +405,7 @@ function SEOAnalyzer() {
                     ["Language", result.metadata?.language],
                     ["Definition", result.metadata?.definition],
                   ].map(([label, value]) => (
-                    <div
+                 <div
                       key={label}
                       className="flex items-center justify-between gap-5 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3"
                     >
@@ -523,7 +522,8 @@ function SEOAnalyzer() {
                 </div>
               </div>
             </div>
-<div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
+
+            <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
@@ -616,8 +616,7 @@ function SEOAnalyzer() {
                     {result.tags?.score ?? "N/A"}/100
                   </span>
                 </div>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+<div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <MetricCard
                     label="Tag Count"
                     value={result.tags?.count ?? "N/A"}
@@ -632,7 +631,6 @@ function SEOAnalyzer() {
                   />
                 </div>
 
-
                 {!!result.tags?.items?.length && (
                   <div className="mt-6 flex max-h-72 flex-wrap gap-2 overflow-auto">
                     {result.tags.items.map((tag, index) => (
@@ -765,7 +763,7 @@ function SEOAnalyzer() {
                 />
               </div>
 
-              {!!result.channel?.checks?.length && (
+{!!result.channel?.checks?.length && (
                 <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {result.channel.checks.map((check, index) => (
                     <div
@@ -789,163 +787,7 @@ function SEOAnalyzer() {
               )}
             </div>
 
-
-                {!!result.tags?.items?.length && (
-                  <div className="mt-6 flex max-h-72 flex-wrap gap-2 overflow-auto">
-                    {result.tags.items.map((tag, index) => (
-                      <button
-                        type="button"
-                        key={`${tag}-${index}`}
-                        onClick={() => copyText(tag)}
-                        className="rounded-full border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-yellow-500/40 hover:text-yellow-300"
-                        title="Copy tag"
-                      >
-                        {tag}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                <Link
-                  to="/tools/tag-extractor"
-                  className="mt-6 inline-flex text-sm font-semibold text-blue-400 hover:text-blue-300"
-                >
-                  Open YouTube Tag Extractor
-                </Link>
-              </div>
-
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
-                  Keyword Analysis
-                </p>
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Search Context
-                </h3>
-
-                <div className="mt-6">
-                  <p className="text-sm font-semibold text-slate-300">
-                    Primary Keywords
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {(result.keywords?.primary || []).map((keyword) => (
-                      <span
-                        key={keyword}
-                        className="rounded-full bg-green-500/10 px-3 py-1.5 text-xs font-semibold text-green-300"
-                      >
-                        {keyword}
-                      </span>
-                    ))}
-                    {!result.keywords?.primary?.length && (
-                      <span className="text-sm text-slate-500">N/A</span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <p className="text-sm font-semibold text-slate-300">
-                    Secondary Keywords
-                  </p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {(result.keywords?.secondary || []).map((keyword) => (
-                      <span
-                        key={keyword}
-                        className="rounded-full bg-blue-500/10 px-3 py-1.5 text-xs font-semibold text-blue-300"
-                      >
-                        {keyword}
-                      </span>
-                    ))}
-                    {!result.keywords?.secondary?.length && (
-                      <span className="text-sm text-slate-500">N/A</span>
-                    )}
-                  </div>
-                </div>
-
-                {!!result.keywords?.related?.length && (
-                  <div className="mt-6">
-                    <p className="text-sm font-semibold text-slate-300">
-                      Related Keywords
-                    </p>
-                    <div className="mt-3 flex flex-wrap gap-2">
-                      {result.keywords.related.map((keyword) => (
-                        <span
-                          key={keyword}
-                          className="rounded-full bg-red-500/10 px-3 py-1.5 text-xs font-semibold text-red-300"
-                        >
-                          {keyword}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
-                    Channel Analysis
-                  </p>
-                  <h3 className="mt-2 text-2xl font-black text-white">
-                    Creator & Channel Signals
-                  </h3>
-                </div>
-                <span className="text-2xl font-black text-red-400">
-                  {result.channel?.score ?? "N/A"}/100
-                </span>
-              </div>
-
-              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <MetricCard
-                  label="Channel"
-                  value={result.channel?.title || result.videoInfo?.channelTitle || "N/A"}
-                  helper="Channel title"
-                  icon="C"
-                />
-                <MetricCard
-                  label="Subscribers"
-                  value={result.channel?.subscriberCount ?? "N/A"}
-                  helper="Public subscriber data"
-                  icon="S"
-                />
-                <MetricCard
-                  label="Videos"
-                  value={result.channel?.videoCount ?? "N/A"}
-                  helper="Published videos"
-                  icon="V"
-                />
-                <MetricCard
-                  label="Views"
-                  value={result.channel?.viewCount ?? "N/A"}
-                  helper="Channel views"
-                  icon="R"
-                />
-              </div>
-
-              {!!result.channel?.checks?.length && (
-                <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                  {result.channel.checks.map((check, index) => (
-                    <div
-                      key={`${check?.label || "channel-check"}-${index}`}
-                      className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
-                    >
-                      <span className="mr-2 text-sm font-bold text-green-400">
-                        {check?.passed ? "[OK]" : "[! ]"}
-                      </span>
-                      <span className="text-sm font-semibold text-slate-200">
-                        {check?.label || "Channel Check"}
-                      </span>
-                      {check?.message && (
-                        <p className="mt-2 text-xs leading-5 text-slate-500">
-                          {check.message}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-{!!result.checks?.length && (
+            {!!result.checks?.length && (
               <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
                   Complete SEO Checklist
@@ -1067,7 +909,6 @@ function SEOAnalyzer() {
             </div>
           </div>
         )}
-
 
         <section className="mt-20 border-t border-white/10 pt-16">
           <div className="mx-auto max-w-4xl">
@@ -1249,3 +1090,4 @@ function SEOAnalyzer() {
 }
 
 export default SEOAnalyzer;
+   
