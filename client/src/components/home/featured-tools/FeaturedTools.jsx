@@ -2,7 +2,7 @@ import ToolGrid from "./ToolGrid";
 
 export default function FeaturedTools() {
   return (
-    <section className="relative py-20 sm:py-24">
+    <section className="relative bg-slate-950 py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
         {/* Section Heading */}
@@ -14,9 +14,9 @@ export default function FeaturedTools() {
               border border-red-500/30
               bg-red-500/10
               px-4 py-2
-              text-sm font-semibold
+              text-xs font-semibold
+              uppercase tracking-wide
               text-red-400
-              shadow-[0_0_25px_rgba(239,68,68,0.08)]
             "
           >
             AI CREATOR STUDIO
@@ -25,6 +25,7 @@ export default function FeaturedTools() {
           <h2
             className="
               mt-5
+              text-center
               text-3xl
               font-black
               tracking-tight
@@ -42,28 +43,29 @@ export default function FeaturedTools() {
           <p
             className="
               mx-auto
-              mt-5
+              mt-4
               max-w-2xl
-              text-base
-              leading-7
+              text-center
+              text-sm
+              leading-6
               text-slate-400
-              sm:text-lg
+              sm:text-base
+              sm:leading-7
             "
           >
             Create, optimize, and grow your YouTube content with
             TubeKit's powerful AI-powered creator tools.
           </p>
 
-          {/* Red Accent */}
           <div
             className="
               mx-auto
               mt-6
               h-1
-              w-20
+              w-14
               rounded-full
               bg-red-500
-              shadow-[0_0_20px_rgba(239,68,68,0.45)]
+              shadow-[0_0_18px_rgba(239,68,68,0.45)]
             "
           />
         </div>
