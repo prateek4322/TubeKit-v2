@@ -47,6 +47,13 @@ import RPMCalculator from "@/pages/tools/RPMCalculator";
 import ThumbnailDownloader from "@/pages/tools/ThumbnailDownloader";
 import ChannelIdFinder from "@/pages/tools/ChannelIdFinder";
 import TagExtractor from "@/pages/tools/TagExtractor";
+import HashtagExtractor from "@/pages/tools/HashtagExtractor";
+import DescriptionExtractor from "@/pages/tools/DescriptionExtractor";
+import ShadowbanDetector from "@/pages/tools/ShadowbanDetector";
+import ChannelAnalyzer from "@/pages/tools/ChannelAnalyzer";
+import SEOAnalyzer from "@/pages/tools/SEOAnalyzer";
+import CommentReader from "@/pages/tools/CommentReader";
+
 
 /* =========================================================
    HERO SEARCH QUERY WRAPPERS
@@ -233,7 +240,7 @@ function AppRoutes() {
             element={<CookiePolicy />}
           />
 
-          {/* =========================
+{/* =========================
               YOUTUBE UTILITY TOOLS
               ========================= */}
 
@@ -311,7 +318,7 @@ function AppRoutes() {
             element={<ShortsGeneratorWithQuery />}
           />
 
-          {/* =========================
+{/* =========================
               CALCULATORS
               ========================= */}
 
