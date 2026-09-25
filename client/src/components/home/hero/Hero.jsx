@@ -85,7 +85,7 @@ function Hero({ onToolSelect }) {
   };
 
   return (
-    <section className="relative isolate overflow-hidden bg-[#030712]">
+    <section className="relative isolate overflow-visible bg-[#030712]">
       <BackgroundEffects />
 
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
@@ -206,22 +206,9 @@ function Hero({ onToolSelect }) {
                   {isOpen && (
                     <div
                       role="listbox"
-                      className="absolute left-0 right-0 top-[calc(100%+8px)] z-[100] overflow-hidden rounded-2xl border border-blue-500/30 bg-[#080d1d] p-2 shadow-2xl shadow-black/60"
+                      className="absolute left-0 right-0 top-[calc(100%+8px)] z-[999] overflow-hidden rounded-2xl border border-blue-500/30 bg-[#080d1d] p-2 shadow-2xl shadow-black/60"
                     >
-                      <div className="flex items-center justify-between border-b border-white/10 px-3 py-3">
-                        <div>
-                          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
-                            Essential Creator Tools
-                          </p>
-                          <p className="mt-1 text-xs text-slate-500">
-                            Extract, analyze and optimize from a YouTube URL
-                          </p>
-                        </div>
-
-                        <Sparkles className="h-4 w-4 text-yellow-400" />
-                      </div>
-
-                      <div className="max-h-80 overflow-y-auto pt-2">
+                      <div className="max-h-[62vh] overflow-y-auto overscroll-contain touch-pan-y py-2 sm:max-h-[420px]">
                         {essentialTools.map((tool) => {
                           const active = selectedTool.path === tool.path;
 
@@ -232,7 +219,7 @@ function Hero({ onToolSelect }) {
                               role="option"
                               aria-selected={active}
                               onClick={() => handleToolSelect(tool)}
-                              className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-all ${
+                              className={`flex min-h-14 w-full items-center justify-between rounded-xl px-4 py-3.5 text-left transition-all sm:min-h-16 sm:px-4 sm:py-4 ${
                                 active
                                   ? "bg-blue-500/12 text-blue-300"
                                   : "text-slate-300 hover:bg-white/[0.045] hover:text-white"
@@ -244,7 +231,7 @@ function Hero({ onToolSelect }) {
                                     active ? "bg-blue-400" : "bg-slate-700"
                                   }`}
                                 />
-                                <span className="text-sm font-medium">
+                                <span className="text-base font-semibold sm:text-[17px]">
                                   {tool.name}
                                 </span>
                               </span>
