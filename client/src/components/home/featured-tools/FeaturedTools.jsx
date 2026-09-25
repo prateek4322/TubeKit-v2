@@ -3,13 +3,13 @@ import ToolGrid from "./ToolGrid";
 
 function FeaturedTools() {
   return (
-    <section className="bg-slate-950 px-6 py-24">
+    <section className="bg-slate-950 px-4 py-20 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-7xl">
-
         <FeaturedTitle />
 
-        <ToolGrid />
-
+        <div className="mt-12 sm:mt-16">
+          <ToolGrid />
+        </div>
       </div>
     </section>
   );
