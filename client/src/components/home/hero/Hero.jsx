@@ -2,47 +2,36 @@ import { useEffect, useRef, useState } from "react";
 import { Search, ChevronDown, Sparkles, Wand2, Check } from "lucide-react";
 import BackgroundEffects from "./BackgroundEffects";
 
-const aiTools = [
-  { name: "AI Title Generator", path: "/tools/title-generator", type: "ai" },
-  { name: "AI Description Generator", path: "/tools/description-generator", type: "ai" },
-  { name: "AI Tags Generator", path: "/tools/tags-generator", type: "ai" },
-  { name: "AI Script Generator", path: "/tools/script-generator", type: "ai" },
-  { name: "AI Hashtag Generator", path: "/tools/hashtag-generator", type: "ai" },
-  { name: "AI Keyword Generator", path: "/tools/keyword-generator", type: "ai" },
-  { name: "AI Hook Generator", path: "/tools/hook-generator", type: "ai" },
-  { name: "AI Outline Generator", path: "/tools/outline-generator", type: "ai" },
-  { name: "AI Shorts Generator", path: "/tools/shorts-generator", type: "ai" },
-  { name: "AI Thumbnail Generator", path: "/tools/thumbnail-generator", type: "ai" },
-];
-
 const essentialTools = [
-  { name: "YouTube Tag Extractor", path: "/tools/tag-extractor", type: "essential" },
-  { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor", type: "essential" },
-  { name: "YouTube Description Extractor", path: "/tools/description-extractor", type: "essential" },
-  { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector", type: "essential" },
-  { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer", type: "essential" },
-  { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer", type: "essential" },
-  { name: "YouTube Comment Reader", path: "/tools/comment-reader", type: "essential" },
-  { name: "Video ID Extractor", path: "/tools/video-id-extractor", type: "essential" },
-  { name: "Thumbnail Downloader", path: "/tools/thumbnail-downloader", type: "essential" },
-  { name: "Channel ID Finder", path: "/tools/channel-id-finder", type: "essential" },
-  { name: "Monetization Checker", path: "/tools/monetization-checker", type: "essential" },
+  { name: "YouTube Tag Extractor", path: "/tools/tag-extractor" },
+  { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor" },
+  { name: "YouTube Description Extractor", path: "/tools/description-extractor" },
+  { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector" },
+  { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer" },
+  { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer" },
+  { name: "YouTube Comment Reader", path: "/tools/comment-reader" },
+  { name: "Video ID Extractor", path: "/tools/video-id-extractor" },
+  { name: "Thumbnail Downloader", path: "/tools/thumbnail-downloader" },
+  { name: "Channel ID Finder", path: "/tools/channel-id-finder" },
+  { name: "Monetization Checker", path: "/tools/monetization-checker" },
 ];
-
-const searchTools = [...aiTools, ...essentialTools];
 
 const rotatingWords = [
-  "Titles",
-  "Scripts",
-  "Hooks",
-  "Keywords",
-  "Descriptions",
+  "Tags",
   "Hashtags",
-  "Thumbnails",
+  "Descriptions",
+  "Channels",
+  "SEO",
+  "Comments",
+  "Video IDs",
 ];
 
 function Hero({ onToolSelect }) {
-  const [selectedTool, setSelectedTool] = useState(aiTools[0]);
+  const defaultTool =
+    essentialTools.find((tool) => tool.name === "Monetization Checker") ||
+    essentialTools[0];
+
+  const [selectedTool, setSelectedTool] = useState(defaultTool);
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [wordIndex, setWordIndex] = useState(0);
@@ -73,7 +62,7 @@ function Hero({ onToolSelect }) {
     const value = query.trim();
 
     if (!value) {
-      setError("Please enter a topic, keyword, URL, or video idea first.");
+      setError("Please enter a YouTube URL first.");
       return;
     }
 
@@ -113,15 +102,15 @@ function Hero({ onToolSelect }) {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-50" />
             <span className="relative inline-flex h-full w-full rounded-full bg-red-500" />
           </span>
-          <span>AI Creator Studio</span>
+          <span>YouTube Creator Utilities</span>
           <span className="h-3 w-px bg-white/15" />
           <Sparkles className="h-3 w-3 text-yellow-400 sm:h-3.5 sm:w-3.5" />
-          <span className="text-slate-400">Built for YouTube</span>
+          <span className="text-slate-400">Extract. Analyze. Optimize.</span>
         </div>
 
         <div className="max-w-5xl text-center">
           <h1 className="text-4xl font-black leading-[1.04] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl">
-            Create Better YouTube
+            Analyze Your YouTube
             <span className="relative mt-2 block h-[1.15em] overflow-hidden sm:mt-3">
               <span
                 key={rotatingWords[wordIndex]}
@@ -133,9 +122,9 @@ function Hero({ onToolSelect }) {
           </h1>
 
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-slate-300 sm:mt-7 sm:text-base sm:leading-8 lg:text-lg">
-            Generate titles, scripts, hooks, keywords, descriptions, hashtags
-            and thumbnail concepts with a premium AI toolkit built for YouTube
-            creators.
+            Extract YouTube data, analyze channels and videos, check SEO
+            signals, and explore useful creator insights from one powerful
+            toolkit.
           </p>
         </div>
 
@@ -160,16 +149,8 @@ function Hero({ onToolSelect }) {
                       if (error) setError("");
                     }}
                     onKeyDown={handleKeyDown}
-                    placeholder={
-                      selectedTool?.type === "essential"
-                        ? "Paste a YouTube URL..."
-                        : "Enter your topic, niche or video idea..."
-                    }
-                    aria-label={
-                      selectedTool?.type === "essential"
-                        ? "Paste a YouTube URL"
-                        : "Enter your topic, niche or video idea"
-                    }
+                    placeholder="Paste a YouTube URL..."
+                    aria-label="Paste a YouTube URL"
                     className="min-w-0 w-full bg-transparent text-xs font-medium text-white outline-none placeholder:text-slate-500 sm:text-sm lg:text-base"
                   />
 
@@ -230,10 +211,10 @@ function Hero({ onToolSelect }) {
                       <div className="flex items-center justify-between border-b border-white/10 px-3 py-3">
                         <div>
                           <p className="text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
-                            TubeKit Tools
+                            Essential Creator Tools
                           </p>
                           <p className="mt-1 text-xs text-slate-500">
-                            AI generation and URL tools
+                            Extract, analyze and optimize from a YouTube URL
                           </p>
                         </div>
 
@@ -241,11 +222,7 @@ function Hero({ onToolSelect }) {
                       </div>
 
                       <div className="max-h-80 overflow-y-auto pt-2">
-                        <div className="px-3 pb-1 pt-1 text-[9px] font-black uppercase tracking-[0.18em] text-red-400">
-                          AI Generation
-                        </div>
-
-                        {aiTools.map((tool) => {
+                        {essentialTools.map((tool) => {
                           const active = selectedTool.path === tool.path;
 
                           return (
@@ -278,46 +255,6 @@ function Hero({ onToolSelect }) {
                             </button>
                           );
                         })}
-
-                        <div className="my-2 border-t border-white/10" />
-
-                        <div className="px-3 pb-1 pt-1 text-[9px] font-black uppercase tracking-[0.18em] text-green-400">
-                          Essential URL Tools
-                        </div>
-
-                        {essentialTools.map((tool) => {
-                          const active = selectedTool.path === tool.path;
-
-                          return (
-                            <button
-                              key={tool.path}
-                              type="button"
-                              role="option"
-                              aria-selected={active}
-                              onClick={() => handleToolSelect(tool)}
-                              className={`flex w-full items-center justify-between rounded-xl px-3 py-3 text-left transition-all ${
-                                active
-                                  ? "bg-green-500/12 text-green-300"
-                                  : "text-slate-300 hover:bg-white/[0.045] hover:text-white"
-                              }`}
-                            >
-                              <span className="flex items-center gap-3">
-                                <span
-                                  className={`h-2 w-2 rounded-full ${
-                                    active ? "bg-green-400" : "bg-slate-700"
-                                  }`}
-                                />
-                                <span className="text-sm font-medium">
-                                  {tool.name}
-                                </span>
-                              </span>
-
-                              {active && (
-                                <Check className="h-4 w-4 text-green-400" />
-                              )}
-                            </button>
-                          );
-                        })}
                       </div>
                     </div>
                   )}
@@ -334,9 +271,7 @@ function Hero({ onToolSelect }) {
                       style={{ color: "#ffffff", stroke: "#ffffff" }}
                       strokeWidth={2.5}
                     />
-                    <span>
-                      {selectedTool?.type === "essential" ? "Open Tool" : "Generate"}
-                    </span>
+                    <span>Open Tool</span>
                   </button>
                 </div>
               </div>
@@ -348,9 +283,8 @@ function Hero({ onToolSelect }) {
                   </p>
                 ) : (
                   <p className="text-center text-[10px] font-medium leading-4 text-slate-500 sm:text-xs">
-                    {selectedTool?.type === "essential"
-                      ? "Paste a YouTube URL and select an essential tool to continue."
-                      : "Enter a topic, keyword, URL, or video idea and select an AI tool to get started."}
+                    Paste a YouTube URL and select an essential tool to
+                    continue.
                   </p>
                 )}
               </div>
@@ -360,7 +294,7 @@ function Hero({ onToolSelect }) {
 
         <div className="mt-9 flex items-center justify-center gap-2.5 text-[10px] text-slate-500 sm:mt-12 sm:gap-3 sm:text-xs">
           <span className="h-px w-8 bg-white/10 sm:w-16" />
-          <span>21 creator tools</span>
+          <span>11 essential creator tools</span>
           <span className="h-px w-8 bg-white/10 sm:w-16" />
         </div>
       </div>
