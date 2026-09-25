@@ -7,11 +7,11 @@ function ToolCard({ tool }) {
       to={tool.path}
       className="
         group block
-        min-h-[360px]
+        min-h-[235px]
         rounded-2xl
         border border-slate-800
         bg-[#0b0b0b]
-        p-10
+        p-7
         outline-none
         transition-all duration-300
 
@@ -25,24 +25,22 @@ function ToolCard({ tool }) {
         active:border-red-500
         active:shadow-[0_0_35px_rgba(239,68,68,0.22)]
 
-        sm:min-h-[380px]
-        sm:p-10
+        sm:min-h-[250px]
+        sm:p-8
       "
     >
       {/* Icon */}
       <div
         className="
-          flex h-20 w-20
+          flex h-16 w-16
           items-center justify-center
           rounded-xl
           bg-red-500/15
-          text-4xl
+          text-3xl
           text-red-500
           transition-all duration-300
-
           group-hover:bg-red-500/20
           group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]
-
           group-focus:bg-red-500/20
         "
       >
@@ -52,13 +50,12 @@ function ToolCard({ tool }) {
       {/* Title */}
       <h3
         className="
-          mt-9
+          mt-6
           text-2xl
           font-extrabold
           tracking-tight
           text-white
           transition-colors duration-300
-
           group-hover:text-red-500
           group-focus:text-red-500
         "
@@ -67,22 +64,14 @@ function ToolCard({ tool }) {
       </h3>
 
       {/* Description */}
-      <p
-        className="
-          mt-5
-          max-w-xl
-          text-base
-          leading-7
-          text-slate-400
-        "
-      >
+      <p className="mt-3 text-base leading-6 text-slate-400">
         {tool.description}
       </p>
 
       {/* Learn More */}
       <div
         className="
-          mt-9
+          mt-6
           inline-flex
           items-center
           gap-2
@@ -90,18 +79,16 @@ function ToolCard({ tool }) {
           font-semibold
           text-red-500
           transition-all duration-300
-
           group-hover:gap-3
-          group-focus:gap-3
         "
       >
         Learn more
+
         <ArrowRight
-          size={22}
+          size={20}
           className="
             transition-transform duration-300
             group-hover:translate-x-1
-            group-focus:translate-x-1
           "
         />
       </div>
