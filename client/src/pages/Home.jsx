@@ -645,11 +645,11 @@ function Home() {
 {/* BENEFITS */}
 <section className="bg-[#030712] px-5 py-20 sm:px-8 sm:py-28 lg:px-12">
   <div className="mx-auto max-w-6xl">
-    <div className="mx-auto max-w-4xl">
-      <h2 className="text-left text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
-        Benefits of Using <span className="text-red-500">TubeKit</span>
-      </h2>
-    </div>
+    <div className="mx-auto max-w-4xl text-center">
+  <h2 className="text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+    Benefits of Using <span className="text-red-500">TubeKit</span>
+  </h2>
+</div>
 
     <div className="mx-auto mt-10 grid max-w-5xl gap-4 sm:grid-cols-2 lg:gap-5">
       {[
