@@ -49,7 +49,7 @@ function ToolCard({ tool }) {
       className="
         group
         flex
-        min-h-[230px]
+        min-h-[250px]
         w-full
         flex-col
         rounded-2xl
@@ -57,7 +57,6 @@ function ToolCard({ tool }) {
         border-slate-800
         bg-[#0b0b0b]
         p-6
-        outline-none
         transition-all
         duration-300
         hover:-translate-y-1
@@ -65,18 +64,18 @@ function ToolCard({ tool }) {
         hover:bg-[#0e0e0e]
         hover:shadow-[0_20px_50px_rgba(239,68,68,0.12)]
         focus:border-red-500
+        focus:outline-none
         focus:shadow-[0_0_35px_rgba(239,68,68,0.18)]
         active:border-red-500
-        sm:min-h-[245px]
+        sm:min-h-[265px]
         sm:p-7
       "
     >
-      {/* Icon */}
       <div
         className="
           flex
-          h-12
-          w-12
+          h-14
+          w-14
           shrink-0
           items-center
           justify-center
@@ -90,52 +89,46 @@ function ToolCard({ tool }) {
           group-hover:border-red-500/40
           group-hover:bg-red-500/15
           group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]
-          sm:h-14
-          sm:w-14
         "
       >
         <Icon
-          size={26}
+          size={27}
           strokeWidth={1.8}
           className="transition-transform duration-300 group-hover:scale-110"
         />
       </div>
 
-      {/* Title */}
       <h3
         className="
-          mt-5
-          text-lg
+          mt-6
+          text-xl
           font-extrabold
-          leading-tight
+          leading-7
           tracking-tight
           text-white
           transition-colors
           duration-300
           group-hover:text-red-500
-          sm:mt-6
-          sm:text-xl
+          sm:text-2xl
         "
       >
         {tool.title}
       </h3>
 
-      {/* Description */}
       <p
         className="
           mt-3
-          min-h-[48px]
+          min-h-[72px]
           text-sm
           leading-6
           text-slate-400
-          sm:text-[15px]
-          sm:leading-6
+          sm:text-base
+          sm:leading-7
         "
       >
         {tool.description}
       </p>
 
-      {/* Bottom Action */}
       <div
         className="
           mt-auto
@@ -154,7 +147,7 @@ function ToolCard({ tool }) {
       >
         Learn more
         <ArrowRight
-          size={18}
+          size={19}
           className="transition-transform duration-300 group-hover:translate-x-1"
         />
       </div>
