@@ -55,13 +55,13 @@ function VideoIdExtractor({ query = "" }) {
 
     let normalized = input;
 
-    if (!/^https?:\\/\\//i.test(normalized)) {
+    if (!/^https?:\/\//i.test(normalized)) {
       normalized = `https://${normalized}`;
     }
 
     try {
       const parsed = new URL(normalized);
-      const host = parsed.hostname.toLowerCase().replace(/^www\\./, "");
+      const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
 
       let id = "";
 
