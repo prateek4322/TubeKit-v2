@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Copy, ExternalLink, RotateCcw, Search, Youtube } from "lucide-react";
+import { Copy, ExternalLink, RotateCcw, Search} from "lucide-react";
 import { Link } from "react-router-dom";
 
 import SEO from "@/components/common/SEO";
