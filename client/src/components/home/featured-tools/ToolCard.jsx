@@ -49,11 +49,12 @@ function ToolCard({ tool }) {
       to={tool.path}
       className="
         group block
-        min-h-[235px]
+        min-h-[240px]
+        w-full
         rounded-2xl
         border border-slate-800
         bg-[#0b0b0b]
-        px-7 py-8
+        p-7
         outline-none
         transition-all duration-300
 
@@ -68,64 +69,72 @@ function ToolCard({ tool }) {
         active:border-red-500
         active:shadow-[0_0_35px_rgba(239,68,68,0.22)]
 
-        sm:min-h-[250px]
-        sm:px-8
-        sm:py-9
+        sm:min-h-[255px]
+        sm:p-8
       "
     >
       {/* Icon */}
       <div
         className="
           flex
-          h-14 w-14
+          h-14
+          w-14
           shrink-0
-          items-center justify-center
+          items-center
+          justify-center
           rounded-xl
-          border border-red-500/15
+          border
+          border-red-500/20
           bg-red-500/10
           text-red-500
-          transition-all duration-300
+          transition-all
+          duration-300
 
-          group-hover:border-red-500/30
+          group-hover:border-red-500/40
           group-hover:bg-red-500/15
           group-hover:shadow-[0_0_30px_rgba(239,68,68,0.15)]
 
-          sm:h-16 sm:w-16
+          sm:h-16
+          sm:w-16
         "
       >
         <Icon
-          size={30}
+          size={29}
           strokeWidth={1.8}
-          className="transition-transform duration-300 group-hover:scale-110"
+          className="
+            transition-transform
+            duration-300
+            group-hover:scale-110
+          "
         />
       </div>
 
       {/* Title */}
-      <div className="mt-7">
-        <h3
-          className="
-            text-xl
-            font-extrabold
-            leading-tight
-            tracking-tight
-            text-white
-            transition-colors duration-300
+      <h3
+        className="
+          mt-7
+          text-xl
+          font-extrabold
+          leading-tight
+          tracking-tight
+          text-white
+          transition-colors
+          duration-300
 
-            group-hover:text-red-500
-            group-focus:text-red-500
+          group-hover:text-red-500
+          group-focus:text-red-500
 
-            sm:text-2xl
-          "
-        >
-          {tool.title}
-        </h3>
-      </div>
+          sm:text-2xl
+        "
+      >
+        {tool.title}
+      </h3>
 
       {/* Description */}
       <p
         className="
           mt-4
-          max-w-2xl
+          max-w-xl
           text-sm
           leading-6
           text-slate-400
@@ -147,7 +156,8 @@ function ToolCard({ tool }) {
           text-base
           font-semibold
           text-red-500
-          transition-all duration-300
+          transition-all
+          duration-300
 
           group-hover:gap-3
 
@@ -158,7 +168,11 @@ function ToolCard({ tool }) {
 
         <ArrowRight
           size={20}
-          className="transition-transform duration-300 group-hover:translate-x-1"
+          className="
+            transition-transform
+            duration-300
+            group-hover:translate-x-1
+          "
         />
       </div>
     </Link>
