@@ -81,7 +81,7 @@ function Navbar() {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-5 pr-3 lg:gap-6 lg:pr-6 xl:pr-8 md:flex">
+        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-5 pr-5 lg:gap-6 lg:pr-6 md:flex">
           {/* Home */}
           <NavLink to="/" onClick={handleHomeClick} className={desktopLinkClass}>
             Home
