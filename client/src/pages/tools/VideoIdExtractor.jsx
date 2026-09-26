@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Copy, ExternalLink, RotateCcw, Search} from "lucide-react";
+import { Copy, ExternalLink, RotateCcw, Search, Video } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import SEO from "@/components/common/SEO";
@@ -227,7 +227,7 @@ function VideoIdExtractor({ query = "" }) {
             </div>
 
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-              <Youtube size={22} />
+              <Video size={22} />
             </div>
           </div>
 
@@ -290,7 +290,7 @@ function VideoIdExtractor({ query = "" }) {
             <div className="border-b border-white/10 bg-green-500/5 p-6 sm:p-8">
               <div className="flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-green-500/10 text-green-400">
-                  <Youtube size={22} />
+                  <Video size={22} />
                 </div>
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
