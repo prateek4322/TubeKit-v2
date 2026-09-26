@@ -34,67 +34,108 @@ function SectionHeading({ children, color = "blue" }) {
 function VideoIdExtractor({ query = "" }) {
   const [url, setUrl] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [videoInfo, setVideoInfo] = useState(null);
   const [loading, setLoading] = useState(false);
 
   /* =========================================================
      EXTRACT VIDEO ID
      ========================================================= */
 
-  const extractVideoId = useCallback((inputValue = url, { silent = false } = {}) => {
-    const input = String(inputValue || "").trim();
-
-    if (!input) {
-      setVideoId("");
-      if (!silent) alert("Please enter a YouTube URL");
-      return;
-    }
-
-    setLoading(true);
-    setVideoId("");
-
-    let normalized = input;
-
-    if (!/^https?:\/\//i.test(normalized)) {
-      normalized = `https://${normalized}`;
-    }
+  const loadVideoInfo = useCallback(async (id) => {
+    const watchUrl = `https://www.youtube.com/watch?v=${id}`;
 
     try {
-      const parsed = new URL(normalized);
-      const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+      const response = await fetch(
+        `https://www.youtube.com/oembed?url=${encodeURIComponent(watchUrl)}&format=json`
+      );
+      if (!response.ok) throw new Error(`oEmbed request failed: ${response.status}`);
 
-      let id = "";
+      const data = await response.json();
 
-      if (host === "youtu.be") {
-        id = parsed.pathname.split("/").filter(Boolean)[0] || "";
-      } else if (
-        host === "youtube.com" ||
-        host === "m.youtube.com" ||
-        host === "music.youtube.com"
-      ) {
-        if (parsed.pathname === "/watch") {
-          id = parsed.searchParams.get("v") || "";
-        } else if (
-          parsed.pathname.startsWith("/shorts/") ||
-          parsed.pathname.startsWith("/embed/") ||
-          parsed.pathname.startsWith("/live/")
-        ) {
-          id = parsed.pathname.split("/").filter(Boolean)[1] || "";
-        }
-      }
+      setVideoInfo({
+        videoId: id,
+        title: data.title || "YouTube Video",
+        authorName: data.author_name || "YouTube Creator",
+        authorUrl: data.author_url || "",
+        thumbnailUrl: data.thumbnail_url || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        watchUrl,
+        embedUrl: `https://www.youtube.com/embed/${id}`,
+      });
+    } catch (error) {
+      console.warn("VIDEO INFO LOAD WARNING:", error);
+      setVideoInfo({
+        videoId: id,
+        title: "YouTube Video",
+        authorName: "Information unavailable",
+        authorUrl: "",
+        thumbnailUrl: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        watchUrl,
+        embedUrl: `https://www.youtube.com/embed/${id}`,
+      });
+    }
+  }, []);
 
-      if (/^[A-Za-z0-9_-]{11}$/.test(id)) {
-        setVideoId(id);
+  const extractVideoId = useCallback(
+    async (inputValue, { silent = false } = {}) => {
+      const input = String(inputValue || "").trim();
+
+      if (!input) {
+        setVideoId("");
+        setVideoInfo(null);
+        if (!silent) alert("Please enter a YouTube URL");
         return;
       }
 
+      setLoading(true);
       setVideoId("");
-      if (!silent) alert("Invalid YouTube URL");
-    } catch (error) {
-      console.error("VIDEO ID EXTRACTION ERROR:", error);
-      setVideoId("");
-      if (!silent) alert("Invalid YouTube URL");
-    }
-  }, [url]);
+      setVideoInfo(null);
+
+      let normalized = input;
+      if (!/^https?:\/\//i.test(normalized)) normalized = `https://${normalized}`;
+
+      try {
+        const parsed = new URL(normalized);
+        const host = parsed.hostname.toLowerCase().replace(/^www\./, "");
+        let id = "";
+
+        if (host === "youtu.be") {
+          id = parsed.pathname.split("/").filter(Boolean)[0] || "";
+        } else if (
+          host === "youtube.com" ||
+          host === "m.youtube.com" ||
+          host === "music.youtube.com"
+        ) {
+          if (parsed.pathname === "/watch") {
+            id = parsed.searchParams.get("v") || "";
+          } else if (
+            parsed.pathname.startsWith("/shorts/") ||
+            parsed.pathname.startsWith("/embed/") ||
+            parsed.pathname.startsWith("/live/")
+          ) {
+            id = parsed.pathname.split("/").filter(Boolean)[1] || "";
+          }
+        }
+
+        if (!/^[A-Za-z0-9_-]{11}$/.test(id)) {
+          setVideoId("");
+          setVideoInfo(null);
+          if (!silent) alert("Invalid YouTube URL");
+          return;
+        }
+
+        setVideoId(id);
+        await loadVideoInfo(id);
+      } catch (error) {
+        console.error("VIDEO ID EXTRACTION ERROR:", error);
+        setVideoId("");
+        setVideoInfo(null);
+        if (!silent) alert("Invalid YouTube URL");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [loadVideoInfo]
+  );
 
   /* =========================================================
      HERO AUTO GENERATION
@@ -132,6 +173,7 @@ function VideoIdExtractor({ query = "" }) {
     setLoading(false);
     setUrl("");
     setVideoId("");
+    setVideoInfo(null);
   };
 
   /* =========================================================
@@ -260,7 +302,7 @@ function VideoIdExtractor({ query = "" }) {
               }}
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !loading) {
-                  extractVideoId();
+                  extractVideoId(url);
                 }
               }}
               placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
@@ -275,7 +317,7 @@ function VideoIdExtractor({ query = "" }) {
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
-              onClick={() => extractVideoId()}
+              onClick={() => extractVideoId(url)}
               disabled={loading || !url.trim()}
               className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 px-6 py-3 font-black text-white shadow-lg shadow-red-500/10 transition hover:-translate-y-0.5 hover:shadow-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
             >
@@ -305,7 +347,27 @@ function VideoIdExtractor({ query = "" }) {
             RESULT
             =================================================== */}
 
-        {videoId && (
+        {loading && (
+          <div className="mt-10 overflow-hidden rounded-3xl border border-blue-500/20 bg-[#090909] p-8 text-center shadow-[0_0_60px_rgba(59,130,246,0.10)]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500/20 border-t-blue-500" />
+            </div>
+            <h3 className="mt-5 text-xl font-bold text-white">Finding YouTube Video</h3>
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-400">
+              Extracting the Video ID and loading the video's title, channel, thumbnail, and player.
+            </p>
+            <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {["Video ID", "Video title", "Channel", "Video preview"].map((item) => (
+                <div key={item} className="rounded-xl border border-blue-500/10 bg-blue-500/[0.03] px-4 py-3 text-left text-sm text-slate-300">
+                  <span className="mr-2 text-blue-400">â—</span>
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {videoId && !loading && (
           <div className="mt-10 overflow-hidden rounded-3xl border border-green-500/20 bg-[#090909] shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
             <div className="border-b border-white/10 bg-green-500/5 p-6 sm:p-8">
               <div className="flex items-center gap-3">
@@ -324,6 +386,60 @@ function VideoIdExtractor({ query = "" }) {
             </div>
 
             <div className="p-6 sm:p-8">
+              {videoInfo && (
+                <div className="mb-6 overflow-hidden rounded-2xl border border-white/10 bg-[#050505]">
+                  <div className="aspect-video w-full bg-black">
+                    <iframe
+                      src={videoInfo.embedUrl}
+                      title={videoInfo.title}
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                    />
+                  </div>
+                  <div className="grid gap-5 p-5 sm:grid-cols-[180px_1fr] sm:p-6">
+                    <img
+                      src={videoInfo.thumbnailUrl}
+                      alt={videoInfo.title}
+                      className="aspect-video w-full rounded-xl object-cover"
+                      loading="lazy"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-400">
+                        Video Information
+                      </p>
+                      <h3 className="mt-2 text-xl font-black leading-7 text-white">
+                        {videoInfo.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-slate-400">
+                        Channel: <span className="font-semibold text-slate-200">{videoInfo.authorName}</span>
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        <a
+                          href={videoInfo.watchUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-flex items-center gap-2 rounded-xl bg-blue-500 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-blue-400"
+                        >
+                          <ExternalLink size={16} />
+                          Open Video
+                        </a>
+                        {videoInfo.authorUrl && (
+                          <a
+                            href={videoInfo.authorUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-semibold text-slate-300 transition hover:border-blue-500/30 hover:text-white"
+                          >
+                            Open Channel
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="rounded-2xl border border-white/10 bg-[#050505] p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
                   Extracted ID
@@ -561,8 +677,7 @@ function VideoIdExtractor({ query = "" }) {
 
             </div>
           </div>
-
-          {/* =================================================
+{/* =================================================
               VIDEO ID VS CHANNEL ID
               ================================================= */}
 
@@ -746,8 +861,7 @@ function VideoIdExtractor({ query = "" }) {
               </li>
             </ul>
           </div>
-
-          {/* =================================================
+{/* =================================================
               RELATED TOOLS
               ================================================= */}
 
