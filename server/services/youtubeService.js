@@ -138,80 +138,186 @@ export function extractVideoId(input) {
 
 export async function resolveChannelId(input) {
   const API_KEY = getApiKey();
-
   let value = String(input || "").trim();
 
   if (!value) {
     throw new Error("YouTube channel is required");
   }
 
-  value = value.replace(/\/$/, "");
+  value = value.replace(/\/+$/, "");
 
-  if (/^UC[\w-]{22}$/.test(value)) {
+  // Direct YouTube Channel ID
+  if (/^UC[A-Za-z0-9_-]{22}$/.test(value)) {
     return value;
   }
 
-  if (value.includes("/channel/")) {
-    return value
-      .split("/channel/")[1]
-      .split("/")[0];
-  }
+  // Normalize URL-like input
+  const normalizedValue = /^https?:\/\//i.test(value)
+    ? value
+    : `https://${value}`;
 
-  if (value.includes("@")) {
-    const handle =
-      value.match(/@([^/?]+)/)?.[1];
-
-    if (!handle) {
-      throw new Error("Invalid Handle");
-    }
-
-    const data = await fetchJson(
-      `${BASE_URL}/channels?part=id&forHandle=${encodeURIComponent(
-        handle
-      )}&key=${API_KEY}`
-    );
-
-    if (data.items?.length) {
-      return data.items[0].id;
-    }
-
-    const search = await fetchJson(
-      `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
-        handle
-      )}&maxResults=1&key=${API_KEY}`
-    );
-
-    if (!search.items?.length) {
-      throw new Error("Channel not found");
-    }
-
-    return search.items[0].snippet.channelId;
-  }
+  let url = null;
 
   try {
-    const videoId = extractVideoId(value);
+    url = new URL(normalizedValue);
+  } catch {
+    url = null;
+  }
 
-    const video = await fetchJson(
-      `${BASE_URL}/videos?part=snippet&id=${encodeURIComponent(
-        videoId
-      )}&key=${API_KEY}`
-    );
+  if (url) {
+    const hostname = url.hostname
+      .toLowerCase()
+      .replace(/^www\./, "")
+      .replace(/^m\./, "");
 
-    if (!video.items?.length) {
-      throw new Error("Video not found");
+    // ---------------------------------------------------------
+    // YouTube channel URLs
+    // ---------------------------------------------------------
+    if (
+      hostname === "youtube.com" ||
+      hostname === "youtube-nocookie.com"
+    ) {
+      const pathname = url.pathname.replace(/\/+$/, "");
+
+      // /channel/UCxxxxxxxxxxxxxxxxxxxxxx
+      const channelMatch = pathname.match(
+        /^\/channel\/(UC[A-Za-z0-9_-]{22})$/i
+      );
+
+      if (channelMatch) {
+        return channelMatch[1];
+      }
+
+      // /@handle
+      const handleMatch = pathname.match(/^\/@([^/]+)$/);
+
+      if (handleMatch) {
+        const handle = handleMatch[1].replace(/^@/, "");
+
+        const data = await fetchJson(
+          `${BASE_URL}/channels?part=id&forHandle=${encodeURIComponent(
+            handle
+          )}&key=${API_KEY}`
+        );
+
+        if (data.items?.length) {
+          return data.items[0].id;
+        }
+
+        const search = await fetchJson(
+          `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
+            handle
+          )}&maxResults=5&key=${API_KEY}`
+        );
+
+        if (search.items?.length) {
+          return search.items[0].snippet.channelId;
+        }
+
+        throw new Error("Channel not found for this handle");
+      }
+
+      // /user/username
+      const userMatch = pathname.match(/^\/user\/([^/]+)$/i);
+
+      if (userMatch) {
+        const username = userMatch[1];
+
+        const data = await fetchJson(
+          `${BASE_URL}/channels?part=id&forUsername=${encodeURIComponent(
+            username
+          )}&key=${API_KEY}`
+        );
+
+        if (data.items?.length) {
+          return data.items[0].id;
+        }
+
+        const search = await fetchJson(
+          `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
+            username
+          )}&maxResults=5&key=${API_KEY}`
+        );
+
+        if (search.items?.length) {
+          return search.items[0].snippet.channelId;
+        }
+
+        throw new Error("Channel not found for this username");
+      }
+
+      // /c/custom-name
+      const customMatch = pathname.match(/^\/c\/([^/]+)$/i);
+
+      if (customMatch) {
+        const customName = customMatch[1];
+
+        const search = await fetchJson(
+          `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
+            customName
+          )}&maxResults=5&key=${API_KEY}`
+        );
+
+        if (search.items?.length) {
+          return search.items[0].snippet.channelId;
+        }
+
+        throw new Error("Channel not found for this custom URL");
+      }
+
+      // Standard YouTube video URL:
+      // /watch?v=...
+      // /shorts/...
+      // /embed/...
+      // /live/...
+      try {
+        const videoId = extractVideoId(value);
+
+        const video = await fetchJson(
+          `${BASE_URL}/videos?part=snippet&id=${encodeURIComponent(
+            videoId
+          )}&key=${API_KEY}`
+        );
+
+        if (video.items?.length) {
+          return video.items[0].snippet.channelId;
+        }
+      } catch {
+        // Continue with channel-name search.
+      }
     }
 
-    return video.items[0].snippet.channelId;
-  } catch (error) {
-    if (error.message !== "Invalid YouTube URL") {
-      throw error;
+    // youtu.be video URL
+    if (hostname === "youtu.be") {
+      try {
+        const videoId = extractVideoId(value);
+
+        const video = await fetchJson(
+          `${BASE_URL}/videos?part=snippet&id=${encodeURIComponent(
+            videoId
+          )}&key=${API_KEY}`
+        );
+
+        if (video.items?.length) {
+          return video.items[0].snippet.channelId;
+        }
+      } catch {
+        // Continue with channel-name search.
+      }
     }
   }
+
+  // ---------------------------------------------------------
+  // Plain channel name / @handle fallback
+  // ---------------------------------------------------------
+  const cleanSearch = value.startsWith("@")
+    ? value.slice(1)
+    : value;
 
   const search = await fetchJson(
     `${BASE_URL}/search?part=snippet&type=channel&q=${encodeURIComponent(
-      value
-    )}&maxResults=1&key=${API_KEY}`
+      cleanSearch
+    )}&maxResults=5&key=${API_KEY}`
   );
 
   if (!search.items?.length) {
@@ -811,7 +917,7 @@ export async function analyzeYouTubeChannel(input) {
       channelHealth: `${score}/100`,
       optimalLength,
       growthPotential,
-      consistency:`${consistency}%`,
+      consistency: `${consistency}%`,
       contentQuality: `${contentQuality}/100`,
       contentVelocity:
         uploadsPerMonth > 0
@@ -873,6 +979,7 @@ export async function analyzeYouTubeChannel(input) {
       .map((check) => check.detail),
   };
 }
+
 /*
 |--------------------------------------------------------------------------
 | Analyze Video SEO
@@ -1032,8 +1139,6 @@ export async function analyzeVideoSEO(input) {
     recommendations,
   };
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Get YouTube Comments
