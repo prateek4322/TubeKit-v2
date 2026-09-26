@@ -9,6 +9,7 @@ import {
   analyzeYouTubeChannel,
   analyzeYouTubeSEO,
   readYouTubeComments,
+  findChannelId,
 } from "../controllers/youtubeController.js";
 
 const router = express.Router();
@@ -99,6 +100,17 @@ router.get(
 router.get(
   "/comments",
   readYouTubeComments
+);
+
+/*
+|--------------------------------------------------------------------------
+| Channel ID Finder
+|--------------------------------------------------------------------------
+*/
+
+router.post(
+  "/channel-id",
+  findChannelId
 );
 
 export default router;
