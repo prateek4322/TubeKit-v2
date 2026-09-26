@@ -972,7 +972,7 @@ function Home() {
               className="inline-flex items-center gap-2 rounded-xl bg-red-500 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/20"
             >
                 View All Blog Posts
-              <ArrowRight className="h-10 w-50" />
+              <ArrowRight className="h-10 w-30" />
             </a>
           </div>
         </div>
@@ -1000,7 +1000,7 @@ function Home() {
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-red-500 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/20"
           >
               Explore Creator Tools
-            <ArrowRight className="h-10 w-50" />
+            <ArrowRight className="h-10 w-30" />
           </a>
         </div>
       </section>
