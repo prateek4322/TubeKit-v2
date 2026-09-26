@@ -6,8 +6,8 @@ import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 
-function CommentReader() {
-  const [query, setQuery] = useState("");
+function CommentReader({ query: initialQuery = "" }) {
+  const [query, setQuery] = useState(initialQuery);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -61,14 +61,18 @@ function CommentReader() {
   };
 
   useEffect(() => {
-    if (!query) return;
+    const value = String(initialQuery || "").trim();
+
+    if (!value) return;
+
+    setQuery(value);
 
     const timer = setTimeout(() => {
-      readComments(query);
+      readComments(value);
     }, 0);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [initialQuery]);
 
   const copyText = async (text) => {
     if (!text) return;
@@ -155,8 +159,7 @@ function CommentReader() {
 
   return (
     <>
-
-<SEO
+      <SEO
         title="YouTube Comment Reader - Read & Analyze Comments | TubeKit"
         description="Read public YouTube comments with TubeKit's Comment Reader. View comments, authors, likes, replies, timestamps, comment statistics and available sentiment insights."
         canonical="/tools/comment-reader"
@@ -322,7 +325,7 @@ function CommentReader() {
               />
             </div>
 
-{!!result.sentiment && (
+            {!!result.sentiment && (
               <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -477,7 +480,7 @@ function CommentReader() {
                       comment.authorProfileImage ||
                       comment.snippet?.authorProfileImageUrl;
 
-return (
+                    return (
                       <article
                         key={
                           comment.id ||
@@ -540,7 +543,7 @@ return (
 
                               {comment.sentiment && (
                                 <span className="text-green-400">
-                                  Sentiment: {comment.sentiment}
+Sentiment: {comment.sentiment}
                                 </span>
                               )}
                             </div>
@@ -617,7 +620,7 @@ return (
               audience insights.
             </p>
 
-<div className="mx-auto mt-7 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mx-auto mt-7 grid max-w-4xl gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {[
                 "Comment text",
                 "Comment authors",
@@ -833,3 +836,4 @@ return (
 }
 
 export default CommentReader;
+                  
