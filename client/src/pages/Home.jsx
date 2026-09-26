@@ -779,47 +779,64 @@ function Home() {
       </section>
 
 {/* BEST PRACTICES */}
-      <section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="mx-auto max-w-4xl text-center">
-          <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
-            Best Practices
-          </span>
+<section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+  <div className="mx-auto max-w-4xl text-center">
+    <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
+      Best Practices
+    </span>
 
-          <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
-            Better YouTube <span className="text-red-500">Content Practices</span>
-          </h2>
+    <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+      Better YouTube <span className="text-red-500">Content Practices</span>
+    </h2>
 
-          <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
-            Use clear topics, accurate titles and thumbnails, useful
-            descriptions, strong openings and audience feedback to improve
-            your content over time.
-          </p>
+    <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
+      Simple practices to create clearer, more useful and audience-focused
+      YouTube content.
+    </p>
 
-          <div className="mx-auto mt-10 grid max-w-5xl gap-4 text-left sm:grid-cols-2">
-            {[
-              "Keep titles accurate and easy to understand.",
-              "Match keywords with the actual topic of the video.",
-              "Use thumbnails that communicate one clear idea.",
-              "Review analytics and audience retention regularly.",
-            ].map((item, index) => (
-              <div
-                key={item}
-                className="group min-h-[100px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] sm:p-6"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-400 transition-transform duration-300 group-hover:scale-105">
-                    <Check className="h-5 w-5" />
-                  </div>
-                  <span className="pt-1 text-sm leading-7 text-slate-400 sm:text-[15px]">
-                    {item}
-                  </span>
-                </div>
-              </div>
-            ))}
+    <div className="mx-auto mt-10 grid max-w-5xl gap-4 text-left sm:grid-cols-2">
+      {[
+        {
+          title: "Clear Titles",
+          text: "Keep titles accurate and easy to understand.",
+        },
+        {
+          title: "Relevant Keywords",
+          text: "Match keywords with your actual video topic.",
+        },
+        {
+          title: "Strong Thumbnails",
+          text: "Communicate one clear idea at a glance.",
+        },
+        {
+          title: "Review Analytics",
+          text: "Track retention and audience response regularly.",
+        },
+      ].map((item, index) => (
+        <div
+          key={item.title}
+          className="group min-h-[118px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] sm:p-6"
+        >
+          <div className="flex items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-400 transition-transform duration-300 group-hover:scale-105">
+              <Check className="h-5 w-5" />
+            </div>
+
+            <div className="min-w-0">
+              <h3 className="text-base font-bold text-white sm:text-lg">
+                {item.title}
+              </h3>
+
+              <p className="mt-1.5 text-sm leading-6 text-slate-500">
+                {item.text}
+              </p>
+            </div>
           </div>
         </div>
-      </section>
-
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* FAQ */}
       <section className="w-full overflow-hidden bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
