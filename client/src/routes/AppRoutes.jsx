@@ -61,101 +61,131 @@ import CommentReader from "@/pages/tools/CommentReader";
 function TitleGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <TitleGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <TitleGenerator query={searchParams.get("q") || ""} />;
 }
 
 function DescriptionGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <DescriptionGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <DescriptionGenerator query={searchParams.get("q") || ""} />;
 }
 
 function TagsGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <TagsGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <TagsGenerator query={searchParams.get("q") || ""} />;
 }
 
 function ScriptGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <ScriptGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <ScriptGenerator query={searchParams.get("q") || ""} />;
 }
 
 function ThumbnailGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <ThumbnailGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <ThumbnailGenerator query={searchParams.get("q") || ""} />;
 }
 
 function HashtagGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <HashtagGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <HashtagGenerator query={searchParams.get("q") || ""} />;
 }
 
 function KeywordGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <KeywordGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <KeywordGenerator query={searchParams.get("q") || ""} />;
 }
 
 function HookGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <HookGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <HookGenerator query={searchParams.get("q") || ""} />;
 }
 
 function OutlineGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <OutlineGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <OutlineGenerator query={searchParams.get("q") || ""} />;
 }
 
 function ShortsGeneratorWithQuery() {
   const [searchParams] = useSearchParams();
 
-  return (
-    <ShortsGenerator
-      query={searchParams.get("q") || ""}
-    />
-  );
+  return <ShortsGenerator query={searchParams.get("q") || ""} />;
+}
+
+/* =========================================================
+   HERO SEARCH - UTILITY TOOL WRAPPERS
+   ========================================================= */
+
+function TagExtractorWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <TagExtractor query={searchParams.get("q") || ""} />;
+}
+
+function HashtagExtractorWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <HashtagExtractor query={searchParams.get("q") || ""} />;
+}
+
+function DescriptionExtractorWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <DescriptionExtractor query={searchParams.get("q") || ""} />;
+}
+
+function ShadowbanDetectorWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <ShadowbanDetector query={searchParams.get("q") || ""} />;
+}
+
+function ChannelAnalyzerWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <ChannelAnalyzer query={searchParams.get("q") || ""} />;
+}
+
+function SEOAnalyzerWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <SEOAnalyzer query={searchParams.get("q") || ""} />;
+}
+
+function CommentReaderWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <CommentReader query={searchParams.get("q") || ""} />;
+}
+
+function VideoIdExtractorWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <VideoIdExtractor query={searchParams.get("q") || ""} />;
+}
+
+function ThumbnailDownloaderWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <ThumbnailDownloader query={searchParams.get("q") || ""} />;
+}
+
+function ChannelIdFinderWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <ChannelIdFinder query={searchParams.get("q") || ""} />;
+}
+
+function MonetizationCheckerWithQuery() {
+  const [searchParams] = useSearchParams();
+
+  return <MonetizationChecker query={searchParams.get("q") || ""} />;
 }
 
 /* =========================================================
@@ -168,7 +198,6 @@ function AppRoutes() {
       <ScrollToTop />
 
       <Routes>
-
         <Route element={<MainLayout />}>
 
           {/* =========================
@@ -197,37 +226,64 @@ function AppRoutes() {
           <Route path="/cookie-policy" element={<CookiePolicy />} />
 
           {/* =========================
-              YOUTUBE UTILITY TOOLS
+              HERO UTILITY TOOLS
+              All tools available in the
+              new YouTube Creator Utilities Hero
               ========================= */}
 
           <Route
-            path="/tools/video-id-extractor"
-            element={<VideoIdExtractor />}
-          />
-
-          <Route
-            path="/tools/channel-id-finder"
-            element={<ChannelIdFinder />}
-          />
-
-          <Route
-            path="/tools/thumbnail-downloader"
-            element={<ThumbnailDownloader />}
-          />
-
-          <Route
             path="/tools/tag-extractor"
-            element={<TagExtractor />}
+            element={<TagExtractorWithQuery />}
           />
 
           <Route
             path="/tools/hashtag-extractor"
-            element={<HashtagExtractor />}
+            element={<HashtagExtractorWithQuery />}
           />
 
           <Route
             path="/tools/description-extractor"
-            element={<DescriptionExtractor />}
+            element={<DescriptionExtractorWithQuery />}
+          />
+
+          <Route
+            path="/tools/shadowban-detector"
+            element={<ShadowbanDetectorWithQuery />}
+          />
+
+          <Route
+            path="/tools/channel-analyzer"
+            element={<ChannelAnalyzerWithQuery />}
+          />
+
+          <Route
+            path="/tools/seo-analyzer"
+            element={<SEOAnalyzerWithQuery />}
+          />
+
+          <Route
+            path="/tools/comment-reader"
+            element={<CommentReaderWithQuery />}
+          />
+
+          <Route
+            path="/tools/video-id-extractor"
+            element={<VideoIdExtractorWithQuery />}
+          />
+
+          <Route
+            path="/tools/thumbnail-downloader"
+            element={<ThumbnailDownloaderWithQuery />}
+          />
+
+          <Route
+            path="/tools/channel-id-finder"
+            element={<ChannelIdFinderWithQuery />}
+          />
+
+          <Route
+            path="/tools/monetization-checker"
+            element={<MonetizationCheckerWithQuery />}
           />
 
           {/* =========================
@@ -251,8 +307,13 @@ function AppRoutes() {
           />
 
           <Route
-            path="/tools/script-generator"
-            element={<ScriptGeneratorWithQuery />}
+            path="/tools/hashtag-generator"
+            element={<HashtagGeneratorWithQuery />}
+          />
+
+          <Route
+            path="/tools/keyword-generator"
+            element={<KeywordGeneratorWithQuery />}
           />
 
           <Route
@@ -261,13 +322,8 @@ function AppRoutes() {
           />
 
           <Route
-            path="/tools/hashtag-generator"
-            element={<HashtagGeneratorWithQuery />}
-          />
-
-          <Route
-            path="/tools/keyword-generator"
-            element={<KeywordGeneratorWithQuery />}
+            path="/tools/script-generator"
+            element={<ScriptGeneratorWithQuery />}
           />
 
           <Route
@@ -283,30 +339,6 @@ function AppRoutes() {
           <Route
             path="/tools/shorts-generator"
             element={<ShortsGeneratorWithQuery />}
-          />
-
-          {/* =========================
-              ANALYSIS / CHANNEL TOOLS
-              ========================= */}
-
-          <Route
-            path="/tools/shadowban-detector"
-            element={<ShadowbanDetector />}
-          />
-
-          <Route
-            path="/tools/channel-analyzer"
-            element={<ChannelAnalyzer />}
-          />
-
-          <Route
-            path="/tools/seo-analyzer"
-            element={<SEOAnalyzer />}
-          />
-
-          <Route
-            path="/tools/comment-reader"
-            element={<CommentReader />}
           />
 
           {/* =========================
@@ -329,22 +361,11 @@ function AppRoutes() {
           />
 
           {/* =========================
-              MONETIZATION
-              ========================= */}
-
-          <Route
-            path="/tools/monetization-checker"
-            element={<MonetizationChecker />}
-          />
-
-          {/* =========================
               404
               ========================= */}
 
           <Route path="*" element={<NotFound />} />
-
         </Route>
-
       </Routes>
     </BrowserRouter>
   );
