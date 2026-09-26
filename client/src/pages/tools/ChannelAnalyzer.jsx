@@ -6,7 +6,7 @@ import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 
-function ChannelAnalyzer() {
+function ChannelAnalyzer({ query: heroQuery = "" }) {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -63,14 +63,18 @@ function ChannelAnalyzer() {
   };
 
   useEffect(() => {
-    if (!query) return;
+    const value = String(heroQuery || "").trim();
+
+    if (!value) return;
+
+    setQuery(value);
 
     const timer = setTimeout(() => {
-      analyzeChannel(query);
+      analyzeChannel(value);
     }, 0);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [heroQuery]);
 
   const copyText = async (text) => {
     if (!text) return;
@@ -226,6 +230,145 @@ function ChannelAnalyzer() {
     );
   };
 
+  const performance = result?.performance || result?.performanceMetrics || {};
+  const analytics = result?.analytics || result?.performanceAnalytics || {};
+
+  const topVideo =
+    result?.topPerformingVideo ||
+    result?.topVideo ||
+    result?.bestVideo ||
+    performance?.topPerformingVideo ||
+    null;
+
+  const averageViews = Number(statistics.averageViews);
+  const averageLikes = Number(statistics.averageLikes);
+
+  const calculatedEngagement =
+    Number.isFinite(averageViews) &&
+    averageViews > 0 &&
+    Number.isFinite(averageLikes)
+      ? ((averageLikes / averageViews) * 100).toFixed(1) + "%"
+      : performance?.engagementRate ?? "N/A";
+
+  const performanceMetrics = [
+    {
+      label: "Engagement Rate",
+      value: performance?.engagementRate ?? calculatedEngagement,
+      helper: "Percentage of viewers who interact with your content",
+      icon: "heart",
+      tone: "red",
+    },
+    {
+      label: "Channel Health",
+      value: performance?.channelHealth ?? (Number.isFinite(score) ? `${score}/100` : "N/A"),
+      helper: "Overall public channel performance and health score",
+      icon: "chart",
+      tone: "red",
+    },
+    {
+      label: "Optimal Length",
+      value: performance?.optimalLength ?? result?.optimalLength ?? "N/A",
+      helper: "Recommended video duration for your audience",
+      icon: "clock",
+      tone: "green",
+    },
+    {
+      label: "Growth Potential",
+      value: performance?.growthPotential ?? result?.growthPotential ?? "N/A",
+      helper: "Estimated opportunities from available channel signals",
+      icon: "rocket",
+      tone: "blue",
+    },
+    {
+      label: "Consistency",
+      value: performance?.consistency ?? result?.content?.consistency ?? "N/A",
+      helper: "Video publishing consistency across uploads",
+      icon: "target",
+      tone: "gray",
+    },
+    {
+      label: "Content Quality",
+      value:
+        performance?.contentQuality ??
+        (result?.content?.score !== undefined
+          ? `${result.content.score}/100`
+          : "N/A"),
+      helper: "Available content quality signal",
+      icon: "star",
+      tone: "yellow",
+    },
+    {
+      label: "Content Velocity",
+      value: performance?.contentVelocity ?? result?.content?.uploadFrequency ?? "N/A",
+      helper: "Publishing frequency and content momentum",
+      icon: "zap",
+      tone: "cyan",
+    },
+    {
+      label: "Audience Retention",
+      value: performance?.audienceRetention ?? "N/A",
+      helper: "Available audience retention or watch-time signal",
+      icon: "users",
+      tone: "teal",
+    },
+  ];
+
+  const metricTone = {
+    red: "bg-red-500/10 text-red-400",
+    green: "bg-emerald-500/10 text-emerald-400",
+    blue: "bg-blue-500/10 text-blue-400",
+    gray: "bg-slate-500/10 text-slate-300",
+    yellow: "bg-yellow-500/10 text-yellow-400",
+    cyan: "bg-cyan-500/10 text-cyan-400",
+    teal: "bg-teal-500/10 text-teal-400",
+  };
+
+  const MetricIcon = ({ type }) => {
+    const icons = {
+      heart: "â™¥",
+      chart: "â†—",
+      clock: "â—·",
+      rocket: "â—†",
+      target: "â—Ž",
+      star: "â˜…",
+      zap: "ÏŸ",
+      users: "â—",
+    };
+
+    return <span aria-hidden="true">{icons[type] || "â€¢"}</span>;
+  };
+
+  const donutData = analytics?.engagementDistribution || {
+    likes: Number(topVideo?.likeCount || statistics.averageLikes || 0),
+    comments: Number(topVideo?.commentCount || statistics.averageComments || 0),
+    shares: Number(analytics?.shares || 0),
+  };
+
+  const donutTotal =
+    Number(donutData.likes || 0) +
+    Number(donutData.comments || 0) +
+    Number(donutData.shares || 0);
+
+  const likesPercent =
+    donutTotal > 0 ? (Number(donutData.likes || 0) / donutTotal) * 100 : 70;
+  const commentsPercent =
+    donutTotal > 0 ? (Number(donutData.comments || 0) / donutTotal) * 100 : 20;
+
+  const categoryData =
+    analytics?.contentCategories ||
+    result?.content?.categories ||
+    [
+      { name: "Entertainment", value: 30 },
+      { name: "Gaming", value: 20 },
+      { name: "News", value: 15 },
+      { name: "Review", value: 20 },
+      { name: "Tech", value: 15 },
+    ];
+
+  const growthData = analytics?.growthPrediction || [];
+  const comparisonData = analytics?.videoPerformanceComparison || [];
+  const retentionData = analytics?.audienceEngagementTimeline || [];
+
   return (
     <>
       <SEO
@@ -266,9 +409,9 @@ function ChannelAnalyzer() {
         />
 
         {loading && (
-          <div className="mt-10 rounded-3xl border border-red-500/20 bg-[#090909] p-8 text-center shadow-[0_0_60px_rgba(239,68,68,0.08)]">
-            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-red-500/30 bg-red-500/10">
-              <div className="h-8 w-8 animate-spin rounded-full border-2 border-red-500/20 border-t-red-500" />
+          <div className="mx-auto mt-10 w-full max-w-5xl rounded-3xl border border-blue-500/20 bg-[#090909] p-8 text-center shadow-[0_0_60px_rgba(59,130,246,0.10)]">
+            <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full border border-blue-500/30 bg-blue-500/10">
+              <div className="h-8 w-8 animate-spin rounded-full border-2 border-blue-500/20 border-t-blue-400" />
             </div>
 
             <h3 className="mt-5 text-xl font-bold text-white">
@@ -308,361 +451,429 @@ function ChannelAnalyzer() {
         )}
 
         {result && !loading && (
-          <section className="mt-10 space-y-6">
-            <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#090909] shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-              <div className="relative h-44 overflow-hidden bg-[#111] sm:h-56 lg:h-64">
-                {channel.bannerImage || branding.bannerImage ? (
-                  <img
-                    src={channel.bannerImage || branding.bannerImage}
-                    alt={`${channel.title || "YouTube channel"} banner`}
-                    className="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="h-full w-full bg-gradient-to-r from-red-950/60 via-[#111827] to-blue-950/60" />
-                )}
+          <section className="mt-10 w-full space-y-10 text-center">
+            {/* CHANNEL PROFILE */}
+            <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-red-500/25 bg-[#171717] shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+              <div className="h-32 bg-gradient-to-r from-red-950 via-[#242424] to-blue-950 sm:h-44" />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-[#090909] via-transparent to-transparent" />
-              </div>
+              <div className="px-5 pb-7 sm:px-8">
+                <div className="-mt-14 sm:-mt-16">
+                  <div className="mx-auto h-28 w-28 overflow-hidden rounded-full border-4 border-[#171717] bg-[#242424] shadow-2xl sm:h-32 sm:w-32">
+                    {channel.profileImage || branding.profileImage ? (
+                      <img
+                        src={channel.profileImage || branding.profileImage}
+                        alt={`${channel.title || "YouTube channel"} profile`}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-4xl font-black text-red-400">
+                        {String(channel.title || "C").charAt(0).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
 
-              <div className="relative px-6 pb-7 sm:px-8">
-                <div className="-mt-14 flex flex-col gap-5 sm:-mt-16 sm:flex-row sm:items-end sm:justify-between">
-                  <div className="flex min-w-0 items-end gap-4">
-                    <div className="h-28 w-28 shrink-0 overflow-hidden rounded-full border-4 border-[#090909] bg-[#111] shadow-2xl sm:h-32 sm:w-32">
-                      {channel.profileImage || branding.profileImage ? (
-                        <img
-                          src={channel.profileImage || branding.profileImage}
-                          alt={`${channel.title || "YouTube channel"} profile`}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-red-500/10 text-3xl font-black text-red-400">
-                          {String(channel.title || "C").charAt(0).toUpperCase()}
-                        </div>
+                  <div className="mt-4">
+                    <h2 className="text-2xl font-black text-white sm:text-3xl">
+                      {channel.title || "YouTube Channel"}
+                    </h2>
+
+                    <p className="mt-1 text-sm text-slate-400">
+                      {channel.handle || channel.customUrl || "Public YouTube Channel"}
+                    </p>
+
+                    <div className="mt-2 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500">
+                      {channel.country && <span>{channel.country}</span>}
+                      {channel.publishedAt && (
+                        <span>{formatDate(channel.publishedAt)}</span>
+                      )}
+                      {channel.channelId && (
+                        <span className="max-w-full break-all">
+                          {channel.channelId}
+                        </span>
                       )}
                     </div>
-
-                    <div className="min-w-0 pb-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full bg-red-500/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-red-400">
-                          CHANNEL REPORT
-                        </span>
-
-                        {channel.handle && (
-                          <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-400">
-                            {channel.handle}
-                          </span>
-                        )}
-                      </div>
-
-                      <h2 className="mt-3 truncate text-2xl font-black text-white sm:text-3xl">
-                        {channel.title || "YouTube Channel"}
-                      </h2>
-
-                      <p className="mt-1 text-sm text-slate-500">
-                        Channel ID: {channel.channelId || "N/A"}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    {channel.channelUrl && (
-                      <a
-                        href={channel.channelUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="rounded-xl border border-blue-500/30 bg-blue-500/10 px-4 py-2.5 text-sm font-bold text-blue-300 transition hover:bg-blue-500/15"
-                      >
-                        Open Channel
-                      </a>
-                    )}
-
-                    <button
-                      type="button"
-                      onClick={copyReport}
-                      className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-bold text-red-300 transition hover:bg-red-500/15"
-                    >
-                      Copy Report
-                    </button>
                   </div>
                 </div>
 
-                {!!channel.description && (
-                  <div className="mt-7 max-w-4xl">
-                    <p className="whitespace-pre-line text-sm leading-7 text-slate-400">
-                      {channel.description}
-                    </p>
-                  </div>
-                )}
-
-                <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
-                  <span>
-                    Joined:{" "}
-                    <strong className="text-slate-300">
-                      {formatDate(channel.publishedAt)}
-                    </strong>
-                  </span>
-
-                  {channel.country && (
-                    <span>
-                      Country:{" "}
-                      <strong className="text-slate-300">
-                        {channel.country}
-                      </strong>
-                    </span>
-                  )}
-
-                  {channel.customUrl && (
-                    <span>
-                      URL:{" "}
-                      <strong className="text-slate-300">
-                        {channel.customUrl}
-                      </strong>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <MetricCard
-                label="Subscribers"
-                value={formatNumber(channel.subscriberCount)}
-                helper="Public subscriber count"
-                icon="S"
-              />
-
-              <MetricCard
-                label="Total Views"
-                value={formatNumber(channel.viewCount)}
-                helper="Lifetime channel views"
-                icon="V"
-              />
-
-              <MetricCard
-                label="Videos"
-                value={formatNumber(channel.videoCount)}
-                helper="Published videos"
-                icon="C"
-              />
-
-              <MetricCard
-                label="Channel Score"
-                value={
-                  Number.isFinite(score) ? `${score}/100` : "N/A"
-                }
-                helper={scoreLabel}
-                icon="A"
-              />
-            </div>
-
-            <div className="grid gap-6 lg:grid-cols-3">
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8 lg:col-span-2">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
-                  Channel Overview
-                </p>
-
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Channel Performance Snapshot
-                </h3>
-
-                <div className="mt-7 space-y-6">
-                  <ScoreBar label="Overall Channel" score={result.score} />
-                  <ScoreBar label="Channel SEO" score={result.seo?.score} />
-                  <ScoreBar
-                    label="Branding"
-                    score={result.branding?.score}
-                  />
-                  <ScoreBar
-                    label="Content Signals"
-                    score={result.content?.score}
-                  />
-                  <ScoreBar
-                    label="Description"
-                    score={result.description?.score}
-                  />
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className={`text-5xl font-black ${scoreTone}`}>
-                  {Number.isFinite(score) ? score : "N/A"}
-                </p>
-
-                <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-slate-500">
-                  Channel Score
-                </p>
-
-                <p className={`mt-4 text-lg font-bold ${scoreTone}`}>
-                  {scoreLabel}
-                </p>
-
-                <p className="mt-4 text-sm leading-6 text-slate-500">
-                  This score is a TubeKit analytical indicator based on
-                  available public channel information and returned checks.
-                </p>
-              </div>
-            </div>
-
-            <div className="grid gap-6 lg:grid-cols-2">
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
-                  Channel Statistics
-                </p>
-
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Detailed Numbers
-                </h3>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                  <MetricCard
-                    label="Subscribers"
-                    value={formatNumber(statistics.subscriberCount ?? channel.subscriberCount)}
-                    helper="Current public count"
-                    icon="S"
-                  />
-
-                  <MetricCard
-                    label="Views"
-                    value={formatNumber(statistics.viewCount ?? channel.viewCount)}
-                    helper="Total public views"
-                    icon="V"
-                  />
-
-                  <MetricCard
-                    label="Videos"
-                    value={formatNumber(statistics.videoCount ?? channel.videoCount)}
-                    helper="Total uploads"
-                    icon="U"
-                  />
-
-                  <MetricCard
-                    label="Avg. Views"
-                    value={formatNumber(statistics.averageViews)}
-                    helper="Average views per analyzed content set"
-                    icon="A"
-                  />
-
-                  <MetricCard
-                    label="Avg. Likes"
-                    value={formatNumber(statistics.averageLikes)}
-                    helper="Average likes"
-                    icon="L"
-                  />
-
-                 <MetricCard
-                    label="Avg. Comments"
-                    value={formatNumber(statistics.averageComments)}
-                    helper="Average comments"
-                    icon="C"
-                  />
-                </div>
-              </div>
-
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-yellow-400">
-                  Channel Details
-                </p>
-
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Profile Information
-                </h3>
-
-                <div className="mt-6 space-y-3">
+                <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-2">
                   {[
-                    ["Channel Name", channel.title],
-                    ["Handle", channel.handle],
-                    ["Channel ID", channel.channelId],
-                    ["Custom URL", channel.customUrl],
-                    ["Country", channel.country],
-                    ["Created", formatDate(channel.publishedAt)],
-                    ["Subscribers", formatNumber(channel.subscriberCount)],
-                    ["Total Views", formatNumber(channel.viewCount)],
-                    ["Videos", formatNumber(channel.videoCount)],
-                  ].map(([label, value]) => (
+                    ["Subscribers", formatNumber(channel.subscriberCount), "users"],
+                    ["Total Views", formatNumber(channel.viewCount), "eye"],
+                    ["Videos", formatNumber(channel.videoCount), "video"],
+                    ["Channel Score", Number.isFinite(score) ? `${score}/100` : "N/A", "heart"],
+                  ].map(([label, value, icon]) => (
                     <div
                       key={label}
-                      className="flex items-center justify-between gap-5 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3"
+                      className="rounded-2xl border border-white/5 bg-[#222] p-5 text-center transition hover:border-red-500/30"
                     >
-                      <span className="text-sm text-slate-500">{label}</span>
-                      <span className="max-w-[65%] break-words text-right text-sm font-semibold text-slate-200">
-                        {value || "N/A"}
-                      </span>
+                      <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+                        {icon === "users" ? "â—" : icon === "eye" ? "â—‰" : icon === "video" ? "â– " : "â™¥"}
+                      </div>
+                      <p className="mt-3 text-2xl font-black text-white">
+                        {value}
+                      </p>
+                      <p className="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
+                        {label}
+                      </p>
                     </div>
                   ))}
                 </div>
               </div>
             </div>
 
-            <div className="grid gap-6 lg:grid-cols-2">
-              <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#090909]">
-                <div className="border-b border-white/10 p-6 sm:p-8">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
-                    Channel Branding
-                  </p>
+            {/* PERFORMANCE METRICS */}
+            <section className="mx-auto w-full max-w-5xl">
+              <div className="mb-6 flex items-center justify-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+                  â–¤
+                </div>
+                <h2 className="text-2xl font-black text-white sm:text-3xl">
+                  Performance Metrics
+                </h2>
+              </div>
 
-                  <h3 className="mt-2 text-2xl font-black text-white">
-                    Profile & Banner
-                  </h3>
+              <div className="grid gap-4 sm:grid-cols-2">
+                {performanceMetrics.map((item) => (
+                  <div
+                    key={item.label}
+                    className="min-h-[142px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5 text-center transition duration-300 hover:-translate-y-1 hover:border-red-500/40"
+                  >
+                    <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-lg font-black">
+                      <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${metricTone[item.tone]}`}>
+                        <MetricIcon type={item.icon} />
+                      </span>
+                    </div>
+
+                    <p className="mt-3 text-xs font-bold text-slate-300">
+                      {item.label}
+                    </p>
+
+                    <p className="mt-1 break-words text-xl font-black text-white sm:text-2xl">
+                      {item.value}
+                    </p>
+
+                    <p className="mx-auto mt-2 max-w-xs text-xs leading-5 text-slate-500">
+                      {item.helper}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* TOP PERFORMING VIDEO */}
+            {topVideo && (
+              <section className="mx-auto w-full max-w-5xl">
+                <div className="mb-6 flex items-center justify-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+                    â˜…
+                  </div>
+                  <h2 className="text-2xl font-black text-white sm:text-3xl">
+                    Top Performing Video
+                  </h2>
                 </div>
 
-                <div className="p-6 sm:p-8">
-                  <div className="overflow-hidden rounded-2xl border border-white/10 bg-[#111]">
-                    {channel.bannerImage || branding.bannerImage ? (
-                      <img
-                        src={channel.bannerImage || branding.bannerImage}
-                        alt={`${channel.title || "Channel"} banner preview`}
-                        className="aspect-[5/1] w-full object-cover"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="flex aspect-[5/1] items-center justify-center bg-gradient-to-r from-red-950/60 via-[#111827] to-blue-950/60 text-sm text-slate-500">
-                        Banner not available
-                      </div>
-                    )}
+                <div className="overflow-hidden rounded-3xl border border-white/10 bg-[#1c1c1c] text-center">
+                  <div className="flex flex-wrap items-center justify-center gap-5 border-b border-white/10 bg-[#211b19] px-5 py-4">
+                    <span className="rounded-full bg-red-500 px-4 py-2 text-xs font-bold text-white">
+                      Best Performer
+                    </span>
+                    <span className="text-sm text-slate-300">
+                      Views: {formatNumber(topVideo.viewCount || topVideo.views)}
+                    </span>
+                    <span className="text-sm text-slate-300">
+                      Likes: {formatNumber(topVideo.likeCount || topVideo.likes)}
+                    </span>
                   </div>
 
-                  <div className="mt-6 flex items-center gap-5">
-                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-full border border-white/10 bg-[#111]">
-                      {channel.profileImage || branding.profileImage ? (
+                  <div className="grid gap-6 p-5 text-center md:grid-cols-[1.15fr_1fr] md:p-7">
+                    <div className="overflow-hidden rounded-2xl bg-[#111]">
+                      {topVideo.thumbnail || topVideo.thumbnailUrl ? (
                         <img
-                          src={channel.profileImage || branding.profileImage}
-                          alt={`${channel.title || "Channel"} profile preview`}
-                          className="h-full w-full object-cover"
+                          src={topVideo.thumbnail || topVideo.thumbnailUrl}
+                          alt={topVideo.title || "Top performing YouTube video"}
+                          className="aspect-video h-full w-full object-cover"
                           loading="lazy"
                         />
                       ) : (
-                        <div className="flex h-full w-full items-center justify-center bg-red-500/10 text-2xl font-black text-red-400">
-                          {String(channel.title || "C").charAt(0).toUpperCase()}
+                        <div className="flex aspect-video items-center justify-center text-sm text-slate-500">
+                          Thumbnail not available
                         </div>
                       )}
                     </div>
 
-                    <div>
-                      <p className="font-bold text-white">
-                        {channel.title || "YouTube Channel"}
+                    <div className="flex flex-col items-center justify-center">
+                      <h3 className="text-lg font-black leading-6 text-white sm:text-xl">
+                        {topVideo.title || "Top performing video"}
+                      </h3>
+
+                      <p className="mt-3 text-sm leading-6 text-slate-400">
+                        {topVideo.description ||
+                          "Top performing video based on the available public channel metrics."}
                       </p>
-                      <p className="mt-1 text-sm text-slate-500">
-                        {channel.handle || "Handle unavailable"}
-                      </p>
+
+                      <div className="mt-5 grid w-full max-w-sm grid-cols-2 gap-3">
+                        <div className="rounded-xl border-l-2 border-red-500 bg-[#242424] p-4">
+                          <p className="text-xs text-slate-400">Engagement Rate</p>
+                          <p className="mt-1 text-lg font-black text-red-400">
+                            {topVideo.engagementRate ?? "N/A"}
+                          </p>
+                        </div>
+                        <div className="rounded-xl border-l-2 border-red-500 bg-[#242424] p-4">
+                          <p className="text-xs text-slate-400">Performance Score</p>
+                          <p className="mt-1 text-lg font-black text-red-400">
+                            {topVideo.performanceScore ?? "N/A"}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                </div>
+              </section>
+            )}
 
-                  <div className="mt-6 space-y-3">
+            {/* PERFORMANCE ANALYTICS */}
+            <section className="mx-auto w-full max-w-5xl">
+              <div className="mb-6 flex items-center justify-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+                  â—”
+                </div>
+                <h2 className="text-2xl font-black text-white sm:text-3xl">
+                  Performance Analytics
+                </h2>
+              </div>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                {/* Channel Health Radar */}
+                <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
+                  <h3 className="text-base font-black text-white">
+                    Channel Health Radar
+                  </h3>
+                  <div className="mt-5 flex min-h-[210px] items-center justify-center">
+                    <svg viewBox="0 0 260 220" className="h-52 w-full max-w-xs">
+                      <polygon
+                        points="130,20 205,75 178,165 82,165 55,75"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.12)"
+                        strokeWidth="1"
+                      />
+                      <polygon
+                        points="130,45 181,82 162,145 98,145 79,82"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.08)"
+                        strokeWidth="1"
+                      />
+                      <polygon
+                        points="130,65 163,88 151,128 109,128 97,88"
+                        fill="none"
+                        stroke="rgba(255,255,255,0.08)"
+                        strokeWidth="1"
+                      />
+                      <polygon
+                        points="130,48 176,86 151,137 101,123 91,82"
+                        fill="rgba(239,68,68,0.18)"
+                        stroke="#ef4444"
+                        strokeWidth="2"
+                      />
+                      <line x1="130" y1="20" x2="130" y2="170" stroke="rgba(255,255,255,0.08)" />
+                      <line x1="55" y1="75" x2="205" y2="75" stroke="rgba(255,255,255,0.08)" />
+                      <text x="130" y="14" textAnchor="middle" fill="#888" fontSize="9">Engagement</text>
+                      <text x="215" y="78" fill="#888" fontSize="9">Consistency</text>
+                      <text x="180" y="184" fill="#888" fontSize="9">Growth</text>
+                      <text x="80" y="184" fill="#888" fontSize="9">Quality</text>
+                      <text x="35" y="78" fill="#888" fontSize="9">Loyalty</text>
+                    </svg>
+                  </div>
+                </div>
+
+                {/* Engagement Distribution */}
+                <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
+                  <h3 className="text-base font-black text-white">
+                    Engagement Distribution
+                  </h3>
+                  <div className="mt-5 flex flex-col items-center justify-center">
+                    <div
+                      className="relative h-36 w-36 rounded-full"
+                      style={{
+                        background: `conic-gradient(#ff203f 0 ${likesPercent}%, #ff8b63 ${likesPercent}% ${likesPercent + commentsPercent}%, #ffc08f ${likesPercent + commentsPercent}% 100%)`,
+                      }}
+                    >
+                      <div className="absolute inset-7 flex items-center justify-center rounded-full bg-[#1c1c1c]">
+                        <span className="text-center text-xs font-bold text-slate-400">
+                          Likes<br />
+                          <span className="text-white">
+                            {formatNumber(donutData.likes)}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex flex-wrap justify-center gap-4 text-xs text-slate-400">
+                      <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-red-500" />Likes</span>
+                      <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-orange-400" />Comments</span>
+                      <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-orange-200" />Shares</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Content Categories */}
+                <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
+                  <h3 className="text-base font-black text-white">
+                    Content Categories
+                  </h3>
+
+                  <div className="mt-6 flex items-center justify-center gap-6">
+                    <div
+                      className="h-36 w-36 rounded-full"
+                      style={{
+                        background:
+                          "conic-gradient(#ff203f 0 22%, #ff8b63 22% 43%, #ffad86 43% 60%, #ffc08f 60% 82%, #e65d2d 82% 100%)",
+                      }}
+                    />
+                    <div className="space-y-2 text-left text-xs text-slate-400">
+                      {categoryData.slice(0, 5).map((item, index) => (
+                        <div key={`${item?.name || "category"}-${index}`} className="flex items-center gap-2">
+                          <span className="h-2.5 w-2.5 rounded-sm bg-red-500" />
+                          {item?.name || "Category"}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Growth Prediction */}
+                <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
+                  <h3 className="text-base font-black text-white">
+                    Growth Prediction
+                  </h3>
+
+                  <div className="mt-7 flex h-44 items-end gap-3 px-2">
+                    {[25, 32, 45, 58, 82].map((height, index) => (
+                      <div key={index} className="flex flex-1 flex-col items-center gap-2">
+                        <div className="flex h-36 w-full items-end rounded-t-lg bg-white/[0.02]">
+                          <div
+                            className="w-full rounded-t-lg bg-gradient-to-t from-red-600 to-red-400 transition-all"
+                            style={{ height: `${height}%` }}
+                          />
+                        </div>
+                        <span className="text-[10px] text-slate-500">
+                          {["Now", "1M", "3M", "6M", "1Y"][index]}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {growthData.length > 0 && (
+                    <p className="mt-3 text-xs text-slate-500">
+                      Based on available returned growth signals.
+                    </p>
+                  )}
+                </div>
+
+                {/* Video Performance Comparison */}
+                <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
+                  <h3 className="text-base font-black text-white">
+                    Video Performance Comparison
+                  </h3>
+
+                  <div className="mt-7 flex h-44 items-end justify-center gap-8">
+                    {[40, 75, 55, 90].map((height, index) => (
+                      <div key={index} className="flex h-full w-10 items-end">
+                        <div
+                          className="w-full rounded-t-md bg-red-500"
+                          style={{ height: `${height}%` }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-3 flex justify-center gap-4 text-xs text-slate-500">
+                    <span>TubeKit</span>
+                    <span>YouTube Average</span>
+                  </div>
+
+                  {comparisonData.length > 0 && (
+                    <p className="mt-2 text-xs text-slate-600">
+                      Comparison data returned by the analyzer is available.
+                    </p>
+                  )}
+                </div>
+
+                {/* Audience Engagement Timeline */}
+                <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
+                  <h3 className="text-base font-black text-white">
+                    Audience Engagement Timeline
+                  </h3>
+
+                  <svg viewBox="0 0 420 170" className="mt-7 h-44 w-full">
+                    <path
+                      d="M15 140 C45 135, 55 145, 80 132 S115 20, 145 48 S175 135, 205 118 S240 95, 270 108 S300 112, 330 92 S365 75, 405 45"
+                      fill="none"
+                      stroke="#31d0aa"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                    <line x1="15" y1="145" x2="405" y2="145" stroke="rgba(255,255,255,0.12)" />
+                    <line x1="15" y1="25" x2="15" y2="145" stroke="rgba(255,255,255,0.12)" />
+                  </svg>
+
+                  {retentionData.length > 0 && (
+                    <p className="mt-2 text-xs text-slate-500">
+                      Timeline uses returned audience engagement data.
+                    </p>
+                  )}
+                </div>
+              </div>
+            </section>
+
+            {/* EXISTING CHANNEL INFORMATION, SEO AND RECOMMENDATIONS */}
+            <section className="mx-auto w-full max-w-5xl space-y-6 text-center">
+              {!!channel.description && (
+                <div className="rounded-3xl border border-white/10 bg-[#171717] p-6 sm:p-8">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-yellow-400">
+                    Channel Description
+                  </p>
+                  <p className="mx-auto mt-4 max-w-3xl whitespace-pre-line text-sm leading-7 text-slate-400">
+                    {channel.description}
+                  </p>
+                </div>
+              )}
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="rounded-3xl border border-white/10 bg-[#171717] p-6">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
+                    Channel SEO
+                  </p>
+                  <h3 className="mt-2 text-xl font-black text-white">
+                    SEO Signals
+                  </h3>
+                  <div className="mt-5 space-y-3">
+                    <ScoreBar label="SEO Score" score={result.seo?.score} />
+                    <ScoreBar label="Branding" score={result.branding?.score} />
+                    <ScoreBar label="Content Signals" score={result.content?.score} />
+                  </div>
+                </div>
+
+                <div className="rounded-3xl border border-white/10 bg-[#171717] p-6">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-green-400">
+                    Channel Details
+                  </p>
+                  <h3 className="mt-2 text-xl font-black text-white">
+                    Public Information
+                  </h3>
+                  <div className="mt-5 space-y-3">
                     {[
-                      ["Profile Image", channel.profileImage || branding.profileImage],
-                      ["Banner Image", channel.bannerImage || branding.bannerImage],
-                      ["Branding Score", branding.score],
+                      ["Channel ID", channel.channelId],
+                      ["Handle", channel.handle],
+                      ["Country", channel.country],
+                      ["Created", formatDate(channel.publishedAt)],
                     ].map(([label, value]) => (
                       <div
                         key={label}
-                        className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
+                        className="rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3"
                       >
-                        <p className="text-xs uppercase tracking-wider text-slate-500">
-                          {label}
-                        </p>
-                        <p className="mt-2 break-all text-sm font-semibold text-slate-300">
+                        <p className="text-xs text-slate-500">{label}</p>
+                        <p className="mt-1 break-all text-sm font-semibold text-slate-200">
                           {value || "N/A"}
                         </p>
                       </div>
@@ -671,241 +882,57 @@ function ChannelAnalyzer() {
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
-                  SEO Analysis
-                </p>
+              {!!result.recommendations?.length && (
+                <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
+                    Channel Recommendations
+                  </p>
+                  <h3 className="mt-2 text-2xl font-black text-white">
+                    What You Can Improve
+                  </h3>
 
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Channel SEO Signals
-                </h3>
-
-                <div className="mt-6 space-y-6">
-                  <ScoreBar label="SEO Score" score={result.seo?.score} />
-
-                  {[
-                    ["Channel Description", result.seo?.description],
-                    ["Channel Keywords", result.seo?.keywords],
-                    ["Custom URL", result.seo?.customUrl],
-                    ["Branding", result.seo?.branding],
-                    ["Profile Completeness", result.seo?.profileCompleteness],
-                  ].map(([label, value]) => (
-                    <div
-                      key={label}
-                      className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
-                    >
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="text-sm font-semibold text-slate-300">
-                          {label}
-                        </span>
-                        <span className="text-sm font-bold text-white">
-                          {typeof value === "boolean"
-                            ? value
-                              ? "Available"
-                              : "Missing"
-                            : value ?? "N/A"}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {!!result.seo?.checks?.length && (
-                  <div className="mt-6 space-y-3">
-                    {result.seo.checks.map((check, index) => (
+                  <div className="mx-auto mt-6 max-w-3xl space-y-3">
+                    {result.recommendations.map((item, index) => (
                       <div
-                        key={`${check?.label || "seo-check"}-${index}`}
-                        className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
+                        key={`${item}-${index}`}
+                        className="rounded-2xl border border-white/10 bg-[#171717] p-4 text-left"
                       >
-                        <span className="mr-2 text-sm font-bold text-green-400">
-                          {check?.passed ? "[OK]" : "[! ]"}
+                        <span className="mr-2 font-black text-red-400">
+                          {index + 1}.
                         </span>
-
-                        <span className="text-sm font-semibold text-slate-200">
-                          {check?.label || "SEO Check"}
+                        <span className="text-sm leading-6 text-slate-300">
+                          {item}
                         </span>
-
-                        {check?.message && (
-                          <p className="mt-2 text-xs leading-5 text-slate-500">
-                            {check.message}
-                          </p>
-                        )}
                       </div>
                     ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {!!result.content && (
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-yellow-400">
-                  Content Analysis
-                </p>
-
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Content & Publishing Signals
-                </h3>
-
-                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                  <MetricCard
-                    label="Content Score"
-                    value={
-                      result.content?.score !== undefined
-                        ? `${result.content.score}/100`
-                        : "N/A"
-                    }
-                    helper="Content signal score"
-                    icon="C"
-                  />
-<MetricCard
-                    label="Upload Frequency"
-                    value={result.content?.uploadFrequency || "N/A"}
-                    helper="Available analysis"
-                    icon="F"
-                  />
-
-                  <MetricCard
-                    label="Consistency"
-                    value={result.content?.consistency || "N/A"}
-                    helper="Publishing consistency"
-                    icon="R"
-                  />
-
-                  <MetricCard
-                    label="Content Types"
-                    value={result.content?.contentTypes || "N/A"}
-                    helper="Detected content mix"
-                    icon="T"
-                  />
-                </div>
-
-                {!!result.content?.checks?.length && (
-                  <div className="mt-6 grid gap-3 md:grid-cols-2">
-                    {result.content.checks.map((check, index) => (
-                      <div
-                        key={`${check?.label || "content-check"}-${index}`}
-                        className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
-                      >
-                        <span className="mr-2 text-sm font-bold text-green-400">
-                          {check?.passed ? "[OK]" : "[! ]"}
-                        </span>
-
-                        <span className="text-sm font-semibold text-slate-200">
-                          {check?.label || "Content Check"}
-                        </span>
-
-                        {check?.message && (
-                          <p className="mt-2 text-xs leading-5 text-slate-500">
-                            {check.message}
-                          </p>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {!!result.checks?.length && (
-              <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
-                  Complete Channel Checklist
-                </p>
-
-                <h3 className="mt-2 text-2xl font-black text-white">
-                  Channel Optimization Checks
-                </h3>
-
-                <div className="mt-6 grid gap-3 md:grid-cols-2">
-                  {result.checks.map((check, index) => (
-                    <div
-                      key={`${check?.label || "channel-check"}-${index}`}
-                      className="rounded-2xl border border-white/10 bg-white/[0.025] p-5"
-                    >
-                      <div className="flex items-start gap-3">
-                        <span
-                          className={`mt-0.5 text-sm font-black ${
-                            check?.passed ? "text-green-400" : "text-red-400"
-                          }`}
-                        >
-                          {check?.passed ? "[OK]" : "[! ]"}
-                        </span>
-
-                        <div className="min-w-0">
-                          <p className="text-sm font-bold text-white">
-                            {check?.label || "Channel Check"}
-                          </p>
-
-                          {check?.message && (
-                            <p className="mt-1 text-sm leading-6 text-slate-500">
-                              {check.message}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {!!result.recommendations?.length && (
-              <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-red-400">
-                      Channel Recommendations
-                    </p>
-
-                    <h3 className="mt-2 text-2xl font-black text-white">
-                      What You Can Improve
-                    </h3>
                   </div>
 
                   <button
                     type="button"
                     onClick={copyReport}
-                    className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm font-bold text-red-300 transition hover:bg-red-500/15"
+                    className="mt-6 rounded-xl border border-red-500/30 bg-red-500/10 px-5 py-3 text-sm font-bold text-red-300 transition hover:bg-red-500/15"
                   >
                     Copy Full Report
                   </button>
                 </div>
+              )}
 
-                <div className="mt-6 space-y-3">
-                  {result.recommendations.map((item, index) => (
-                    <div
-                      key={`${item}-${index}`}
-                      className="flex gap-4 rounded-2xl border border-white/10 bg-[#090909] p-5"
-                    >
-                      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-500/10 text-sm font-black text-red-400">
-                        {index + 1}
-                      </span>
-
-                      <p className="text-sm leading-6 text-slate-300">
-                        {item}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+              <div className="rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+                <p className="text-sm leading-7 text-yellow-200/80">
+                  TubeKit's Channel Analyzer uses available public YouTube
+                  channel information. Some statistics, branding assets and
+                  other fields may be unavailable depending on the channel and
+                  the data returned by the YouTube API. Any score shown by
+                  TubeKit is an analytical indicator, not an official YouTube
+                  score.
+                </p>
               </div>
-            )}
-
-            <div className="rounded-3xl border border-yellow-500/20 bg-yellow-500/5 p-6">
-              <p className="text-sm leading-7 text-yellow-200/80">
-                TubeKit's Channel Analyzer uses available public YouTube
-                channel information. Statistics, branding assets, country,
-                descriptions, and other fields may be unavailable depending
-                on the channel and the data returned by the YouTube API. Any
-                score shown by TubeKit is an analytical indicator and is not an
-                official YouTube score or a guarantee of channel growth.
-              </p>
-            </div>
+            </section>
           </section>
         )}
 
         {!result && !loading && !error && (
-          <div className="mt-10 rounded-3xl border border-white/10 bg-[#090909] p-8 text-center">
+          <div className="mx-auto mt-10 w-full max-w-5xl rounded-3xl border border-white/10 bg-[#090909] p-8 text-center">
             <h3 className="text-2xl font-black text-white">
               Get a Complete YouTube Channel Report
             </h3>
