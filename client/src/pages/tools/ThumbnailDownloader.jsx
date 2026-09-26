@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Download, Search, RotateCcw } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import SEO from "@/components/common/SEO";
@@ -22,27 +23,119 @@ function SectionHeading({ children, color = "blue" }) {
   );
 }
 
-function ThumbnailDownloader() {
+function ThumbnailDownloader({ query = "" }) {
   const [url, setUrl] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [error, setError] = useState("");
+  const [downloading, setDownloading] = useState("");
+  const generatedForRef = useRef("");
 
-  const extractVideoId = () => {
-    const regex =
-      /(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([^?&/\s]+)/;
+  const extractVideoId = (inputValue = url) => {
+    const input = String(inputValue || "").trim();
 
-    const match = url.match(regex);
-
-    if (match && match[1]) {
-      setVideoId(match[1]);
-    } else {
-      alert("Invalid YouTube URL");
+    if (!input) {
+      setError("Please enter a YouTube video URL first.");
       setVideoId("");
+      return;
     }
+
+    const normalized = /^https?:\/\//i.test(input)
+      ? input
+      : `https://${input}`;
+
+    try {
+      const parsed = new URL(normalized);
+      const hostname = parsed.hostname.replace(/^www\./, "").toLowerCase();
+      let id = "";
+
+      if (hostname === "youtu.be") {
+        id = parsed.pathname.split("/").filter(Boolean)[0] || "";
+      } else if (
+        hostname === "youtube.com" ||
+        hostname === "m.youtube.com" ||
+        hostname === "music.youtube.com"
+      ) {
+        if (parsed.pathname === "/watch") {
+          id = parsed.searchParams.get("v") || "";
+        } else if (
+          parsed.pathname.startsWith("/shorts/") ||
+          parsed.pathname.startsWith("/embed/") ||
+          parsed.pathname.startsWith("/live/")
+        ) {
+          id = parsed.pathname.split("/").filter(Boolean)[1] || "";
+        }
+      }
+
+      if (/^[A-Za-z0-9_-]{11}$/.test(id)) {
+        setUrl(input);
+        setVideoId(id);
+        setError("");
+        return;
+      }
+    } catch {
+      // Fall through to the invalid URL message below.
+    }
+
+    setVideoId("");
+    setError("Please enter a valid YouTube video URL.");
   };
+
+  useEffect(() => {
+    const value = String(query || "").trim();
+
+    if (!value || value === generatedForRef.current) return;
+
+    generatedForRef.current = value;
+    setUrl(value);
+    extractVideoId(value);
+  }, [query]);
 
   const reset = () => {
     setUrl("");
     setVideoId("");
+    setError("");
+    generatedForRef.current = "";
+  };
+
+  const downloadThumbnail = async (thumbnailUrl, title) => {
+    const key = `${title}-${thumbnailUrl}`;
+
+    try {
+      setDownloading(key);
+
+      const response = await fetch(thumbnailUrl, {
+        mode: "cors",
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error("Thumbnail download failed.");
+      }
+
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+
+      anchor.href = blobUrl;
+      anchor.download = `youtube-thumbnail-${title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")}.jpg`;
+
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1500);
+    } catch (error) {
+      console.error("Thumbnail download error:", error);
+
+      // Cross-origin browser restrictions can prevent a direct blob download.
+      // Opening the original image gives the user a browser save option.
+      window.open(thumbnailUrl, "_blank", "noopener,noreferrer");
+    } finally {
+      setDownloading("");
+    }
   };
 
   const thumbnails = [
@@ -81,7 +174,8 @@ function ThumbnailDownloader() {
     {
       question: "How do I download a YouTube thumbnail?",
       answer:
-        "Copy the YouTube video URL, paste it into TubeKit's YouTube Thumbnail Downloader, click Get Thumbnails, and choose the available thumbnail resolution.",
+        "Copy the YouTube video URL, paste it into TubeKit's YouTube Thumbnail Downloader, click <Search className="h-4 w-4" />
+              Get Thumbnails, and choose the available thumbnail resolution.",
     },
     {
       question: "Can I download a YouTube thumbnail in HD?",
@@ -108,7 +202,7 @@ function ThumbnailDownloader() {
   return (
     <>
       <SEO
-        title="YouTube Thumbnail Downloader – Download HD Thumbnails | TubeKit"
+        title="YouTube Thumbnail Downloader â€“ Download HD Thumbnails | TubeKit"
         description="Download available YouTube video thumbnails in HD and other resolutions with TubeKit's free YouTube Thumbnail Downloader. Paste a video URL and preview available thumbnail images."
         keywords="YouTube thumbnail downloader, download YouTube thumbnail, YouTube thumbnail download, HD YouTube thumbnail downloader, YouTube thumbnail grabber, YouTube thumbnail extractor, YouTube thumbnail saver, download YouTube video thumbnail"
         canonical="/tools/thumbnail-downloader"
@@ -132,39 +226,84 @@ function ThumbnailDownloader() {
         />
 
         {/* TOOL */}
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-          <label className="mb-2 block font-medium text-white">
-            YouTube Video URL
-          </label>
+        <div className="rounded-3xl border border-blue-500/25 bg-[#070b18] p-5 shadow-2xl shadow-blue-500/5 sm:p-7 lg:p-8">
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-blue-400">
+                Thumbnail Downloader
+              </p>
+              <h2 className="mt-1 text-lg font-black text-white sm:text-xl">
+                Paste a YouTube Video URL
+              </h2>
+            </div>
 
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                extractVideoId();
-              }
-            }}
-            placeholder="https://www.youtube.com/watch?v=xxxxxxxxxxx"
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-white outline-none transition focus:border-blue-500"
-          />
+            <div className="hidden rounded-full border border-blue-500/20 bg-blue-500/10 px-3 py-1.5 text-[10px] font-bold text-blue-300 sm:block">
+              HD Preview
+            </div>
+          </div>
 
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex min-h-14 min-w-0 flex-1 items-center rounded-xl border-2 border-blue-500/70 bg-[#030712] px-4 transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-lg focus-within:shadow-blue-500/15">
+              <Search className="mr-3 h-5 w-5 shrink-0 text-blue-400" strokeWidth={2.4} />
+
+              <input
+                type="text"
+                value={url}
+                onChange={(e) => {
+                  setUrl(e.target.value);
+                  if (error) setError("");
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") extractVideoId();
+                }}
+                placeholder="Paste a YouTube URL..."
+                aria-label="Paste a YouTube video URL"
+                className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500 sm:text-base"
+              />
+
+              {url && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUrl("");
+                    setVideoId("");
+                    setError("");
+                    generatedForRef.current = "";
+                  }}
+                  className="ml-2 shrink-0 rounded-lg px-2 py-1 text-xs font-bold text-slate-500 transition hover:bg-white/5 hover:text-white"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
             <button
-              onClick={extractVideoId}
-              className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500"
+              type="button"
+              onClick={() => extractVideoId()}
+              className="flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-xl border-2 border-blue-500 bg-blue-600 px-6 text-sm font-black text-white shadow-lg shadow-blue-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-500 hover:shadow-blue-500/30 sm:min-w-[170px]"
             >
+              <Search className="h-5 w-5" strokeWidth={2.5} />
               Get Thumbnails
             </button>
-
-            <button
-              onClick={reset}
-              className="rounded-xl bg-slate-700 px-6 py-3 font-semibold text-white transition hover:bg-slate-600"
-            >
-              Reset
-            </button>
           </div>
+
+          {error ? (
+            <p className="mt-3 text-xs font-semibold text-red-400">{error}</p>
+          ) : (
+            <p className="mt-3 text-xs text-slate-500">
+              Paste a YouTube video URL and press Enter or Get Thumbnails.
+            </p>
+          )}
+
+          <button
+            type="button"
+            onClick={reset}
+            className="mt-4 inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.04] px-4 py-2 text-xs font-bold text-slate-400 transition hover:border-blue-500/30 hover:bg-blue-500/10 hover:text-blue-300"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            <RotateCcw className="h-4 w-4" />
+              Reset
+          </button>
         </div>
 
         {/* THUMBNAIL RESULTS */}
@@ -207,17 +346,18 @@ function ThumbnailDownloader() {
                     {item.description}
                   </p>
 
-                  <a
-                    href={item.url}
-                    download={`youtube-thumbnail-${item.title
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}.jpg`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 inline-flex rounded-lg bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-500"
+                  <button
+                    type="button"
+                    onClick={() => downloadThumbnail(item.url, item.title)}
+                    disabled={Boolean(downloading)}
+                    className="mt-4 inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 font-semibold text-white transition hover:bg-blue-500 disabled:cursor-wait disabled:opacity-70"
                   >
-                    Download Thumbnail
-                  </a>
+                    <Download className="h-4 w-4" />
+                    {downloading === `${item.title}-${item.url}`
+                      ? "Downloading..."
+                      : "<Download className="h-4 w-4" />
+                    Download Thumbnail"}
+                  </button>
                 </div>
               );
             })}
@@ -380,43 +520,36 @@ function ThumbnailDownloader() {
           </div>
 
           {/* FEATURES */}
-          <div>
+          
+             <div>
             <SectionHeading color="red">
               YouTube Thumbnail Downloader Features
             </SectionHeading>
 
             <ul className="mt-6 grid gap-3 sm:grid-cols-2">
               <li className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-slate-300">
-                ✓ Free YouTube thumbnail downloader
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Free YouTube thumbnail downloader</li>
 
               <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4 text-slate-300">
-                ✓ Supports common YouTube URLs
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Supports common YouTube URLs</li>
 
               <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-slate-300">
-                ✓ Multiple thumbnail resolutions
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Multiple thumbnail resolutions</li>
 
               <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 text-slate-300">
-                ✓ Quick thumbnail preview
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Quick thumbnail preview</li>
 
               <li className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-slate-300">
-                ✓ Simple URL-based workflow
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Simple URL-based workflow</li>
 
               <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4 text-slate-300">
-                ✓ Easy image access
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Easy image access</li>
 
               <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-slate-300">
-                ✓ Works without complicated setup
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Works without complicated setup</li>
 
               <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 text-slate-300">
-                ✓ Free for creators
-              </li>
+                <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Free for creators</li>
             </ul>
           </div>
 
@@ -517,7 +650,7 @@ function ThumbnailDownloader() {
               to="/tools/thumbnail-generator"
               className="mt-6 inline-flex rounded-xl border border-green-500/30 bg-green-500/5 px-5 py-3 font-semibold text-green-400 transition hover:border-green-400 hover:bg-green-500/10"
             >
-              Try AI Thumbnail Generator →
+              Try AI Thumbnail Generator
             </Link>
           </div>
 
@@ -539,7 +672,7 @@ function ThumbnailDownloader() {
                 className="rounded-xl border border-red-500/20 bg-red-500/5 p-5 transition hover:border-red-400"
               >
                 <span className="font-semibold text-red-400">
-                  YouTube Title Generator →
+                  YouTube Title Generator
                 </span>
 
                 <p className="mt-2 text-sm text-slate-400">
@@ -552,7 +685,7 @@ function ThumbnailDownloader() {
                 className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5 transition hover:border-yellow-300"
               >
                 <span className="font-semibold text-yellow-300">
-                  YouTube Description Generator →
+                  YouTube Description Generator
                 </span>
 
                 <p className="mt-2 text-sm text-slate-400">
@@ -565,7 +698,7 @@ function ThumbnailDownloader() {
                 className="rounded-xl border border-green-500/20 bg-green-500/5 p-5 transition hover:border-green-400"
               >
                 <span className="font-semibold text-green-400">
-                  YouTube Keyword Generator →
+                  YouTube Keyword Generator
                 </span>
 
                 <p className="mt-2 text-sm text-slate-400">
@@ -578,7 +711,7 @@ function ThumbnailDownloader() {
                 className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5 transition hover:border-blue-400"
               >
                 <span className="font-semibold text-blue-400">
-                  YouTube Tags Generator →
+                  YouTube Tags Generator
                 </span>
 
                 <p className="mt-2 text-sm text-slate-400">
@@ -600,7 +733,7 @@ function ThumbnailDownloader() {
                 className="rounded-xl border border-yellow-400/20 bg-yellow-400/5 p-5 transition hover:border-yellow-300"
               >
                 <span className="font-semibold text-yellow-300">
-                  How to Create Better YouTube Thumbnails →
+                  How to Create Better YouTube Thumbnails
                 </span>
 
                 <p className="mt-2 text-sm leading-7 text-slate-400">
@@ -614,7 +747,7 @@ function ThumbnailDownloader() {
                 className="rounded-xl border border-red-500/20 bg-red-500/5 p-5 transition hover:border-red-400"
               >
                 <span className="font-semibold text-red-400">
-                  How to Write YouTube Titles That Get More Clicks →
+                  How to Write YouTube Titles That Get More Clicks
                 </span>
 
                 <p className="mt-2 text-sm leading-7 text-slate-400">
