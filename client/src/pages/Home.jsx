@@ -715,23 +715,27 @@ function Home() {
     <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
       {[
         {
+          icon: "🎬",
           title: "Content Creators",
-          text: "Plan videos and improve content ideas.",
+          text: "Plan videos, improve ideas and build stronger content workflows.",
           color: "red",
         },
         {
+          icon: "📣",
           title: "Digital Marketers",
-          text: "Research topics and organize campaigns.",
+          text: "Research topics, organize ideas and support YouTube campaigns.",
           color: "green",
         },
         {
+          icon: "🔎",
           title: "SEO Specialists",
-          text: "Optimize keywords, titles and metadata.",
+          text: "Optimize keywords, titles, descriptions and YouTube metadata.",
           color: "yellow",
         },
         {
+          icon: "⚙️",
           title: "Developers & Researchers",
-          text: "Explore YouTube data and creator utilities.",
+          text: "Use YouTube utilities, analyzers and data-focused workflows.",
           color: "blue",
         },
       ].map((item) => {
@@ -741,13 +745,16 @@ function Home() {
           <div
             key={item.title}
             tabIndex={0}
-            className={`group min-h-[130px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[140px] sm:p-6`}
+            className={`group min-h-[145px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[155px] sm:p-6`}
           >
-            <h3 className="text-lg font-bold text-white sm:text-xl">
-              {item.title}
+            <h3 className="flex items-center gap-3 text-lg font-bold text-white sm:text-xl">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-xl transition-transform duration-300 group-hover:scale-110">
+                {item.icon}
+              </span>
+              <span>{item.title}</span>
             </h3>
 
-            <p className="mt-2 text-sm leading-6 text-slate-500 sm:text-[15px]">
+            <p className="mt-3 pl-[52px] text-sm leading-6 text-slate-500 sm:text-[15px]">
               {item.text}
             </p>
           </div>
