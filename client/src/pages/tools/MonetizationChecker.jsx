@@ -160,8 +160,7 @@ function MonetizationChecker({ query = "" }) {
   const readiness = result?.readiness || result?.eligibility || {};
   const checks = result?.checks || result?.monetizationChecks || [];
   const recommendations = result?.recommendations || [];
-
-  const subscribers = toNumber(
+const subscribers = toNumber(
     channelData.subscribers ?? stats.subscribers ?? channelData.subscriberCount
   );
   const views = toNumber(
@@ -434,8 +433,7 @@ function MonetizationChecker({ query = "" }) {
                     className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
                   />
                 </div>
-
-                <button
+<button
                   type="button"
                   onClick={handleAnalyze}
                   disabled={loading || !channel.trim()}
@@ -518,11 +516,10 @@ function MonetizationChecker({ query = "" }) {
               </div>
             </div>
           )}
-
-          {result && (
+{result && (
             <div className="mt-8 space-y-6 sm:mt-10 sm:space-y-7">
               {/* Channel profile */}
-<section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
+              <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
                 {channelData.banner && (
                   <img
                     src={channelData.banner}
@@ -640,8 +637,7 @@ function MonetizationChecker({ query = "" }) {
                   color="yellow"
                 />
               </section>
-
-              {/* Monetization status */}
+{/* Monetization status */}
               <section className="rounded-3xl border border-green-500/30 bg-green-500/5 p-5 shadow-[0_0_35px_rgba(34,197,94,0.05)] sm:p-6">
                 <div className="flex items-start gap-4">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-green-500/15 text-green-400">
@@ -682,7 +678,8 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 )}
               </section>
-{/* Estimated revenue matrix */}
+
+              {/* Estimated revenue matrix */}
               <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
                 <div className="p-5 sm:p-7">
                   <div className="flex items-center gap-3">
@@ -766,8 +763,7 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 </div>
               </section>
-
-              {/* Key insights */}
+{/* Key insights */}
               <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
@@ -808,7 +804,7 @@ function MonetizationChecker({ query = "" }) {
                 </div>
               </section>
 
-{/* YPP progress */}
+              {/* YPP progress */}
               <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
                 <div className="mb-7">
                   <p className="text-xs font-black uppercase tracking-wider text-blue-400">
@@ -968,7 +964,8 @@ function MonetizationChecker({ query = "" }) {
                 second="Tool Analyzes"
                 secondColor="blue"
               />
-<div className="mx-auto mt-6 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+
+              <div className="mx-auto mt-6 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[
                   ["Channel statistics", "Subscribers, total views and public video count."],
                   ["YPP threshold progress", "Compares available metrics with common thresholds."],
@@ -1011,8 +1008,7 @@ function MonetizationChecker({ query = "" }) {
                   text="Expanded YPP access can have lower thresholds for selected fan-funding and Shopping features. Requirements depend on region and feature."
                 />
               </div>
-
-              <p className="mx-auto mt-5 max-w-5xl text-sm leading-7 text-slate-500">
+<p className="mx-auto mt-5 max-w-5xl text-sm leading-7 text-slate-500">
                 Thresholds and feature availability can change. Always verify
                 the current requirements in YouTube Studio and official YouTube
                 documentation before applying.
@@ -1099,7 +1095,8 @@ function MonetizationChecker({ query = "" }) {
                 />
               </div>
             </div>
-<div>
+
+            <div>
               <SectionHeading
                 first="Frequently Asked Questions"
                 second="About Monetization"
@@ -1202,7 +1199,6 @@ function StatCard({ title, value, subValue, icon: Icon, color }) {
     </div>
   );
 }
-
 function ThresholdCard({
   title,
   current,
@@ -1372,7 +1368,6 @@ function ToolLink({ to, color, title, text }) {
     </Link>
   );
 }
-
 function SearchIcon() {
   return (
     <svg
@@ -1470,4 +1465,3 @@ function statusLooksPositive(status) {
 }
 
 export default MonetizationChecker;
-              
