@@ -120,6 +120,25 @@ function ChannelIdFinder({ query = "" }) {
     }
   };
 
+  // Support both the normal YouTube API response shape and flattened
+  // channel objects returned by the backend.
+  const channelName =
+    data?.snippet?.title ||
+    data?.title ||
+    data?.channelName ||
+    data?.name ||
+    "YouTube Channel";
+
+  const channelLogo =
+    data?.snippet?.thumbnails?.high?.url ||
+    data?.snippet?.thumbnails?.medium?.url ||
+    data?.snippet?.thumbnails?.default?.url ||
+    data?.thumbnail ||
+    data?.thumbnailUrl ||
+    data?.channelLogo ||
+    data?.logo ||
+    "";
+
   return (
     <>
       <SEO
@@ -203,23 +222,26 @@ function ChannelIdFinder({ query = "" }) {
           <div className="mx-auto mt-8 w-full max-w-5xl rounded-3xl border border-blue-500/20 bg-[#090909] p-5 shadow-2xl sm:p-8">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
               <div className="relative shrink-0">
-                {data.snippet?.thumbnails?.high?.url ||
-                data.snippet?.thumbnails?.medium?.url ||
-                data.snippet?.thumbnails?.default?.url ? (
+                {channelLogo ? (
                   <img
-                    src={
-                      data.snippet?.thumbnails?.high?.url ||
-                      data.snippet?.thumbnails?.medium?.url ||
-                      data.snippet?.thumbnails?.default?.url
-                    }
-                    alt={`${data.snippet?.title || "YouTube"} channel profile`}
-                    className="h-24 w-24 rounded-full border-2 border-red-500/30 object-cover shadow-lg shadow-red-500/10"
+                    src={channelLogo}
+                    alt={`${channelName} channel logo`}
+                    className="h-24 w-24 rounded-full border-2 border-red-500/40 object-cover shadow-lg shadow-red-500/10"
+                    loading="lazy"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                      e.currentTarget.nextElementSibling?.classList.remove("hidden");
+                    }}
                   />
-                ) : (
-                  <div className="flex h-24 w-24 items-center justify-center rounded-full border border-red-500/20 bg-red-500/10 text-red-400">
-                    <Users size={34} />
-                  </div>
-                )}
+                ) : null}
+
+                <div
+                  className={`${
+                    channelLogo ? "hidden " : ""
+                  }flex h-24 w-24 items-center justify-center rounded-full border border-red-500/20 bg-red-500/10 text-red-400`}
+                >
+                  <Users size={34} />
+                </div>
               </div>
 
               <div className="min-w-0 flex-1">
@@ -237,19 +259,21 @@ function ChannelIdFinder({ query = "" }) {
                 </div>
 
                 <h2 className="mt-3 break-words text-2xl font-black text-white sm:text-3xl">
-                  {data.snippet?.title || "YouTube Channel"}
+                  {channelName}
                 </h2>
 
-                {data.snippet?.description && (
+                {(data.snippet?.description || data.description) && (
                   <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-400">
-                    {data.snippet.description}
+                    {data.snippet?.description || data.description}
                   </p>
                 )}
 
-                {data.snippet?.publishedAt && (
+                {(data.snippet?.publishedAt || data.publishedAt) && (
                   <p className="mt-3 text-xs text-slate-500">
                     Created:{" "}
-                    {new Date(data.snippet.publishedAt).toLocaleDateString()}
+                    {new Date(
+                      data.snippet?.publishedAt || data.publishedAt
+                    ).toLocaleDateString()}
                   </p>
                 )}
               </div>
@@ -314,12 +338,12 @@ function ChannelIdFinder({ query = "" }) {
                   Profile Image
                 </p>
                 <p className="mt-2 text-sm font-bold text-white">
-                  {data.snippet?.thumbnails ? "Available" : "Not available"}
+                  {channelLogo ? "Available" : "Not available"}
                 </p>
               </div>
             </div>
 
-            {data.snippet?.thumbnails && (
+            {channelLogo && data.snippet?.thumbnails && (
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.025] p-5">
                 <p className="text-sm font-bold text-white">
                   Profile Image URLs
@@ -507,7 +531,7 @@ function ChannelIdFinder({ query = "" }) {
                     <td className="px-5 py-4 text-muted-foreground">
                       Public display name
                     </td>
-</tr>
+                  </tr>
 
                   <tr className="border-t border-slate-800">
                     <td className="px-5 py-4 text-muted-foreground">
@@ -688,4 +712,3 @@ function ChannelIdFinder({ query = "" }) {
 }
 
 export default ChannelIdFinder;
-                  
