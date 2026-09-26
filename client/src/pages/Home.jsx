@@ -699,42 +699,63 @@ function Home() {
       </section>
 
 {/* COMMON USE CASES */}
-      <section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-        <div className="mx-auto w-full max-w-6xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mt-5 text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
-              Common <span className="text-red-500">Use Cases</span>
-            </h2>
+<section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+  <div className="mx-auto w-full max-w-6xl">
+    <div className="mx-auto max-w-4xl text-center">
+      <h2 className="mt-5 text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
+        Common <span className="text-red-500">Use Cases</span>
+      </h2>
 
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
-              Useful workflows for creators, marketers, SEO-focused teams and
-              anyone working with YouTube content.
+      <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+        Practical ways creators and teams can use TubeKit for everyday
+        YouTube workflows.
+      </p>
+    </div>
+
+    <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
+      {[
+        {
+          title: "Content Creators",
+          text: "Plan videos and improve content ideas.",
+          color: "red",
+        },
+        {
+          title: "Digital Marketers",
+          text: "Research topics and organize campaigns.",
+          color: "green",
+        },
+        {
+          title: "SEO Specialists",
+          text: "Optimize keywords, titles and metadata.",
+          color: "yellow",
+        },
+        {
+          title: "Developers & Researchers",
+          text: "Explore YouTube data and creator utilities.",
+          color: "blue",
+        },
+      ].map((item) => {
+        const s = rgby[item.color];
+
+        return (
+          <div
+            key={item.title}
+            tabIndex={0}
+            className={`group min-h-[130px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[140px] sm:p-6`}
+          >
+            <h3 className="text-lg font-bold text-white sm:text-xl">
+              {item.title}
+            </h3>
+
+            <p className="mt-2 text-sm leading-6 text-slate-500 sm:text-[15px]">
+              {item.text}
             </p>
           </div>
-
-          <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
-            {[
-              ["Content Creators", "Plan videos, improve metadata and develop stronger content directions.", "red"],
-              ["Digital Marketers", "Research topics, organize content ideas and support campaign planning.", "green"],
-              ["SEO Specialists", "Work with keywords, titles, descriptions and metadata around search intent.", "yellow"],
-              ["Developers & Researchers", "Use practical YouTube utilities and data-focused creator workflows.", "blue"],
-            ].map(([title, text, color]) => {
-              const s = rgby[color];
-
-              return (
-                <div
-                  key={title}
-                  tabIndex={0}
-                  className={`group min-h-[180px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[190px] sm:p-6`}
-                >
-                  <h3 className="text-lg font-bold text-white">{title}</h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-500">{text}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
 {/* HOW IT WORKS */}
       <section
