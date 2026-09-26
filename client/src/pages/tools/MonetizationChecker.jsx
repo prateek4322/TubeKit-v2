@@ -29,6 +29,7 @@ function MonetizationChecker({ query = "" }) {
   const [copied, setCopied] = useState(false);
   const [inputError, setInputError] = useState("");
   const generatedForRef = useRef("");
+  const requestIdRef = useRef(0);
 
   const faqs = [
     {
@@ -67,36 +68,65 @@ function MonetizationChecker({ query = "" }) {
     const value = String(inputValue || "").trim();
 
     if (!value) {
-      setInputError("Please enter a YouTube channel URL or supported channel identifier.");
+      setInputError(
+        "Please enter a YouTube channel URL or supported channel identifier."
+      );
       return;
     }
 
+    const requestId = ++requestIdRef.current;
+
     setInputError("");
+    setLoading(true);
+    setResult(null);
+    setCopied(false);
 
     try {
-      setLoading(true);
-      setResult(null);
-      setCopied(false);
-
       const response = await api.post("/youtube/monetization-analyzer", {
         channel: value,
       });
 
-      if (response.data.success) {
+      if (requestId !== requestIdRef.current) return;
+
+      if (response?.data?.success) {
         setResult(response.data);
       } else {
-        setInputError(response.data.message || "Unable to analyze this channel.");
+        setInputError(
+          response?.data?.message ||
+            "Unable to analyze this channel. Please try again."
+        );
       }
     } catch (error) {
+      if (requestId !== requestIdRef.current) return;
+
       console.error("MONETIZATION CHECKER ERROR:", error);
+
       setInputError(
-        error.response?.data?.message ||
-          error.message ||
-          "Channel not found or unable to analyze the channel."
+        error?.response?.data?.message ||
+          error?.message ||
+          "Channel not found or unable to analyze the channel. Please try again."
       );
     } finally {
-      setLoading(false);
+      if (requestId === requestIdRef.current) {
+        setLoading(false);
+      }
     }
+  };
+
+  const handleAnalyze = () => {
+    const value = String(channel || "").trim();
+
+    if (!value) {
+      setInputError(
+        "Please enter a YouTube channel URL or supported channel identifier."
+      );
+      return;
+    }
+
+    // Manual submit/regenerate must always run, even when the same
+    // URL was already auto-generated from the Hero search.
+    generatedForRef.current = value;
+    analyzeChannel(value);
   };
 
   useEffect(() => {
@@ -120,7 +150,7 @@ function MonetizationChecker({ query = "" }) {
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      analyzeChannel();
+      handleAnalyze();
     }
   };
 
@@ -389,14 +419,14 @@ function MonetizationChecker({ query = "" }) {
                     if (inputError) setInputError("");
                   }}
                   onKeyDown={handleKeyDown}
-                  placeholder="https://youtube.com/@channel"
+                  placeholder="Channel or Video URL, ID, or @username.."
                   disabled={loading}
                   aria-invalid={Boolean(inputError)}
                   aria-describedby={inputError ? "channel-input-error" : undefined}
-                  className={`w-full rounded-2xl border bg-black/50 py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base ${
+                  className={`w-full rounded-2xl border-2 bg-black/50 py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base ${
                     inputError
-                      ? "border-red-500/70 focus:border-red-500 focus:ring-red-500/10"
-                      : "border-slate-700 focus:border-blue-500 focus:ring-blue-500/10"
+                      ? "border-red-500 focus:border-red-400"
+                      : "border-red-500"
                   }`}
                 />
               </div>
@@ -439,9 +469,9 @@ function MonetizationChecker({ query = "" }) {
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <button
                   type="button"
-                  onClick={analyzeChannel}
+                  onClick={handleAnalyze}
                   disabled={loading || !channel.trim()}
-                  className="group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 px-6 py-3 font-black text-white shadow-lg shadow-red-500/10 transition hover:-translate-y-0.5 hover:shadow-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-red-500 px-6 py-3 font-black text-white shadow-lg shadow-red-500/20 transition hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/30 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading ? (
                     <>
@@ -449,10 +479,7 @@ function MonetizationChecker({ query = "" }) {
                       Analyzing Channel...
                     </>
                   ) : (
-                    <>
-                      <Sparkles size={18} />
-                      Check Monetization
-                    </>
+                    "Submit"
                   )}
                 </button>
 
@@ -470,7 +497,8 @@ function MonetizationChecker({ query = "" }) {
           </section>
 
           {/* Existing TubeKit loader preserved */}
-          {loading && (
+          
+              {loading && (
             <div className="mt-8 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-5 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-blue-400">
@@ -562,6 +590,7 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 </div>
               </section>
+
 
               {/* Screenshot-style statistics */}
               <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
@@ -657,7 +686,7 @@ function MonetizationChecker({ query = "" }) {
                 )}
               </section>
 
-              {/* Estimated revenue matrix */}
+{/* Estimated revenue matrix */}
               <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
                 <div className="p-5 sm:p-7">
                   <div className="flex items-center gap-3">
@@ -741,7 +770,8 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 </div>
               </section>
-{/* Key insights */}
+
+              {/* Key insights */}
               <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
                 <div className="flex items-center gap-3">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
@@ -914,7 +944,7 @@ function MonetizationChecker({ query = "" }) {
             </div>
           )}
 
-<section className="mt-14 space-y-10 sm:mt-16 sm:space-y-12">
+          <section className="mt-14 space-y-10 sm:mt-16 sm:space-y-12">
             <SectionHeading
               first="YouTube Monetization"
               second="Checker"
@@ -1023,7 +1053,7 @@ function MonetizationChecker({ query = "" }) {
               </div>
             </div>
 
-<div>
+            <div>
               <SectionHeading
                 first="How to Use"
                 second="Monetization Checker"
@@ -1074,8 +1104,7 @@ function MonetizationChecker({ query = "" }) {
                 />
               </div>
             </div>
-
-            <div>
+<div>
               <SectionHeading
                 first="Frequently Asked Questions"
                 second="About Monetization"
@@ -1178,6 +1207,7 @@ function StatCard({ title, value, subValue, icon: Icon, color }) {
     </div>
   );
 }
+
 function ThresholdCard({
   title,
   current,
@@ -1278,8 +1308,7 @@ function CheckItem({ value }) {
     typeof value === "object"
       ? value?.passed ?? value?.eligible ?? value?.status === "passed"
       : null;
-
-  return (
+return (
     <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
       {passed === false ? (
         <XCircle className="mt-0.5 shrink-0 text-red-400" size={19} />
@@ -1445,3 +1474,4 @@ function statusLooksPositive(status) {
 }
 
 export default MonetizationChecker;
+                      
