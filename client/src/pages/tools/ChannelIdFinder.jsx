@@ -1,4 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import {
+  BarChart3,
+  Check,
+  Copy,
+  ExternalLink,
+  Image as ImageIcon,
+  Search,
+  Users,
+  Video,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "@/services/api";
 
@@ -6,8 +16,10 @@ import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 
-function ChannelIdFinder() {
+function ChannelIdFinder({ query = "" }) {
   const [channel, setChannel] = useState("");
+  const [error, setError] = useState("");
+  const generatedForRef = useRef("");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -44,24 +56,36 @@ function ChannelIdFinder() {
     },
   ];
 
-  const findChannel = async () => {
-    if (!channel.trim()) {
-      alert("Please enter a YouTube channel URL.");
+  const findChannel = async (inputValue = channel) => {
+    const value = String(inputValue || "").trim();
+
+    if (!value) {
+      setError("Please enter a YouTube channel URL, handle, channel ID, or video URL.");
+      setData(null);
       return;
     }
 
     try {
       setLoading(true);
       setData(null);
+      setError("");
 
       const response = await api.post("/youtube/channel-id", {
-        channel: channel.trim(),
+        channel: value,
       });
 
-      setData(response.data.data);
+      const result = response?.data?.data;
+
+      if (!result?.id) {
+        throw new Error("Channel information was not returned.");
+      }
+
+      setData(result);
     } catch (error) {
-      alert(
+      console.error("CHANNEL ID FINDER ERROR:", error);
+      setError(
         error.response?.data?.message ||
+          error.message ||
           "Channel not found. Please check the URL and try again."
       );
       setData(null);
@@ -69,6 +93,21 @@ function ChannelIdFinder() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const value = String(query || "").trim();
+
+    if (!value || value === generatedForRef.current) return;
+
+    generatedForRef.current = value;
+    setChannel(value);
+
+    const timer = setTimeout(() => {
+      findChannel(value);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, [query]);
 
   const copyChannelId = async () => {
     if (!data?.id) return;
@@ -98,100 +137,242 @@ function ChannelIdFinder() {
         />
 
         {/* Tool */}
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8">
-          <label className="mb-2 block font-semibold text-white">
-            YouTube Channel URL
-          </label>
+        <div className="mx-auto w-full max-w-5xl rounded-2xl border border-white/10 bg-[#151515] p-4 shadow-2xl sm:p-5">
+          <div className="mb-4 flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+              <Search size={19} strokeWidth={2.5} />
+            </div>
 
-          <input
-            value={channel}
-            onChange={(e) => setChannel(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                findChannel();
-              }
-            }}
-            placeholder="https://youtube.com/@channelname"
-            className="w-full rounded-xl border border-slate-700 bg-slate-950 p-3 text-white outline-none transition focus:border-blue-500"
-          />
+            <div>
+              <h2 className="text-sm font-black text-white sm:text-base">
+                Find YouTube Channel ID
+              </h2>
+              <p className="text-xs text-slate-500">
+                Enter a channel URL, @handle, Channel ID, or YouTube video URL
+              </p>
+            </div>
+          </div>
 
-          <button
-            onClick={findChannel}
-            disabled={loading}
-            className="mt-6 rounded-xl bg-gradient-to-r from-red-500 via-yellow-400 via-green-500 to-blue-500 px-6 py-3 font-bold text-white transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "Searching..." : "Find Channel ID"}
-          </button>
+          <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex min-h-14 min-w-0 flex-1 items-center rounded-xl border-2 border-red-500/70 bg-[#202020] px-4 transition focus-within:border-red-400 focus-within:shadow-[0_0_25px_rgba(239,68,68,0.12)]">
+              <Search
+                size={18}
+                strokeWidth={2.5}
+                className="mr-3 shrink-0 text-red-500"
+              />
+
+              <input
+                value={channel}
+                onChange={(e) => {
+                  setChannel(e.target.value);
+                  if (error) setError("");
+                  generatedForRef.current = "";
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") findChannel();
+                }}
+                placeholder="Channel URL, @handle, ID, or video URL..."
+                aria-label="YouTube channel input"
+                className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500 sm:text-base"
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => findChannel()}
+              disabled={loading}
+              className="flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-xl bg-red-600 px-6 text-sm font-black text-white shadow-lg shadow-red-500/20 transition hover:bg-red-500 disabled:cursor-wait disabled:opacity-70 sm:min-w-[165px]"
+            >
+              <Search size={18} strokeWidth={2.5} />
+              {loading ? "Searching..." : "Find Channel ID"}
+            </button>
+          </div>
+
+          {error ? (
+            <p className="mt-3 text-xs font-semibold text-red-400">{error}</p>
+          ) : (
+            <p className="mt-3 text-xs text-slate-500">
+              Supported: /channel/UC..., /@handle, /user/username, /c/channel,
+              channel IDs, channel names, and YouTube video URLs.
+            </p>
+          )}
         </div>
 
         {/* Result */}
-        {data && (
-          <div className="mt-10 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-8">
+        {data && !loading && (
+          <div className="mx-auto mt-8 w-full max-w-5xl rounded-3xl border border-blue-500/20 bg-[#090909] p-5 shadow-2xl sm:p-8">
             <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-              {data.snippet?.thumbnails?.high?.url && (
-                <img
-                  src={data.snippet.thumbnails.high.url}
-                  alt={`${data.snippet.title} YouTube channel`}
-                  className="h-24 w-24 rounded-full object-cover"
-                />
-              )}
+              <div className="relative shrink-0">
+                {data.snippet?.thumbnails?.high?.url ||
+                data.snippet?.thumbnails?.medium?.url ||
+                data.snippet?.thumbnails?.default?.url ? (
+                  <img
+                    src={
+                      data.snippet?.thumbnails?.high?.url ||
+                      data.snippet?.thumbnails?.medium?.url ||
+                      data.snippet?.thumbnails?.default?.url
+                    }
+                    alt={`${data.snippet?.title || "YouTube"} channel profile`}
+                    className="h-24 w-24 rounded-full border-2 border-red-500/30 object-cover shadow-lg shadow-red-500/10"
+                  />
+                ) : (
+                  <div className="flex h-24 w-24 items-center justify-center rounded-full border border-red-500/20 bg-red-500/10 text-red-400">
+                    <Users size={34} />
+                  </div>
+                )}
+              </div>
 
-              <div>
-                <p className="text-sm font-semibold text-green-400">
-                  CHANNEL FOUND
-                </p>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-green-500/10 px-3 py-1 text-xs font-bold text-green-400">
+                    <Check size={14} />
+                    CHANNEL FOUND
+                  </span>
 
-                <h2 className="mt-1 text-2xl font-black text-white">
-                  {data.snippet?.title}
+                  {data.snippet?.customUrl && (
+                    <span className="rounded-full bg-blue-500/10 px-3 py-1 text-xs font-semibold text-blue-400">
+                      {data.snippet.customUrl}
+                    </span>
+                  )}
+                </div>
+
+                <h2 className="mt-3 break-words text-2xl font-black text-white sm:text-3xl">
+                  {data.snippet?.title || "YouTube Channel"}
                 </h2>
+
+                {data.snippet?.description && (
+                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-400">
+                    {data.snippet.description}
+                  </p>
+                )}
+
+                {data.snippet?.publishedAt && (
+                  <p className="mt-3 text-xs text-slate-500">
+                    Created:{" "}
+                    {new Date(data.snippet.publishedAt).toLocaleDateString()}
+                  </p>
+                )}
               </div>
             </div>
 
-            {/* Channel ID */}
-            <div className="mt-8 rounded-2xl border border-slate-800 bg-slate-950 p-5">
-              <p className="text-sm font-semibold text-yellow-400">
-                YouTube Channel ID
-              </p>
-
-              <div className="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <code className="break-all text-sm text-green-400 sm:text-base">
-                  {data.id}
-                </code>
+            <div className="mt-8 rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-blue-400">
+                    YouTube Channel ID
+                  </p>
+                  <code className="mt-2 block break-all text-sm font-bold text-green-400 sm:text-base">
+                    {data.id}
+                  </code>
+                </div>
 
                 <button
+                  type="button"
                   onClick={copyChannelId}
-                  className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition hover:bg-blue-500"
+                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-blue-500"
                 >
+                  <Copy size={16} />
                   Copy ID
                 </button>
               </div>
             </div>
 
-            {/* Stats */}
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-sm text-slate-400">
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-5">
+                <Users size={20} className="text-red-400" />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Subscribers
                 </p>
-
                 <p className="mt-2 text-2xl font-black text-white">
-                  {Number(
-                    data.statistics?.subscriberCount || 0
-                  ).toLocaleString()}
+                  {Number(data.statistics?.subscriberCount || 0).toLocaleString()}
                 </p>
               </div>
 
-              <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5">
-                <p className="text-sm text-slate-400">
+              <div className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5">
+                <Video size={20} className="text-yellow-300" />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   Videos
                 </p>
-
                 <p className="mt-2 text-2xl font-black text-white">
-                  {Number(
-                    data.statistics?.videoCount || 0
-                  ).toLocaleString()}
+                  {Number(data.statistics?.videoCount || 0).toLocaleString()}
                 </p>
               </div>
+
+              <div className="rounded-2xl border border-green-500/20 bg-green-500/5 p-5">
+                <BarChart3 size={20} className="text-green-400" />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Channel Views
+                </p>
+                <p className="mt-2 text-2xl font-black text-white">
+                  {Number(data.statistics?.viewCount || 0).toLocaleString()}
+                </p>
+              </div>
+
+              <div className="rounded-2xl border border-blue-500/20 bg-blue-500/5 p-5">
+                <ImageIcon size={20} className="text-blue-400" />
+                <p className="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Profile Image
+                </p>
+                <p className="mt-2 text-sm font-bold text-white">
+                  {data.snippet?.thumbnails ? "Available" : "Not available"}
+                </p>
+              </div>
+            </div>
+
+            {data.snippet?.thumbnails && (
+              <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.025] p-5">
+                <p className="text-sm font-bold text-white">
+                  Profile Image URLs
+                </p>
+
+                <div className="mt-4 space-y-3">
+                  {["default", "medium", "high"].map((size) => {
+                    const imageUrl = data.snippet?.thumbnails?.[size]?.url;
+                    if (!imageUrl) return null;
+
+                    return (
+                      <div
+                        key={size}
+                        className="flex flex-col gap-2 rounded-xl border border-white/10 bg-black/20 p-3 sm:flex-row sm:items-center sm:justify-between"
+                      >
+                        <span className="text-xs font-bold uppercase text-slate-500">
+                          {size}
+                        </span>
+
+                        <code className="break-all text-xs text-slate-400">
+                          {imageUrl}
+                        </code>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            <div className="mt-6 flex flex-wrap gap-3">
+              {data.snippet?.customUrl && (
+                <a
+                  href={`https://www.youtube.com/${String(data.snippet.customUrl).replace(/^@?/, "@")}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/5 px-5 py-3 text-sm font-bold text-red-400 transition hover:border-red-400 hover:bg-red-500/10"
+                >
+                  <ExternalLink size={16} />
+                  Open Channel
+                </a>
+              )}
+
+              {data.id && (
+                <a
+                  href={`https://www.youtube.com/channel/${data.id}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/5 px-5 py-3 text-sm font-bold text-blue-400 transition hover:border-blue-400 hover:bg-blue-500/10"
+                >
+                  <ExternalLink size={16} />
+                  Open Channel ID URL
+                </a>
+              )}
             </div>
           </div>
         )}
@@ -326,7 +507,7 @@ function ChannelIdFinder() {
                     <td className="px-5 py-4 text-muted-foreground">
                       Public display name
                     </td>
-                  </tr>
+</tr>
 
                   <tr className="border-t border-slate-800">
                     <td className="px-5 py-4 text-muted-foreground">
@@ -354,14 +535,14 @@ function ChannelIdFinder() {
             </h2>
 
             <ul className="mt-6 grid gap-3 text-muted-foreground sm:grid-cols-2">
-              <li>✓ Find YouTube Channel IDs</li>
-              <li>✓ Simple channel URL input</li>
-              <li>✓ Fast channel lookup</li>
-              <li>✓ Channel name preview</li>
-              <li>✓ Subscriber information</li>
-              <li>✓ Video count information</li>
-              <li>✓ One-click Channel ID copying</li>
-              <li>✓ Free to use</li>
+              <li>Find YouTube Channel IDs</li>
+              <li>Simple channel URL input</li>
+              <li>Fast channel lookup</li>
+              <li>Channel name preview</li>
+              <li>Subscriber information</li>
+              <li>Video count information</li>
+              <li>One-click Channel ID copying</li>
+              <li>Free to use</li>
             </ul>
           </div>
 
@@ -421,7 +602,7 @@ function ChannelIdFinder() {
                 className="rounded-2xl border border-red-500/30 bg-red-500/5 p-5 transition hover:border-red-400"
               >
                 <h3 className="font-black text-red-400">
-                  YouTube Video ID Extractor →
+                  YouTube Video ID Extractor
                 </h3>
 
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -434,7 +615,7 @@ function ChannelIdFinder() {
                 className="rounded-2xl border border-yellow-500/30 bg-yellow-500/5 p-5 transition hover:border-yellow-400"
               >
                 <h3 className="font-black text-yellow-400">
-                  YouTube Thumbnail Downloader →
+                  YouTube Thumbnail Downloader
                 </h3>
 
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -447,7 +628,7 @@ function ChannelIdFinder() {
                 className="rounded-2xl border border-green-500/30 bg-green-500/5 p-5 transition hover:border-green-400"
               >
                 <h3 className="font-black text-green-400">
-                  YouTube Tags Generator →
+                  YouTube Tags Generator
                 </h3>
 
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -460,7 +641,7 @@ function ChannelIdFinder() {
                 className="rounded-2xl border border-blue-500/30 bg-blue-500/5 p-5 transition hover:border-blue-400"
               >
                 <h3 className="font-black text-blue-400">
-                  YouTube Keyword Generator →
+                  YouTube Keyword Generator
                 </h3>
 
                 <p className="mt-2 text-sm text-muted-foreground">
@@ -507,3 +688,4 @@ function ChannelIdFinder() {
 }
 
 export default ChannelIdFinder;
+                  
