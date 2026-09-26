@@ -28,7 +28,7 @@ import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 
 function ChannelAnalyzer({ query = "" }) {
-  const [query, setQuery] = useState("");
+  const [channelQuery, setChannelQuery] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -79,7 +79,7 @@ function ChannelAnalyzer({ query = "" }) {
   };
 
   const handleGenerate = ({ topic }) => {
-    setQuery(topic);
+    setChannelQuery(topic);
     analyzeChannel(topic);
   };
 
@@ -88,7 +88,7 @@ function ChannelAnalyzer({ query = "" }) {
 
     if (!value) return;
 
-    setQuery(value);
+    setChannelQuery(value);
 
     const timer = setTimeout(() => {
       analyzeChannel(value);
@@ -425,7 +425,7 @@ function ChannelAnalyzer({ query = "" }) {
         />
 
         <ToolForm
-          query={query}
+          query={channelQuery}
           setQuery={setQuery}
           onGenerate={handleGenerate}
           placeholder="Paste a channel URL, handle, or channel ID..."
@@ -576,7 +576,7 @@ function ChannelAnalyzer({ query = "" }) {
                 {performanceMetrics.map((item) => (
                   <div
                     key={item.label}
-                    className="min-h-[142px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5 text-center transition duration-300 hover:-translate-y-1 hover:border-red-500/40"
+    className="min-h-[142px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5 text-center transition duration-300 hover:-translate-y-1 hover:border-red-500/40"
                   >
                     <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl text-lg font-black">
                       <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${metricTone[item.tone]}`}>
@@ -724,8 +724,7 @@ function ChannelAnalyzer({ query = "" }) {
                     </svg>
                   </div>
                 </div>
-
-                {/* Engagement Distribution */}
+{/* Engagement Distribution */}
                 <div className="min-h-[280px] rounded-2xl border border-white/10 bg-[#1c1c1c] p-5">
                   <h3 className="text-base font-black text-white">
                     Engagement Distribution
@@ -874,8 +873,7 @@ function ChannelAnalyzer({ query = "" }) {
                 </div>
               </div>
             </section>
-
-            {/* EXISTING CHANNEL INFORMATION, SEO AND RECOMMENDATIONS */}
+{/* EXISTING CHANNEL INFORMATION, SEO AND RECOMMENDATIONS */}
             <section className="mx-auto w-full max-w-5xl space-y-6 text-center">
               {!!channel.description && (
                 <div className="rounded-3xl border border-white/10 bg-[#171717] p-6 sm:p-8">
@@ -1021,8 +1019,7 @@ function ChannelAnalyzer({ query = "" }) {
             </div>
           </div>
         )}
-
-        <section className="mt-20 border-t border-white/10 pt-16">
+<section className="mt-20 border-t border-white/10 pt-16">
           <div className="mx-auto max-w-4xl">
             <div className="text-center">
               <span className="text-sm font-bold uppercase tracking-[0.18em] text-red-400">
