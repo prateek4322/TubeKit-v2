@@ -34,6 +34,7 @@ function SectionHeading({ children, color = "blue" }) {
 function VideoIdExtractor({ query = "" }) {
   const [url, setUrl] = useState("");
   const [videoId, setVideoId] = useState("");
+  const [loading, setLoading] = useState(false);
 
   /* =========================================================
      EXTRACT VIDEO ID
@@ -47,6 +48,9 @@ function VideoIdExtractor({ query = "" }) {
       if (!silent) alert("Please enter a YouTube URL");
       return;
     }
+
+    setLoading(true);
+    setVideoId("");
 
     let normalized = input;
 
@@ -125,6 +129,7 @@ function VideoIdExtractor({ query = "" }) {
      ========================================================= */
 
   const reset = () => {
+    setLoading(false);
     setUrl("");
     setVideoId("");
   };
@@ -241,21 +246,26 @@ function VideoIdExtractor({ query = "" }) {
           <div className="relative">
             <Search
               size={19}
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-red-400"
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
+              strokeWidth={2.5}
             />
 
             <input
               id="youtube-video-url"
               type="text"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              onChange={(e) => {
+                setUrl(e.target.value);
+                if (videoId) setVideoId("");
+              }}
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
+                if (e.key === "Enter" && !loading) {
                   extractVideoId();
                 }
               }}
               placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
-              className="w-full rounded-2xl border border-blue-500/40 bg-[#050505] py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-red-500 focus:ring-4 focus:ring-red-500/10"
+              disabled={loading}
+              className="w-full rounded-2xl border-2 border-red-500/55 bg-[#050505] py-4 pl-12 pr-4 text-sm font-medium text-white outline-none transition placeholder:text-slate-600 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 disabled:cursor-not-allowed disabled:opacity-70"
             />
           </div>
 
@@ -265,11 +275,21 @@ function VideoIdExtractor({ query = "" }) {
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
-              onClick={extractVideoId}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-500 px-6 py-3 font-bold text-white shadow-[0_10px_30px_rgba(239,68,68,0.18)] transition hover:bg-red-400"
+              onClick={() => extractVideoId()}
+              disabled={loading || !url.trim()}
+              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 px-6 py-3 font-black text-white shadow-lg shadow-red-500/10 transition hover:-translate-y-0.5 hover:shadow-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Search size={18} />
-              Extract Video ID
+              {loading ? (
+                <>
+                  <RotateCcw size={18} className="animate-spin" />
+                  Extracting Video ID...
+                </>
+              ) : (
+                <>
+                  <Search size={18} />
+                  Extract Video ID
+                </>
+              )}
             </button>
 
             <button
