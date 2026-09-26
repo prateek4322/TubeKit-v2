@@ -405,30 +405,44 @@ function MonetizationChecker({ query = "" }) {
                 </div>
               </div>
 
-              <div className="relative">
-                <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-red-400">
-                  <SearchIcon />
+              {/* Search input + submit */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
+                <div
+                  className={`flex min-h-14 min-w-0 flex-1 items-center gap-3 rounded-2xl border-2 bg-black/50 px-4 transition-all duration-300 sm:min-h-[58px] sm:px-5 ${
+                    inputError
+                      ? "border-red-500 shadow-[0_0_22px_rgba(239,68,68,0.10)]"
+                      : "border-red-500 focus-within:border-red-400 focus-within:shadow-[0_0_22px_rgba(239,68,68,0.12)]"
+                  }`}
+                >
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-red-400 sm:h-9 sm:w-9">
+                    <SearchIcon />
+                  </span>
+
+                  <input
+                    id="channel-url"
+                    type="text"
+                    value={channel}
+                    onChange={(e) => {
+                      setChannel(e.target.value);
+                      if (inputError) setInputError("");
+                    }}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Channel or Video URL, ID, or @username.."
+                    disabled={loading}
+                    aria-invalid={Boolean(inputError)}
+                    aria-describedby={inputError ? "channel-input-error" : undefined}
+                    className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+                  />
                 </div>
 
-                <input
-                  id="channel-url"
-                  type="text"
-                  value={channel}
-                  onChange={(e) => {
-                    setChannel(e.target.value);
-                    if (inputError) setInputError("");
-                  }}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Channel or Video URL, ID, or @username.."
-                  disabled={loading}
-                  aria-invalid={Boolean(inputError)}
-                  aria-describedby={inputError ? "channel-input-error" : undefined}
-                  className={`w-full rounded-2xl border-2 bg-black/50 py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base ${
-                    inputError
-                      ? "border-red-500 focus:border-red-400"
-                      : "border-red-500"
-                  }`}
-                />
+                <button
+                  type="button"
+                  onClick={handleAnalyze}
+                  disabled={loading || !channel.trim()}
+                  className="inline-flex min-h-14 w-full shrink-0 items-center justify-center rounded-2xl border-2 border-red-500 bg-red-500 px-7 py-3 text-sm font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/30 disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-[58px] sm:w-[150px] sm:text-base"
+                >
+                  Submit
+                </button>
               </div>
 
               <p className="mt-3 text-xs leading-6 text-slate-500 sm:text-sm">
@@ -466,39 +480,23 @@ function MonetizationChecker({ query = "" }) {
                 ))}
               </div>
 
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  onClick={handleAnalyze}
-                  disabled={loading || !channel.trim()}
-                  className="group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-red-500 px-6 py-3 font-black text-white shadow-lg shadow-red-500/20 transition hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/30 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  {loading ? (
-                    <>
-                      <RefreshCw size={18} className="animate-spin" />
-                      Analyzing Channel...
-                    </>
-                  ) : (
-                    "Submit"
-                  )}
-                </button>
-
+              <div className="mt-6 flex justify-end">
                 <button
                   type="button"
                   onClick={reset}
                   disabled={loading}
-                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-slate-700 bg-slate-900 px-6 py-3 font-bold text-slate-200 transition hover:border-red-500/50 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-5 py-2.5 text-sm font-bold text-slate-200 transition hover:border-red-500/50 hover:bg-red-500/5 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <RefreshCw size={17} />
+                  <RefreshCw size={16} />
                   Reset
                 </button>
+              </div>
               </div>
             </div>
           </section>
 
           {/* Existing TubeKit loader preserved */}
-          
-              {loading && (
+          {loading && (
             <div className="mt-8 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-5 sm:p-6">
               <div className="flex items-center gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-500/10 text-blue-400">
@@ -524,7 +522,7 @@ function MonetizationChecker({ query = "" }) {
           {result && (
             <div className="mt-8 space-y-6 sm:mt-10 sm:space-y-7">
               {/* Channel profile */}
-              <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
+<section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
                 {channelData.banner && (
                   <img
                     src={channelData.banner}
@@ -590,7 +588,6 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 </div>
               </section>
-
 
               {/* Screenshot-style statistics */}
               <section className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
@@ -685,7 +682,6 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 )}
               </section>
-
 {/* Estimated revenue matrix */}
               <section className="overflow-hidden rounded-3xl border border-slate-800 bg-[#090b12]">
                 <div className="p-5 sm:p-7">
@@ -812,7 +808,7 @@ function MonetizationChecker({ query = "" }) {
                 </div>
               </section>
 
-              {/* YPP progress */}
+{/* YPP progress */}
               <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-5 sm:p-7">
                 <div className="mb-7">
                   <p className="text-xs font-black uppercase tracking-wider text-blue-400">
@@ -972,8 +968,7 @@ function MonetizationChecker({ query = "" }) {
                 second="Tool Analyzes"
                 secondColor="blue"
               />
-
-              <div className="mx-auto mt-6 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+<div className="mx-auto mt-6 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[
                   ["Channel statistics", "Subscribers, total views and public video count."],
                   ["YPP threshold progress", "Compares available metrics with common thresholds."],
@@ -1308,7 +1303,8 @@ function CheckItem({ value }) {
     typeof value === "object"
       ? value?.passed ?? value?.eligible ?? value?.status === "passed"
       : null;
-return (
+
+  return (
     <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.02] p-4">
       {passed === false ? (
         <XCircle className="mt-0.5 shrink-0 text-red-400" size={19} />
@@ -1474,4 +1470,4 @@ function statusLooksPositive(status) {
 }
 
 export default MonetizationChecker;
-                      
+              
