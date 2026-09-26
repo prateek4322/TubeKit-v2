@@ -129,7 +129,13 @@ function ChannelIdFinder({ query = "" }) {
     data?.name ||
     "YouTube Channel";
 
+  // Backend /youtube/channel-id returns the image as `profileImage`
+  // and the complete thumbnail object as `thumbnails`.
   const channelLogo =
+    data?.profileImage ||
+    data?.thumbnails?.high?.url ||
+    data?.thumbnails?.medium?.url ||
+    data?.thumbnails?.default?.url ||
     data?.snippet?.thumbnails?.high?.url ||
     data?.snippet?.thumbnails?.medium?.url ||
     data?.snippet?.thumbnails?.default?.url ||
@@ -338,12 +344,12 @@ function ChannelIdFinder({ query = "" }) {
                   Profile Image
                 </p>
                 <p className="mt-2 text-sm font-bold text-white">
-                  {channelLogo ? "Available" : "Not available"}
+                  {data?.profileImage || channelLogo ? "Available" : "Not available"}
                 </p>
               </div>
             </div>
 
-            {channelLogo && data.snippet?.thumbnails && (
+            {channelLogo && data.thumbnails && (
               <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.025] p-5">
                 <p className="text-sm font-bold text-white">
                   Profile Image URLs
@@ -351,7 +357,7 @@ function ChannelIdFinder({ query = "" }) {
 
                 <div className="mt-4 space-y-3">
                   {["default", "medium", "high"].map((size) => {
-                    const imageUrl = data.snippet?.thumbnails?.[size]?.url;
+                    const imageUrl = data.thumbnails?.[size]?.url;
                     if (!imageUrl) return null;
 
                     return (
