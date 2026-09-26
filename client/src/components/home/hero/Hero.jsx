@@ -87,7 +87,7 @@ function Hero({ onToolSelect }) {
         <div className="absolute left-1/2 top-0 h-px w-[75%] -translate-x-1/2 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-[710px] max-w-7xl flex-col items-center justify-center px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
+      <div className="relative z-10 mx-auto flex min-h-[710px] max-w-7xl flex-col items-center justify-center px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
         <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/[0.04] px-3.5 py-1.5 text-[11px] font-bold tracking-wide text-slate-300 shadow-xl shadow-black/20 backdrop-blur-xl sm:px-4 sm:py-2 sm:text-xs">
           <span className="relative flex h-2 w-2 sm:h-2.5 sm:w-2.5">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-50" />
@@ -114,7 +114,7 @@ function Hero({ onToolSelect }) {
           </p>
         </div>
 
-        <div className="mt-9 w-full max-w-5xl sm:mt-11">
+        <div className="mt-9 w-full max-w-5xl px-0 sm:mt-11">
           <div className="group relative">
             <div className="pointer-events-none absolute -inset-[1px] rounded-[1.4rem] bg-gradient-to-r from-red-500/30 via-yellow-400/15 via-green-500/15 to-blue-500/30 opacity-80 blur-sm transition duration-500 group-hover:opacity-100" />
 
