@@ -1,4 +1,25 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  BarChart3,
+  CalendarDays,
+  Check,
+  Clock3,
+  Eye,
+  Globe,
+  Heart,
+  ListChecks,
+  Maximize2,
+  MessageCircle,
+  PieChart,
+  Play,
+  Rocket,
+  Star,
+  Target,
+  ThumbsUp,
+  Users,
+  Video,
+  Zap,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "@/services/api";
 import SEO from "@/components/common/SEO";
@@ -6,7 +27,7 @@ import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 
-function ChannelAnalyzer({ query: heroQuery = "" }) {
+function ChannelAnalyzer({ query = "" }) {
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -63,7 +84,7 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
   };
 
   useEffect(() => {
-    const value = String(heroQuery || "").trim();
+    const value = String(query || "").trim();
 
     if (!value) return;
 
@@ -74,7 +95,7 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
     }, 0);
 
     return () => clearTimeout(timer);
-  }, [heroQuery]);
+  }, [query]);
 
   const copyText = async (text) => {
     if (!text) return;
@@ -117,7 +138,7 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
       "",
       "Branding",
       `Profile Image: ${channel.profileImage || "N/A"}`,
-      `Banner: ${channel.bannerImage || "N/A"}`,
+      `Banner: ${channel.bannerImage || channel.banner || branding.bannerUrl || "N/A"}`,
       "",
       "Recommendations",
       ...(result.recommendations || []).map(
@@ -240,8 +261,10 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
     performance?.topPerformingVideo ||
     null;
 
-  const averageViews = Number(statistics.averageViews);
-  const averageLikes = Number(statistics.averageLikes);
+  const averageViews = Number(
+    statistics.averageViews ?? statistics.viewsPerVideo ?? 0
+  );
+  const averageLikes = Number(statistics.averageLikes ?? 0);
 
   const calculatedEngagement =
     Number.isFinite(averageViews) &&
@@ -325,17 +348,19 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
 
   const MetricIcon = ({ type }) => {
     const icons = {
-      heart: "â™¥",
-      chart: "â†—",
-      clock: "â—·",
-      rocket: "â—†",
-      target: "â—Ž",
-      star: "â˜…",
-      zap: "ÏŸ",
-      users: "â—",
+      heart: Heart,
+      chart: BarChart3,
+      clock: Clock3,
+      rocket: Rocket,
+      target: Target,
+      star: Star,
+      zap: Zap,
+      users: Users,
     };
 
-    return <span aria-hidden="true">{icons[type] || "â€¢"}</span>;
+    const Icon = icons[type] || Target;
+
+    return <Icon className="h-5 w-5" strokeWidth={2.2} />;
   };
 
   const donutData = analytics?.engagementDistribution || {
@@ -453,15 +478,13 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
         {result && !loading && (
           <section className="mt-10 w-full space-y-10 text-center">
             {/* CHANNEL PROFILE */}
-            <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-red-500/25 bg-[#171717] shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
-              <div className="h-32 bg-gradient-to-r from-red-950 via-[#242424] to-blue-950 sm:h-44" />
-
-              <div className="px-5 pb-7 sm:px-8">
-                <div className="-mt-14 sm:-mt-16">
-                  <div className="mx-auto h-28 w-28 overflow-hidden rounded-full border-4 border-[#171717] bg-[#242424] shadow-2xl sm:h-32 sm:w-32">
-                    {channel.profileImage || branding.profileImage ? (
+            <div className="mx-auto w-full max-w-5xl overflow-hidden rounded-3xl border border-white/10 border-l-4 border-l-red-500 bg-[#171717] shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+              <div className="px-5 py-7 sm:px-8 sm:py-8">
+                <div>
+                  <div className="mx-auto h-24 w-24 overflow-hidden rounded-full border-4 border-red-500/70 bg-[#242424] shadow-[0_0_35px_rgba(239,68,68,0.16)] sm:h-28 sm:w-28">
+                    {channel.profileImage || channel.thumbnail || branding.profileImage ? (
                       <img
-                        src={channel.profileImage || branding.profileImage}
+                        src={channel.profileImage || channel.thumbnail || branding.profileImage}
                         alt={`${channel.title || "YouTube channel"} profile`}
                         className="h-full w-full object-cover"
                         loading="lazy"
@@ -483,9 +506,17 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
                     </p>
 
                     <div className="mt-2 flex flex-wrap items-center justify-center gap-3 text-xs text-slate-500">
-                      {channel.country && <span>{channel.country}</span>}
+                      {channel.country && (
+                        <span className="inline-flex items-center gap-1">
+                          <Globe className="h-3.5 w-3.5" />
+                          {channel.country}
+                        </span>
+                      )}
                       {channel.publishedAt && (
-                        <span>{formatDate(channel.publishedAt)}</span>
+                        <span className="inline-flex items-center gap-1">
+                          <CalendarDays className="h-3.5 w-3.5" />
+                          {formatDate(channel.publishedAt)}
+                        </span>
                       )}
                       {channel.channelId && (
                         <span className="max-w-full break-all">
@@ -498,9 +529,9 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
 
                 <div className="mx-auto mt-7 grid max-w-3xl gap-3 sm:grid-cols-2">
                   {[
-                    ["Subscribers", formatNumber(channel.subscriberCount), "users"],
-                    ["Total Views", formatNumber(channel.viewCount), "eye"],
-                    ["Videos", formatNumber(channel.videoCount), "video"],
+                    ["Subscribers", formatNumber(channel.subscriberCount ?? channel.subscribers ?? statistics.subscriberCount ?? statistics.subscribers), "users"],
+                    ["Total Views", formatNumber(channel.viewCount ?? channel.views ?? statistics.viewCount ?? statistics.views), "eye"],
+                    ["Videos", formatNumber(channel.videoCount ?? channel.videos ?? statistics.videoCount ?? statistics.videos), "video"],
                     ["Channel Score", Number.isFinite(score) ? `${score}/100` : "N/A", "heart"],
                   ].map(([label, value, icon]) => (
                     <div
@@ -508,7 +539,15 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
                       className="rounded-2xl border border-white/5 bg-[#222] p-5 text-center transition hover:border-red-500/30"
                     >
                       <div className="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-                        {icon === "users" ? "â—" : icon === "eye" ? "â—‰" : icon === "video" ? "â– " : "â™¥"}
+                        {icon === "users" ? (
+                          <Users className="h-5 w-5" />
+                        ) : icon === "eye" ? (
+                          <Eye className="h-5 w-5" />
+                        ) : icon === "video" ? (
+                          <Video className="h-5 w-5" />
+                        ) : (
+                          <Heart className="h-5 w-5" />
+                        )}
                       </div>
                       <p className="mt-3 text-2xl font-black text-white">
                         {value}
@@ -526,7 +565,7 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
             <section className="mx-auto w-full max-w-5xl">
               <div className="mb-6 flex items-center justify-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-                  â–¤
+                  <ListChecks className="h-5 w-5" />
                 </div>
                 <h2 className="text-2xl font-black text-white sm:text-3xl">
                   Performance Metrics
@@ -566,7 +605,7 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
               <section className="mx-auto w-full max-w-5xl">
                 <div className="mb-6 flex items-center justify-center gap-3">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-                    â˜…
+                    <Star className="h-5 w-5" />
                   </div>
                   <h2 className="text-2xl font-black text-white sm:text-3xl">
                     Top Performing Video
@@ -579,10 +618,10 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
                       Best Performer
                     </span>
                     <span className="text-sm text-slate-300">
-                      Views: {formatNumber(topVideo.viewCount || topVideo.views)}
+                      Views: {formatNumber(topVideo.viewCount ?? topVideo.views)}
                     </span>
                     <span className="text-sm text-slate-300">
-                      Likes: {formatNumber(topVideo.likeCount || topVideo.likes)}
+                      Likes: {formatNumber(topVideo.likeCount ?? topVideo.likes)}
                     </span>
                   </div>
 
@@ -636,7 +675,7 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
             <section className="mx-auto w-full max-w-5xl">
               <div className="mb-6 flex items-center justify-center gap-3">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-                  â—”
+                  <PieChart className="h-5 w-5" />
                 </div>
                 <h2 className="text-2xl font-black text-white sm:text-3xl">
                   Performance Analytics
@@ -709,9 +748,9 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
                     </div>
 
                     <div className="mt-5 flex flex-wrap justify-center gap-4 text-xs text-slate-400">
-                      <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-red-500" />Likes</span>
-                      <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-orange-400" />Comments</span>
-                      <span><i className="mr-1 inline-block h-2.5 w-2.5 bg-orange-200" />Shares</span>
+                      <span><i aria-hidden="true" className="mr-1 inline-block h-2.5 w-2.5 rounded-sm bg-red-500" />Likes</span>
+                      <span><i aria-hidden="true" className="mr-1 inline-block h-2.5 w-2.5 rounded-sm bg-orange-400" />Comments</span>
+                      <span><i aria-hidden="true" className="mr-1 inline-block h-2.5 w-2.5 rounded-sm bg-orange-200" />Shares</span>
                     </div>
                   </div>
                 </div>
@@ -748,19 +787,29 @@ function ChannelAnalyzer({ query: heroQuery = "" }) {
                   </h3>
 
                   <div className="mt-7 flex h-44 items-end gap-3 px-2">
-                    {[25, 32, 45, 58, 82].map((height, index) => (
-                      <div key={index} className="flex flex-1 flex-col items-center gap-2">
-                        <div className="flex h-36 w-full items-end rounded-t-lg bg-white/[0.02]">
-                          <div
-                            className="w-full rounded-t-lg bg-gradient-to-t from-red-600 to-red-400 transition-all"
-                            style={{ height: `${height}%` }}
-                          />
+                    {(growthData.length > 0
+                      ? growthData.slice(0, 5).map((item) =>
+                          typeof item === "number" ? item : item?.value ?? 0
+                        )
+                      : [25, 32, 45, 58, 82]
+                    ).map((value, index, arr) => {
+                      const maxValue = Math.max(...arr.map((item) => Number(item) || 0), 1);
+                      const height = Math.max(8, ((Number(value) || 0) / maxValue) * 100);
+
+                      return (
+                        <div key={index} className="flex flex-1 flex-col items-center gap-2">
+                          <div className="flex h-36 w-full items-end rounded-t-lg bg-white/[0.02]">
+                            <div
+                              className="w-full rounded-t-lg bg-gradient-to-t from-red-600 to-red-400 transition-all"
+                              style={{ height: `${height}%` }}
+                            />
+                          </div>
+                          <span className="text-[10px] text-slate-500">
+                            {["Now", "1M", "3M", "6M", "1Y"][index]}
+                          </span>
                         </div>
-                        <span className="text-[10px] text-slate-500">
-                          {["Now", "1M", "3M", "6M", "1Y"][index]}
-                        </span>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
 
                   {growthData.length > 0 && (
