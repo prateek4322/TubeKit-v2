@@ -424,10 +424,10 @@ function ChannelAnalyzer({ query = "" }) {
           description="Get a detailed public-data analysis of a YouTube channel including its profile, banner, description, statistics, branding, content signals, SEO checks, and optimization opportunities."
         />
 
-        <ToolForm
-          query={channelQuery}
-          setQuery={setQuery}
-          onGenerate={handleGenerate}
+       <ToolForm
+  query={channelQuery}
+  setQuery={setChannelQuery}
+  onGenerate={handleGenerate}
           placeholder="Paste a channel URL, handle, or channel ID..."
           buttonText="Analyze Channel"
           helperText="Use a public YouTube channel URL, @handle, channel ID, or supported channel input."
