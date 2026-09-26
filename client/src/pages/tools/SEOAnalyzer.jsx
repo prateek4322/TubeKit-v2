@@ -1,13 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  AlertTriangle,
+  BarChart3,
+  CheckCircle2,
+  FileText,
+  Hash,
+  Search,
+  Tag,
+  Type,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import api from "@/services/api";
 import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
-import ToolForm from "@/components/tool-layout/ToolForm";
 
-function SEOAnalyzer() {
-  const [query, setQuery] = useState("");
+function SEOAnalyzer({ query = "" }) {
+  const [searchQuery, setSearchQuery] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -56,19 +65,25 @@ function SEOAnalyzer() {
   };
 
   const handleGenerate = ({ topic }) => {
-    setQuery(topic);
-    analyzeSEO(topic);
+    const value = String(topic || "").trim();
+    setSearchQuery(value);
+    analyzeSEO(value);
   };
 
   useEffect(() => {
-    if (!query) return;
+    const value = String(query || "").trim();
+
+    if (!value || value === generatedForRef.current) return;
+
+    generatedForRef.current = value;
+    setSearchQuery(value);
 
     const timer = setTimeout(() => {
-      analyzeSEO(query);
-    }, 0);
+      analyzeSEO(value);
+    }, 100);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [query]);
 
   const copyText = async (text) => {
     if (!text) return;
@@ -220,14 +235,72 @@ function SEOAnalyzer() {
           description="Analyze a YouTube video and get a detailed SEO report covering title, description, tags, keywords, channel signals, metadata, and optimization opportunities."
         />
 
-        <ToolForm
-          query={query}
-          setQuery={setQuery}
-          onGenerate={handleGenerate}
-          placeholder="Paste a YouTube video URL..."
-          buttonText="Analyze SEO"
-          helperText="Use a public YouTube video URL. TubeKit analyzes available public metadata and returns an SEO report."
-        />
+        <div className="mx-auto w-full max-w-5xl">
+          <div className="rounded-2xl border border-white/10 bg-[#151515] p-4 shadow-2xl sm:p-5">
+            <div className="mb-4 flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-500">
+                <Search size={19} strokeWidth={2.5} />
+              </div>
+
+              <div>
+                <h2 className="text-sm font-black text-white sm:text-base">
+                  Analyze Video SEO
+                </h2>
+                <p className="text-xs text-slate-500">
+                  Enter a YouTube video URL to get your SEO score
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex min-h-14 min-w-0 flex-1 items-center rounded-xl border-2 border-red-500/70 bg-[#202020] px-4 transition focus-within:border-red-400 focus-within:shadow-[0_0_25px_rgba(239,68,68,0.12)]">
+                <Search
+                  size={18}
+                  strokeWidth={2.5}
+                  className="mr-3 shrink-0 text-red-500"
+                />
+
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    if (error) setError("");
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleGenerate({ topic: searchQuery });
+                    }
+                  }}
+                  placeholder="Paste a YouTube video URL..."
+                  className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500"
+                />
+              </div>
+
+              <button
+                type="button"
+                onClick={() => handleGenerate({ topic: searchQuery })}
+                disabled={loading}
+                className="flex min-h-14 shrink-0 items-center justify-center gap-2 rounded-xl bg-red-600 px-6 text-sm font-black text-white shadow-lg shadow-red-500/20 transition hover:bg-red-500 disabled:cursor-wait disabled:opacity-70 sm:min-w-[155px]"
+              >
+                <BarChart3 size={18} strokeWidth={2.5} />
+                {loading ? "Analyzing..." : "Analyze SEO"}
+              </button>
+            </div>
+
+            {error && (
+              <p className="mt-3 text-xs font-semibold text-red-400">
+                {error}
+              </p>
+            )}
+
+            {!error && (
+              <p className="mt-3 text-xs text-slate-500">
+                Paste a public YouTube video URL and press Enter or Analyze SEO.
+              </p>
+            )}
+          </div>
+        </div>
 
         {loading && (
           <div className="mt-10 rounded-3xl border border-red-500/20 bg-[#090909] p-8 text-center shadow-[0_0_60px_rgba(239,68,68,0.08)]">
@@ -255,7 +328,7 @@ function SEOAnalyzer() {
                   key={item}
                   className="rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-left text-sm text-slate-300"
                 >
-                  <span className="mr-2 text-red-400">[OK]</span>
+                  <CheckCircle2 size={15} className="mr-2 inline-block text-green-400" />
                   {item}
                 </div>
               ))}
@@ -335,25 +408,25 @@ function SEOAnalyzer() {
                 label="Title"
                 value={`${result.title?.score ?? "N/A"}/100`}
                 helper={`${result.title?.length ?? 0} characters`}
-                icon="T"
+                icon={<Type size={17} />}
               />
               <MetricCard
                 label="Description"
                 value={`${result.description?.score ?? "N/A"}/100`}
                 helper={`${result.description?.length ?? 0} characters`}
-                icon="D"
+                icon={<FileText size={17} />}
               />
               <MetricCard
                 label="Tags"
                 value={`${result.tags?.score ?? "N/A"}/100`}
                 helper={`${result.tags?.count ?? 0} available tags`}
-                icon="#"
+                icon={<Tag size={17} />}
               />
               <MetricCard
                 label="Keywords"
                 value={`${result.keywords?.score ?? "N/A"}/100`}
                 helper="Keyword relevance signals"
-                icon="K"
+                icon={<Hash size={17} />}
               />
             </div>
 
@@ -405,7 +478,7 @@ function SEOAnalyzer() {
                     ["Language", result.metadata?.language],
                     ["Definition", result.metadata?.definition],
                   ].map(([label, value]) => (
-                 <div
+                    <div
                       key={label}
                       className="flex items-center justify-between gap-5 rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3"
                     >
@@ -499,7 +572,11 @@ function SEOAnalyzer() {
                     >
                       <div className="flex items-start gap-3">
                         <span className="mt-0.5 text-sm font-bold text-green-400">
-                          {check?.passed ? "[OK]" : "[! ]"}
+                          {check?.passed ? (
+                            <CheckCircle2 size={16} />
+                          ) : (
+                            <AlertTriangle size={16} />
+                          )}
                         </span>
                         <div>
                           <p className="text-sm font-bold text-slate-200">
@@ -543,19 +620,19 @@ function SEOAnalyzer() {
                   label="Length"
                   value={result.description?.length ?? "N/A"}
                   helper="Characters"
-                  icon="L"
+                  icon={<FileText size={17} />}
                 />
                 <MetricCard
                   label="Words"
                   value={result.description?.wordCount ?? "N/A"}
                   helper="Description words"
-                  icon="W"
+                  icon={<Type size={17} />}
                 />
                 <MetricCard
                   label="Links"
                   value={result.description?.linkCount ?? "N/A"}
                   helper="Detected links"
-                  icon="U"
+                  icon={<Search size={17} />}
                 />
               </div>
 
@@ -585,7 +662,11 @@ function SEOAnalyzer() {
                       className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
                     >
                       <span className="mr-2 text-sm font-bold text-green-400">
-                        {check?.passed ? "[OK]" : "[! ]"}
+                        {check?.passed ? (
+                            <CheckCircle2 size={16} />
+                          ) : (
+                            <AlertTriangle size={16} />
+                          )}
                       </span>
                       <span className="text-sm font-semibold text-slate-200">
                         {check?.label || "Description Check"}
@@ -616,18 +697,19 @@ function SEOAnalyzer() {
                     {result.tags?.score ?? "N/A"}/100
                   </span>
                 </div>
-<div className="mt-6 grid gap-4 sm:grid-cols-2">
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
                   <MetricCard
                     label="Tag Count"
                     value={result.tags?.count ?? "N/A"}
                     helper="Available public tags"
-                    icon="#"
+                    icon={<Tag size={17} />}
                   />
                   <MetricCard
                     label="Avg. Length"
                     value={result.tags?.averageLength ?? "N/A"}
                     helper="Average tag characters"
-                    icon="A"
+                    icon={<Tag size={17} />}
                   />
                 </div>
 
@@ -646,8 +728,7 @@ function SEOAnalyzer() {
                     ))}
                   </div>
                 )}
-
-                <Link
+<Link
                   to="/tools/tag-extractor"
                   className="mt-6 inline-flex text-sm font-semibold text-blue-400 hover:text-blue-300"
                 >
@@ -741,29 +822,29 @@ function SEOAnalyzer() {
                   label="Channel"
                   value={result.channel?.title || result.videoInfo?.channelTitle || "N/A"}
                   helper="Channel title"
-                  icon="C"
+                  icon={<Search size={17} />}
                 />
                 <MetricCard
                   label="Subscribers"
                   value={result.channel?.subscriberCount ?? "N/A"}
                   helper="Public subscriber data"
-                  icon="S"
+                  icon={<BarChart3 size={17} />}
                 />
                 <MetricCard
                   label="Videos"
                   value={result.channel?.videoCount ?? "N/A"}
                   helper="Published videos"
-                  icon="V"
+                  icon={<FileText size={17} />}
                 />
                 <MetricCard
                   label="Views"
                   value={result.channel?.viewCount ?? "N/A"}
                   helper="Channel views"
-                  icon="R"
+                  icon={<BarChart3 size={17} />}
                 />
               </div>
 
-{!!result.channel?.checks?.length && (
+              {!!result.channel?.checks?.length && (
                 <div className="mt-6 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {result.channel.checks.map((check, index) => (
                     <div
@@ -771,7 +852,11 @@ function SEOAnalyzer() {
                       className="rounded-xl border border-white/10 bg-white/[0.025] p-4"
                     >
                       <span className="mr-2 text-sm font-bold text-green-400">
-                        {check?.passed ? "[OK]" : "[! ]"}
+                        {check?.passed ? (
+                            <CheckCircle2 size={16} />
+                          ) : (
+                            <AlertTriangle size={16} />
+                          )}
                       </span>
                       <span className="text-sm font-semibold text-slate-200">
                         {check?.label || "Channel Check"}
@@ -808,7 +893,11 @@ function SEOAnalyzer() {
                             check?.passed ? "text-green-400" : "text-red-400"
                           }`}
                         >
-                          {check?.passed ? "[OK]" : "[! ]"}
+                          {check?.passed ? (
+                            <CheckCircle2 size={16} />
+                          ) : (
+                            <AlertTriangle size={16} />
+                          )}
                         </span>
                         <div className="min-w-0">
                           <p className="text-sm font-bold text-white">
@@ -826,8 +915,7 @@ function SEOAnalyzer() {
                 </div>
               </div>
             )}
-
-            {!!result.recommendations?.length && (
+{!!result.recommendations?.length && (
               <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
@@ -902,7 +990,7 @@ function SEOAnalyzer() {
                   key={item}
                   className="rounded-xl border border-white/10 bg-white/[0.025] px-4 py-3 text-left text-sm text-slate-300"
                 >
-                  <span className="mr-2 text-red-400">[OK]</span>
+                  <CheckCircle2 size={15} className="mr-2 inline-block text-green-400" />
                   {item}
                 </div>
               ))}
@@ -1090,4 +1178,3 @@ function SEOAnalyzer() {
 }
 
 export default SEOAnalyzer;
-   
