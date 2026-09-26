@@ -24,7 +24,7 @@ const rotatingWords = [
   "Channels",
   "SEO",
   "Comments",
-  "Video IDs",
+  "Video ",
 ];
 
 function Hero({ onToolSelect }) {
