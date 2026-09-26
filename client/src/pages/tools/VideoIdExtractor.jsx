@@ -262,7 +262,7 @@ function VideoIdExtractor({ query = "" }) {
             TOOL
             =================================================== */}
 
-        <div className="rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
+        <div className="w-full min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
           <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
@@ -285,12 +285,14 @@ function VideoIdExtractor({ query = "" }) {
             YouTube Video URL
           </label>
 
-          <div className="relative">
-            <Search
-              size={19}
-              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-red-500"
-              strokeWidth={2.5}
-            />
+          <div className="relative w-full min-w-0 overflow-hidden">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex w-12 items-center justify-center sm:w-14">
+              <Search
+                size={19}
+                className="text-red-500"
+                strokeWidth={2.5}
+              />
+            </div>
 
             <input
               id="youtube-video-url"
@@ -307,7 +309,12 @@ function VideoIdExtractor({ query = "" }) {
               }}
               placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
               disabled={loading}
-              className="w-full rounded-2xl border-2 border-red-500/55 bg-[#050505] py-4 pl-12 pr-4 text-sm font-medium text-white outline-none transition placeholder:text-slate-600 focus:border-red-400 focus:ring-4 focus:ring-red-500/10 disabled:cursor-not-allowed disabled:opacity-70"
+              style={{
+                paddingLeft: "56px",
+                paddingRight: "16px",
+                boxSizing: "border-box",
+              }}
+              className="block w-full min-w-0 max-w-full rounded-2xl border-2 border-blue-500/60 bg-[#050505] py-4 text-sm font-medium text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-70 sm:py-4"
             />
           </div>
 
@@ -495,7 +502,7 @@ function VideoIdExtractor({ query = "" }) {
               </div>
             </div>
           </div>
-        )}
+)}
 
         {/* ===================================================
             SEO CONTENT
@@ -677,7 +684,8 @@ function VideoIdExtractor({ query = "" }) {
 
             </div>
           </div>
-{/* =================================================
+
+          {/* =================================================
               VIDEO ID VS CHANNEL ID
               ================================================= */}
 
@@ -783,6 +791,7 @@ function VideoIdExtractor({ query = "" }) {
             </ul>
           </div>
 
+
 {/* =================================================
               FEATURES
               ================================================= */}
@@ -861,7 +870,8 @@ function VideoIdExtractor({ query = "" }) {
               </li>
             </ul>
           </div>
-{/* =================================================
+
+          {/* =================================================
               RELATED TOOLS
               ================================================= */}
 
