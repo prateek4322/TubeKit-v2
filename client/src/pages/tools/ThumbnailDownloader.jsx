@@ -174,8 +174,7 @@ function ThumbnailDownloader({ query = "" }) {
     {
       question: "How do I download a YouTube thumbnail?",
       answer:
-        "Copy the YouTube video URL, paste it into TubeKit's YouTube Thumbnail Downloader, click <Search className="h-4 w-4" />
-              Get Thumbnails, and choose the available thumbnail resolution.",
+        "Copy the YouTube video URL, paste it into TubeKit's YouTube Thumbnail Downloader, click Get Thumbnails, and choose the available thumbnail resolution.",
     },
     {
       question: "Can I download a YouTube thumbnail in HD?",
@@ -355,8 +354,7 @@ function ThumbnailDownloader({ query = "" }) {
                     <Download className="h-4 w-4" />
                     {downloading === `${item.title}-${item.url}`
                       ? "Downloading..."
-                      : "<Download className="h-4 w-4" />
-                    Download Thumbnail"}
+                      : "Download Thumbnail"}
                   </button>
                 </div>
               );
@@ -520,8 +518,7 @@ function ThumbnailDownloader({ query = "" }) {
           </div>
 
           {/* FEATURES */}
-          
-             <div>
+          <div>
             <SectionHeading color="red">
               YouTube Thumbnail Downloader Features
             </SectionHeading>
@@ -544,8 +541,7 @@ function ThumbnailDownloader({ query = "" }) {
 
               <li className="rounded-lg border border-yellow-400/20 bg-yellow-400/5 p-4 text-slate-300">
                 <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Easy image access</li>
-
-              <li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-slate-300">
+<li className="rounded-lg border border-green-500/20 bg-green-500/5 p-4 text-slate-300">
                 <Check className="mr-2 inline-block h-4 w-4 shrink-0 align-[-2px]" />Works without complicated setup</li>
 
               <li className="rounded-lg border border-blue-500/20 bg-blue-500/5 p-4 text-slate-300">
@@ -798,3 +794,4 @@ function ThumbnailDownloader({ query = "" }) {
 }
 
 export default ThumbnailDownloader;
+              
