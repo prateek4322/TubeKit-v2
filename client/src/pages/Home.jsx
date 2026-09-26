@@ -765,46 +765,52 @@ function Home() {
 </section>
 
 {/* HOW IT WORKS */}
-      <section
-        id="how-it-works"
-        className="w-full overflow-hidden bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
-      >
-        <div className="mx-auto w-full max-w-6xl">
-          <div className="mx-auto max-w-4xl text-center">
-            <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
-              How It Works
-            </span>
+<section
+  id="how-it-works"
+  className="w-full overflow-hidden bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
+>
+  <div className="mx-auto w-full max-w-6xl">
+    <div className="mx-auto max-w-4xl text-center">
+      <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
+        How It Works
+      </span>
 
-            <h2 className="mt-5 text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
-              From Idea <span className="text-red-500">To Upload</span>
-            </h2>
+      <h2 className="mt-5 text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
+        From Idea <span className="text-red-500">To Upload</span>
+      </h2>
+    </div>
+
+    <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {workflow.map((step) => {
+        const s = rgby[step.color];
+
+        return (
+          <div
+            key={step.number}
+            tabIndex={0}
+            className={`group min-h-[165px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[175px] sm:p-6`}
+          >
+            <div className="flex items-center gap-3">
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${s.icon} text-sm font-black ${s.text} transition-transform duration-300 group-hover:scale-105`}
+              >
+                {step.number}
+              </div>
+
+              <h3 className="text-base font-extrabold leading-tight text-white sm:text-lg">
+                {step.title}
+              </h3>
+            </div>
+
+            <p className="mt-4 text-sm leading-6 text-slate-500 sm:text-[15px]">
+              {step.text}
+            </p>
           </div>
-
-          <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {workflow.map((step) => {
-              const s = rgby[step.color];
-
-              return (
-                <div
-                  key={step.number}
-                  tabIndex={0}
-                  className={`group min-h-[190px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[205px] sm:p-6`}
-                >
-                  <div className={`mx-auto flex h-11 w-11 items-center justify-center rounded-xl ${s.icon} text-sm font-black ${s.text}`}>
-                    {step.number}
-                  </div>
-                  <h3 className="mt-5 text-lg font-extrabold leading-tight text-white sm:text-xl">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-500 sm:text-[15px] sm:leading-7">
-                    {step.text}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+        );
+      })}
+    </div>
+  </div>
+</section>
 
 {/* BEST PRACTICES */}
 <section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
@@ -825,29 +831,34 @@ function Home() {
     <div className="mx-auto mt-10 grid max-w-5xl gap-4 text-left sm:grid-cols-2">
       {[
         {
+          icon: "✓",
           title: "Clear Titles",
           text: "Keep titles accurate and easy to understand.",
         },
         {
+          icon: "⌕",
           title: "Relevant Keywords",
           text: "Match keywords with your actual video topic.",
         },
         {
+          icon: "▣",
           title: "Strong Thumbnails",
           text: "Communicate one clear idea at a glance.",
         },
         {
+          icon: "↗",
           title: "Review Analytics",
           text: "Track retention and audience response regularly.",
         },
-      ].map((item, index) => (
+      ].map((item) => (
         <div
           key={item.title}
-          className="group min-h-[118px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] sm:p-6"
+          tabIndex={0}
+          className="group min-h-[118px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] focus:border-red-500/50 sm:p-6"
         >
           <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-400 transition-transform duration-300 group-hover:scale-105">
-              <Check className="h-5 w-5" />
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-lg font-bold text-red-400 transition-transform duration-300 group-hover:scale-105">
+              {item.icon}
             </div>
 
             <div className="min-w-0">
