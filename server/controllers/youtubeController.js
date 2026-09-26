@@ -9,6 +9,68 @@ import {
   getYouTubeComments,
 } from "../services/youtubeService.js";
 
+
+/*
+|--------------------------------------------------------------------------
+| Channel ID Finder
+|--------------------------------------------------------------------------
+*/
+
+export const findChannelId = async (req, res) => {
+  try {
+    const input =
+      req.body?.channel ||
+      req.body?.url ||
+      req.body?.query ||
+      req.query?.channel ||
+      req.query?.url;
+
+    if (!input) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "YouTube channel URL, ID, username, or handle is required.",
+      });
+    }
+
+    const info = await getChannelInfo(input);
+
+    return res.status(200).json({
+      success: true,
+      data: {
+        id: info.id,
+        channelId: info.id,
+        name: info.snippet?.title || "",
+        title: info.snippet?.title || "",
+        description: info.snippet?.description || "",
+        customUrl: info.snippet?.customUrl || "",
+        publishedAt: info.snippet?.publishedAt || "",
+        country: info.snippet?.country || "",
+        thumbnails: info.snippet?.thumbnails || {},
+        profileImage:
+          info.snippet?.thumbnails?.high?.url ||
+          info.snippet?.thumbnails?.medium?.url ||
+          info.snippet?.thumbnails?.default?.url ||
+          "",
+        statistics: info.statistics || {},
+        subscribers: Number(info.statistics?.subscriberCount || 0),
+        views: Number(info.statistics?.viewCount || 0),
+        videos: Number(info.statistics?.videoCount || 0),
+        url: `https://www.youtube.com/channel/${info.id}`,
+      },
+    });
+  } catch (error) {
+    console.error("Channel ID Finder Error:", error);
+
+    return res.status(404).json({
+      success: false,
+      message:
+        error.message ||
+        "Unable to find the YouTube channel.",
+    });
+  }
+};
+
 /*
 |--------------------------------------------------------------------------
 | Monetization Analyzer
