@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
 
 import api from "@/services/api";
 
@@ -229,17 +230,151 @@ function HashtagExtractor({ query = "" }) {
           description="Extract available hashtags from YouTube videos quickly using a simple video URL."
         />
 
-        <ToolForm
-          onGenerate={handleGenerate}
-          loading={loading}
-          config={{
-            buttonText: "Extract YouTube Hashtags",
-            topicLabel: "YouTube Video URL",
-            topicPlaceholder:
-              "Paste YouTube video URL (watch, youtu.be, Shorts, embed, live)...",
-            initialTopic: query,
-          }}
-        />
+        {/* ===================================================
+            HASHTAG EXTRACTOR SEARCH
+            =================================================== */}
+
+        <div className="w-full min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
+          <div className="mb-6">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
+              Creator Utility
+            </p>
+
+            <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+              Extract YouTube Hashtags
+            </h2>
+          </div>
+
+          <label
+            htmlFor="youtube-hashtag-url"
+            className="mb-2 block text-sm font-semibold text-slate-300"
+          >
+            YouTube Video URL
+          </label>
+
+          <div
+            className="
+              relative w-full min-w-0 overflow-hidden
+              rounded-2xl border-2 border-blue-500/70
+              bg-[#050816]
+              shadow-[0_0_35px_rgba(59,130,246,0.08)]
+              transition-all duration-300
+              focus-within:border-blue-400
+              focus-within:shadow-[0_0_45px_rgba(59,130,246,0.16)]
+            "
+          >
+            <div
+              className="
+                pointer-events-none absolute inset-y-0 left-0 z-10
+                flex w-14 shrink-0 items-center justify-center
+                bg-blue-500/10 text-blue-400
+              "
+            >
+              <Search size={21} strokeWidth={2.5} />
+            </div>
+
+            <input
+              id="youtube-hashtag-url"
+              type="text"
+              inputMode="url"
+              autoComplete="off"
+              autoCapitalize="none"
+              spellCheck="false"
+              enterKeyHint="search"
+              defaultValue={query}
+              onChange={(e) => {
+                e.currentTarget.dataset.value = e.currentTarget.value;
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !loading && e.currentTarget.value.trim()) {
+                  e.preventDefault();
+                  handleGenerate({ topic: e.currentTarget.value.trim() });
+                }
+              }}
+              placeholder="Paste YouTube video URL..."
+              aria-label="YouTube Video URL"
+              disabled={loading}
+              style={{
+                paddingLeft: "76px",
+                paddingRight: "16px",
+                boxSizing: "border-box",
+              }}
+              className="
+                block h-14 w-full min-w-0 max-w-full
+                rounded-xl bg-transparent py-3
+                text-sm font-semibold text-white outline-none
+                placeholder:text-slate-500 focus:outline-none
+                disabled:cursor-not-allowed disabled:opacity-70
+                sm:h-16 sm:text-base
+              "
+            />
+          </div>
+
+          <p className="mt-3 text-xs leading-5 text-slate-500">
+            Paste a YouTube URL and press Enter, or use Extract YouTube Hashtags.
+            Supports watch, youtu.be, Shorts, embed, live, and other supported URLs.
+          </p>
+
+          <div className="mt-5 flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={(e) => {
+                const input = e.currentTarget
+                  .closest("div")
+                  ?.previousElementSibling
+                  ?.querySelector("input");
+
+                const value = input?.value?.trim() || query.trim();
+
+                if (!loading && value) {
+                  handleGenerate({ topic: value });
+                }
+              }}
+              disabled={loading}
+              className="
+                group relative inline-flex min-h-14 w-full
+                items-center justify-center gap-2 overflow-hidden
+                rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-500
+                px-6 py-3 font-black text-white
+                shadow-[0_14px_35px_rgba(239,68,68,0.20)]
+                transition-all duration-300 hover:-translate-y-0.5
+                hover:shadow-[0_18px_45px_rgba(239,68,68,0.30)]
+                disabled:cursor-wait disabled:opacity-100
+              "
+            >
+              <Search size={20} />
+              {loading ? "Extracting Hashtags..." : "Extract YouTube Hashtags"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                const input = document.getElementById("youtube-hashtag-url");
+
+                if (input) {
+                  input.value = "";
+                  delete input.dataset.value;
+                }
+
+                setResults([]);
+                setVideoInfo(null);
+                setNoHashtagsFound(false);
+                setLastFormData(null);
+                autoGeneratedQuery.current = "";
+              }}
+              className="
+                inline-flex min-h-12 w-full items-center justify-center gap-2
+                rounded-2xl border border-white/10 bg-white/[0.04]
+                px-6 py-3 font-semibold text-slate-300
+                transition-all duration-300
+                hover:border-blue-500/30 hover:bg-blue-500/[0.05]
+                hover:text-white
+              "
+            >
+              Reset
+            </button>
+          </div>
+        </div>
 
         {/* ===================================================
             VIDEO INFO
@@ -329,7 +464,6 @@ function HashtagExtractor({ query = "" }) {
             }}
           />
         )}
-
 
         {/* ===================================================
             SEO CONTENT
@@ -462,7 +596,8 @@ function HashtagExtractor({ query = "" }) {
               </div>
             </div>
           </div>
-<div>
+
+          <div>
             <SectionHeading color="blue">
               What Is a YouTube Hashtag Extractor?
             </SectionHeading>
