@@ -15,8 +15,7 @@ import {
   Users,
   Video,
   Wallet,
-  XCircle,
-  Search,
+  XCircle
 } from "lucide-react";
 
 import api from "@/services/api";
@@ -265,74 +264,20 @@ function MonetizationChecker({ query = "" }) {
                 </div>
               </div>
 
-              {/* ===================================================
-                  MONETIZATION SEARCH
-                  =================================================== */}
-
-              <div
-                className="
-                  relative w-full min-w-0 overflow-hidden
-                  rounded-2xl
-                  border-2 border-blue-500/70
-                  bg-[#050816]
-                  shadow-[0_0_35px_rgba(59,130,246,0.08)]
-                  transition-all duration-300
-                  focus-within:border-blue-400
-                  focus-within:shadow-[0_0_45px_rgba(59,130,246,0.16)]
-                "
-              >
-                <div
-                  className="
-                    pointer-events-none
-                    absolute inset-y-0 left-0 z-10
-                    flex w-14 shrink-0
-                    items-center justify-center
-                    bg-blue-500/10
-                    text-blue-400
-                  "
-                >
-                  <Search size={21} strokeWidth={2.5} />
+              <div className="relative">
+                <div className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-red-400">
+                  <SearchIcon />
                 </div>
 
                 <input
                   id="channel-url"
                   type="text"
-                  inputMode="url"
-                  autoComplete="off"
-                  autoCapitalize="none"
-                  spellCheck="false"
-                  enterKeyHint="search"
                   value={channel}
                   onChange={(e) => setChannel(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="Channel or Video URL, ID, or @username..."
+                  placeholder="https://youtube.com/@channel"
                   disabled={loading}
-                  aria-label="YouTube channel URL or identifier"
-                  style={{
-                    paddingLeft: "76px",
-                    paddingRight: "16px",
-                    boxSizing: "border-box",
-                  }}
-                  className="
-                    block
-                    h-14
-                    w-full
-                    min-w-0
-                    max-w-full
-                    rounded-xl
-                    bg-transparent
-                    py-3
-                    text-sm
-                    font-semibold
-                    text-white
-                    outline-none
-                    placeholder:text-slate-500
-                    focus:outline-none
-                    disabled:cursor-not-allowed
-                    disabled:opacity-70
-                    sm:h-16
-                    sm:text-base
-                  "
+                  className="w-full rounded-2xl border border-slate-700 bg-black/50 py-4 pl-12 pr-4 text-sm text-white outline-none transition placeholder:text-slate-600 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
                 />
               </div>
 
@@ -341,38 +286,12 @@ function MonetizationChecker({ query = "" }) {
                 Press Enter to analyze.
               </p>
 
-              <div className="mt-6 flex flex-col gap-3">
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <button
                   type="button"
                   onClick={analyzeChannel}
-                  disabled={loading}
-                  className="
-                    group
-                    relative
-                    inline-flex
-                    min-h-14
-                    w-full
-                    items-center
-                    justify-center
-                    gap-2
-                    overflow-hidden
-                    rounded-2xl
-                    bg-gradient-to-r
-                    from-red-500
-                    via-red-600
-                    to-red-500
-                    px-6
-                    py-3
-                    font-black
-                    text-white
-                    shadow-[0_14px_35px_rgba(239,68,68,0.20)]
-                    transition-all
-                    duration-300
-                    hover:-translate-y-0.5
-                    hover:shadow-[0_18px_45px_rgba(239,68,68,0.30)]
-                    disabled:cursor-wait
-                    disabled:opacity-100
-                  "
+                  disabled={loading || !channel.trim()}
+                  className="group inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 px-6 py-3 font-black text-white shadow-lg shadow-red-500/10 transition hover:-translate-y-0.5 hover:shadow-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {loading ? (
                     <>
@@ -381,7 +300,7 @@ function MonetizationChecker({ query = "" }) {
                     </>
                   ) : (
                     <>
-                      <Search size={20} />
+                      <Sparkles size={18} />
                       Check Monetization
                     </>
                   )}
@@ -391,31 +310,9 @@ function MonetizationChecker({ query = "" }) {
                   type="button"
                   onClick={reset}
                   disabled={loading}
-                  className="
-                    inline-flex
-                    min-h-12
-                    w-full
-                    items-center
-                    justify-center
-                    gap-2
-                    rounded-2xl
-                    border
-                    border-white/10
-                    bg-white/[0.04]
-                    px-6
-                    py-3
-                    font-semibold
-                    text-slate-300
-                    transition-all
-                    duration-300
-                    hover:border-blue-500/30
-                    hover:bg-blue-500/[0.05]
-                    hover:text-white
-                    disabled:cursor-not-allowed
-                    disabled:opacity-100
-                  "
+                  className="inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl border border-slate-700 bg-slate-900 px-6 py-3 font-bold text-slate-200 transition hover:border-red-500/50 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                  <RefreshCw size={18} />
+                  <RefreshCw size={17} />
                   Reset
                 </button>
               </div>
@@ -521,7 +418,7 @@ function MonetizationChecker({ query = "" }) {
                   title="Videos"
                   value={formatNumber(videos)}
                   icon={Video}
-      color="green"
+                  color="green"
                 />
                 <StatCard
                   title="Readiness Score"
@@ -580,7 +477,7 @@ function MonetizationChecker({ query = "" }) {
                       </h3>
                     </div>
                   </div>
-                  <p className="mt-5 text-sm leading-7 text-slate-300">
+                <p className="mt-5 text-sm leading-7 text-slate-300">
                     TubeKit cannot see private YouTube Studio, Earn, AdSense,
                     application or internal review information. A public
                     analysis cannot prove actual YPP approval or rejection.
@@ -601,7 +498,8 @@ function MonetizationChecker({ query = "" }) {
                     Public channel data does not always expose qualifying metrics.
                   </p>
                 </div>
-<div className="grid gap-5 lg:grid-cols-3">
+
+                <div className="grid gap-5 lg:grid-cols-3">
                   <ThresholdCard
                     title="Subscribers"
                     current={subscribers}
@@ -768,8 +666,7 @@ function MonetizationChecker({ query = "" }) {
               second="Checker"
               secondColor="yellow"
             />
-
-            <div>
+<div>
               <p className="leading-8 text-slate-400">
                 TubeKit's YouTube Monetization Checker is designed to turn
                 available public channel information into a practical
@@ -785,7 +682,8 @@ function MonetizationChecker({ query = "" }) {
                 normal public channel data.
               </p>
             </div>
-<div>
+
+            <div>
               <SectionHeading first="What This" second="Tool Analyzes" secondColor="blue" />
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[
@@ -858,8 +756,7 @@ function MonetizationChecker({ query = "" }) {
                 </div>
               </div>
             </div>
-
-            <div>
+<div>
               <SectionHeading first="How to Use" second="Monetization Checker" secondColor="red" />
               <ol className="mt-5 list-decimal space-y-3 pl-6 text-slate-400">
                 <li>Copy a public YouTube channel URL or supported identifier.</li>
@@ -1175,6 +1072,24 @@ function ToolLink({ to, color, title, text }) {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </svg>
+  );
+}
 
 function normalizeItems(items) {
   if (!Array.isArray(items)) return [];
