@@ -266,7 +266,7 @@ function VideoIdExtractor({ query = "" }) {
   <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
     <div>
       <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
-        Creator Utility
+        ㅤCreator Utility
       </p>
 
       <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
