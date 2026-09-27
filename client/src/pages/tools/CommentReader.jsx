@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "lucide-react";
 import api from "@/services/api";
 import SEO from "@/components/common/SEO";
 import ToolLayout from "@/components/tool-layout/ToolLayout";
 import ToolHeader from "@/components/tool-layout/ToolHeader";
 import ToolForm from "@/components/tool-layout/ToolForm";
 
-function CommentReader({ query: initialQuery = "" }) {
-  const [query, setQuery] = useState(initialQuery);
+function CommentReader({ query: heroQuery = "" }) {
+  const [query, setQuery] = useState(heroQuery);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -61,18 +62,13 @@ function CommentReader({ query: initialQuery = "" }) {
   };
 
   useEffect(() => {
-    const value = String(initialQuery || "").trim();
+    const value = String(heroQuery || "").trim();
 
     if (!value) return;
+    if (generatedForRef.current === value) return;
 
-    setQuery(value);
-
-    const timer = setTimeout(() => {
-      readComments(value);
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [initialQuery]);
+    readComments(value);
+  }, [heroQuery]);
 
   const copyText = async (text) => {
     if (!text) return;
@@ -185,14 +181,180 @@ function CommentReader({ query: initialQuery = "" }) {
           description="Read public comments from a YouTube video in a clean dashboard with comment details, engagement data, replies, statistics, and available audience insights."
         />
 
-        <ToolForm
-          query={query}
-          setQuery={setQuery}
-          onGenerate={handleGenerate}
-          placeholder="Paste a YouTube video URL..."
-          buttonText="Read Comments"
-          helperText="Enter a public YouTube video URL to load available comments."
-        />
+        {/* ===================================================
+            COMMENT READER SEARCH
+            =================================================== */}
+
+        <div className="w-full min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
+          <div className="mb-6">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
+              Creator Utility
+            </p>
+
+            <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+              Read YouTube Comments
+            </h2>
+          </div>
+
+          <label
+            htmlFor="youtube-comment-url"
+            className="mb-2 block text-sm font-semibold text-slate-300"
+          >
+            YouTube Video URL
+          </label>
+
+          <div
+            className="
+              relative w-full min-w-0 overflow-hidden
+              rounded-2xl
+              border-2 border-blue-500/70
+              bg-[#050816]
+              shadow-[0_0_35px_rgba(59,130,246,0.08)]
+              transition-all duration-300
+              focus-within:border-blue-400
+              focus-within:shadow-[0_0_45px_rgba(59,130,246,0.16)]
+            "
+          >
+            <div
+              className="
+                pointer-events-none
+                absolute inset-y-0 left-0 z-10
+                flex w-14 shrink-0
+                items-center justify-center
+                bg-blue-500/10
+                text-blue-400
+              "
+            >
+              <Search size={21} strokeWidth={2.5} />
+            </div>
+
+            <input
+              id="youtube-comment-url"
+              type="text"
+              inputMode="url"
+              autoComplete="off"
+              autoCapitalize="none"
+              spellCheck="false"
+              enterKeyHint="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !loading && query.trim()) {
+                  e.preventDefault();
+                  handleGenerate({ topic: query.trim() });
+                }
+              }}
+              placeholder="Paste YouTube video URL..."
+              aria-label="YouTube Video URL"
+              disabled={loading}
+              style={{
+                paddingLeft: "76px",
+                paddingRight: "16px",
+                boxSizing: "border-box",
+              }}
+              className="
+                block
+                h-14
+                w-full
+                min-w-0
+                max-w-full
+                rounded-xl
+                bg-transparent
+                py-3
+                text-sm
+                font-semibold
+                text-white
+                outline-none
+                placeholder:text-slate-500
+                focus:outline-none
+                disabled:cursor-not-allowed
+                disabled:opacity-70
+                sm:h-16
+                sm:text-base
+              "
+            />
+          </div>
+
+          <p className="mt-3 text-xs leading-5 text-slate-500">
+            Paste a public YouTube URL and press Enter, or use Read Comments.
+            The tool loads available public comments and engagement data.
+          </p>
+
+          <div className="mt-5 flex flex-col gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (!loading && query.trim()) {
+                  handleGenerate({ topic: query.trim() });
+                }
+              }}
+              disabled={loading}
+              className="
+                group
+                relative
+                inline-flex
+                min-h-14
+                w-full
+                items-center
+                justify-center
+                gap-2
+                overflow-hidden
+                rounded-2xl
+                bg-gradient-to-r
+                from-red-500
+                via-red-600
+                to-red-500
+                px-6
+                py-3
+                font-black
+                text-white
+                shadow-[0_14px_35px_rgba(239,68,68,0.20)]
+                transition-all
+                duration-300
+                hover:-translate-y-0.5
+                hover:shadow-[0_18px_45px_rgba(239,68,68,0.30)]
+                disabled:cursor-wait
+                disabled:opacity-100
+              "
+            >
+              <Search size={20} />
+              {loading ? "Reading Comments..." : "Read Comments"}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setQuery("");
+                setResult(null);
+                setError("");
+                generatedForRef.current = "";
+              }}
+              className="
+                inline-flex
+                min-h-12
+                w-full
+                items-center
+                justify-center
+                gap-2
+                rounded-2xl
+                border
+                border-white/10
+                bg-white/[0.04]
+                px-6
+                py-3
+                font-semibold
+                text-slate-300
+                transition-all
+                duration-300
+                hover:border-blue-500/30
+                hover:bg-blue-500/[0.05]
+                hover:text-white
+              "
+            >
+              Reset
+            </button>
+          </div>
+        </div>
 
         {loading && (
           <div className="mt-10 rounded-3xl border border-red-500/20 bg-[#090909] p-8 text-center shadow-[0_0_60px_rgba(239,68,68,0.08)]">
@@ -427,8 +589,7 @@ function CommentReader({ query: initialQuery = "" }) {
                 </div>
               </div>
             )}
-
-            <div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
+<div className="rounded-3xl border border-white/10 bg-[#090909] p-6 sm:p-8">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
@@ -518,8 +679,7 @@ function CommentReader({ query: initialQuery = "" }) {
                                   </p>
                                 )}
                               </div>
-
-                              <button
+<button
                                 type="button"
                                 onClick={() => copyText(text)}
                                 className="self-start rounded-lg border border-white/10 bg-white/[0.03] px-3 py-1.5 text-xs font-semibold text-slate-400 transition hover:border-blue-500/30 hover:text-blue-300"
@@ -543,7 +703,7 @@ function CommentReader({ query: initialQuery = "" }) {
 
                               {comment.sentiment && (
                                 <span className="text-green-400">
-Sentiment: {comment.sentiment}
+                                  Sentiment: {comment.sentiment}
                                 </span>
                               )}
                             </div>
@@ -701,8 +861,7 @@ Sentiment: {comment.sentiment}
                   video.
                 </p>
               </article>
-
-              <article>
+<article>
                 <h3 className="text-xl font-bold text-white">
                   Can comments be used to understand audience feedback?
                 </h3>
@@ -836,4 +995,4 @@ Sentiment: {comment.sentiment}
 }
 
 export default CommentReader;
-                  
+  
