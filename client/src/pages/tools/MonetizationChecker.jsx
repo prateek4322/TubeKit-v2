@@ -405,96 +405,102 @@ function MonetizationChecker({ query = "" }) {
                   Public data analysis
                 </div>
               </div>
+{/* Search input + submit */}
+<div className="flex flex-col gap-3">
+  <div
+    className={`flex min-h-14 min-w-0 w-full items-center overflow-hidden rounded-2xl border-2 bg-[#050816] transition-all duration-300 sm:min-h-[58px] ${
+      inputError
+        ? "border-red-500 shadow-[0_0_22px_rgba(239,68,68,0.10)]"
+        : "border-blue-500/70 focus-within:border-blue-400 focus-within:shadow-[0_0_24px_rgba(59,130,246,0.14)]"
+    }`}
+  >
+    <span className="flex h-full min-h-14 w-14 shrink-0 items-center justify-center border-r border-blue-500/20 bg-blue-500/10 text-blue-400 sm:min-h-[58px]">
+      <Search size={21} strokeWidth={2.5} />
+    </span>
 
-              {/* Search input + submit */}
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-stretch">
-                <div
-                  className={`flex min-h-14 min-w-0 flex-1 items-center gap-3 rounded-2xl border-2 bg-black/50 px-4 transition-all duration-300 sm:min-h-[58px] sm:px-5 ${
-                    inputError
-                      ? "border-red-500 shadow-[0_0_22px_rgba(239,68,68,0.10)]"
-                      : "border-red-500 focus-within:border-red-400 focus-within:shadow-[0_0_22px_rgba(239,68,68,0.12)]"
-                  }`}
-                >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-500/10 text-red-400 sm:h-9 sm:w-9">
-                    <SearchIcon />
-                  </span>
+    <input
+      id="channel-url"
+      type="text"
+      value={channel}
+      onChange={(e) => {
+        setChannel(e.target.value);
+        if (inputError) setInputError("");
+      }}
+      onKeyDown={handleKeyDown}
+      placeholder="Channel or Video URL, ID, or @username..."
+      disabled={loading}
+      aria-invalid={Boolean(inputError)}
+      aria-describedby={inputError ? "channel-input-error" : undefined}
+      className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+      style={{
+        paddingLeft: "20px",
+        paddingRight: "16px",
+        boxSizing: "border-box",
+      }}
+    />
+  </div>
 
-                  <input
-                    id="channel-url"
-                    type="text"
-                    value={channel}
-                    onChange={(e) => {
-                      setChannel(e.target.value);
-                      if (inputError) setInputError("");
-                    }}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Channel or Video URL, ID, or @username.."
-                    disabled={loading}
-                    aria-invalid={Boolean(inputError)}
-                    aria-describedby={inputError ? "channel-input-error" : undefined}
-                    className="min-w-0 w-full bg-transparent text-sm font-medium text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
-                  />
-                </div>
+  <button
+    type="button"
+    onClick={() => {
+      if (!loading && channel.trim()) {
+        handleAnalyze();
+      }
+    }}
+    disabled={loading}
+    className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl border-2 border-red-500 bg-gradient-to-r from-red-500 via-red-600 to-red-500 px-7 py-3 text-sm font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:from-red-400 hover:via-red-500 hover:to-red-400 hover:shadow-red-500/30 disabled:cursor-not-allowed disabled:opacity-100 sm:min-h-[58px] sm:text-base"
+  >
+    Submit
+  </button>
+</div>
 
-                <button
-                  type="button"
-                  onClick={handleAnalyze}
-                  disabled={loading || !channel.trim()}
-                  className="inline-flex min-h-14 w-full shrink-0 items-center justify-center rounded-2xl border-2 border-red-500 bg-red-500 px-7 py-3 text-sm font-black text-white shadow-lg shadow-red-500/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-red-400 hover:shadow-red-500/30 disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-[58px] sm:w-[150px] sm:text-base"
-                >
-                  Submit
-                </button>
-              </div>
+<p className="mt-3 text-xs leading-6 text-slate-500 sm:text-sm">
+  Supports public channel URLs, handles and supported channel
+  identifiers. Press Enter to analyze.
+</p>
 
-              <p className="mt-3 text-xs leading-6 text-slate-500 sm:text-sm">
-                Supports public channel URLs, handles and supported channel
-                identifiers. Press Enter to analyze.
-              </p>
+{inputError && (
+  <p
+    id="channel-input-error"
+    role="alert"
+    className="mt-3 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm font-semibold text-red-400"
+  >
+    {inputError}
+  </p>
+)}
 
-              {inputError && (
-                <p
-                  id="channel-input-error"
-                  role="alert"
-                  className="mt-3 rounded-xl border border-red-500/20 bg-red-500/5 px-4 py-3 text-sm font-semibold text-red-400"
-                >
-                  {inputError}
-                </p>
-              )}
+<div className="mt-6 grid gap-3 sm:grid-cols-3">
+  {[
+    ["Public Data", "No private Studio access"],
+    ["YPP Signals", "Threshold progress"],
+    ["Revenue View", "Estimated CPM range"],
+  ].map(([title, text]) => (
+    <div
+      key={title}
+      className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3"
+    >
+      <p className="text-xs font-black uppercase tracking-wider text-slate-500">
+        {title}
+      </p>
+      <p className="mt-1 text-sm font-bold text-slate-200">
+        {text}
+      </p>
+    </div>
+  ))}
+</div>
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  ["Public Data", "No private Studio access"],
-                  ["YPP Signals", "Threshold progress"],
-                  ["Revenue View", "Estimated CPM range"],
-                ].map(([title, text]) => (
-                  <div
-                    key={title}
-                    className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3"
-                  >
-                    <p className="text-xs font-black uppercase tracking-wider text-slate-500">
-                      {title}
-                    </p>
-                    <p className="mt-1 text-sm font-bold text-slate-200">
-                      {text}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 flex justify-end">
-                <button
-                  type="button"
-                  onClick={reset}
-                  disabled={loading}
-                  className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-900 px-5 py-2.5 text-sm font-bold text-slate-200 transition hover:border-red-500/50 hover:bg-red-500/5 hover:text-red-400 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  <RefreshCw size={16} />
-                  Reset
-                </button>
-              </div>
-            </div>
-          </section>
-
+<div className="mt-4">
+  <button
+    type="button"
+    onClick={reset}
+    disabled={loading}
+    className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/5 px-5 py-2.5 text-sm font-bold text-blue-400 transition-all duration-300 hover:border-blue-500/60 hover:bg-blue-500/10 hover:text-blue-300 disabled:cursor-not-allowed disabled:opacity-50"
+  >
+    <RefreshCw size={16} />
+    Reset
+  </button>
+</div>
+              
           {/* Existing TubeKit loader preserved */}
           {loading && (
             <div className="mt-8 rounded-3xl border border-blue-500/20 bg-blue-500/5 p-5 sm:p-6">
