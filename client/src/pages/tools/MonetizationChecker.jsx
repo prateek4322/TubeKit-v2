@@ -16,7 +16,6 @@ import {
   Video,
   Wallet,
   XCircle,
-  Youtube,
   Search,
 } from "lucide-react";
 
