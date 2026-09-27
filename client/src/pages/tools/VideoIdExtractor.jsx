@@ -239,7 +239,7 @@ function VideoIdExtractor({ query = "" }) {
           ===================================================== */}
 
       <SEO
-        title="YouTube Video ID Extractor â€“ Extract Video ID Free | TubeKit"
+        title="YouTube Video ID Extractor | Extract Video ID Free | TubeKit"
         description="Extract a YouTube Video ID from any supported YouTube URL with TubeKit's free Video ID Extractor. Supports YouTube watch, Shorts, embed and youtu.be URLs."
         keywords="YouTube Video ID extractor, YouTube video ID finder, extract YouTube video ID, YouTube ID extractor, video ID finder, YouTube URL ID extractor, YouTube Shorts ID extractor, youtu.be ID extractor"
         canonical="/tools/video-id-extractor"
