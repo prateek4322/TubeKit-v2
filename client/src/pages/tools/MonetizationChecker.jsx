@@ -227,7 +227,7 @@ function MonetizationChecker({ query = "" }) {
         <div className="mx-auto max-w-6xl">
           <div className="mb-10 text-center">
             <div className="mx-auto mb-5 inline-flex items-center gap-2 rounded-full border border-red-500/20 bg-red-500/10 px-4 py-2 text-sm font-bold text-red-400">
-              <Youtube size={17} />
+              <Video size={17} />
               YouTube Creator Tool
             </div>
 
@@ -789,7 +789,8 @@ function MonetizationChecker({ query = "" }) {
                 <ToolLink to="/tools/channel-analyzer" color="blue" title="Channel Analyzer" text="Review public channel information and optimization signals." />
               </div>
             </div>
-<div>
+
+            <div>
               <SectionHeading first="Frequently Asked Questions" second="About Monetization" secondColor="blue" />
               <div className="mt-7 space-y-5">
                 {faqs.map((faq, index) => (
@@ -805,8 +806,7 @@ function MonetizationChecker({ query = "" }) {
                 ))}
               </div>
             </div>
-
-            <div className="rounded-3xl border border-blue-500/30 bg-blue-500/5 p-7 text-center">
+<div className="rounded-3xl border border-blue-500/30 bg-blue-500/5 p-7 text-center">
               <h2 className="text-2xl font-black text-white">
                 Check a YouTube Channel's Monetization Readiness
               </h2>
@@ -996,7 +996,8 @@ function AnalysisPanel({ title, icon: Icon, color, data }) {
       value !== null &&
       typeof value !== "object"
   );
-if (!entries.length) {
+
+  if (!entries.length) {
     return (
       <div className="rounded-3xl border border-slate-800 bg-[#090b12] p-6">
         <div className="flex items-center gap-3">
@@ -1009,8 +1010,7 @@ if (!entries.length) {
       </div>
     );
   }
-
-  return (
+return (
     <div className="rounded-3xl border border-slate-800 bg-[#090b12] p-6">
       <div className="flex items-center gap-3">
         <Icon className={iconColors[color] || iconColors.blue} size={21} />
@@ -1138,4 +1138,5 @@ function humanize(value) {
 
 export default MonetizationChecker;
 
-               
+
+             
