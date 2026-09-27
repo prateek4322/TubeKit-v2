@@ -460,25 +460,7 @@ function MonetizationChecker({ query = "" }) {
                 </p>
               )}
 
-              <div className="mt-6 grid gap-3 sm:grid-cols-3">
-                {[
-                  ["Public Data", "No private Studio access"],
-                  ["YPP Signals", "Threshold progress"],
-                  ["Revenue View", "Estimated CPM range"],
-                ].map(([title, text]) => (
-                  <div
-                    key={title}
-                    className="rounded-2xl border border-white/10 bg-white/[0.02] px-4 py-3"
-                  >
-                    <p className="text-xs font-black uppercase tracking-wider text-slate-500">
-                      {title}
-                    </p>
-                    <p className="mt-1 text-sm font-bold text-slate-200">
-                      {text}
-                    </p>
-                  </div>
-                ))}
-              </div>
+             
 
               <div className="mt-6 flex justify-end">
                 <button
