@@ -602,8 +602,7 @@ function MonetizationChecker({ query = "" }) {
                     Public channel data does not always expose qualifying metrics.
                   </p>
                 </div>
-
-                <div className="grid gap-5 lg:grid-cols-3">
+<div className="grid gap-5 lg:grid-cols-3">
                   <ThresholdCard
                     title="Subscribers"
                     current={subscribers}
@@ -643,7 +642,8 @@ function MonetizationChecker({ query = "" }) {
                   </div>
                 </div>
               </section>
-{(normalizedChecks.length > 0 || readiness.checks) && (
+
+              {(normalizedChecks.length > 0 || readiness.checks) && (
                 <section className="rounded-3xl border border-slate-800 bg-[#090b12] p-6 sm:p-8">
                   <div className="mb-7">
                     <p className="text-xs font-black uppercase tracking-wider text-green-400">
@@ -786,8 +786,7 @@ function MonetizationChecker({ query = "" }) {
                 normal public channel data.
               </p>
             </div>
-
-            <div>
+<div>
               <SectionHeading first="What This" second="Tool Analyzes" secondColor="blue" />
               <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[
@@ -813,7 +812,8 @@ function MonetizationChecker({ query = "" }) {
                 ))}
               </div>
             </div>
-<div>
+
+            <div>
               <SectionHeading first="Common YouTube" second="YPP Thresholds" secondColor="green" />
               <div className="grid gap-5 md:grid-cols-2">
                 <InfoBox
@@ -991,7 +991,8 @@ function ThresholdCard({
   };
 
   const style = styles[color] || styles.blue;
-return (
+
+  return (
     <div className={`rounded-2xl border p-5 ${style.box}`}>
       <p className={`text-sm font-black ${style.text}`}>{title}</p>
 
@@ -1029,7 +1030,6 @@ return (
     </div>
   );
 }
-
 function ProgressBar({ value, color = "blue" }) {
   const bars = {
     red: "bg-red-500",
