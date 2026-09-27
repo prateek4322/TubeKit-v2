@@ -215,7 +215,7 @@ function TagExtractor({ query = "" }) {
   return (
     <>
       <SEO
-        title="YouTube Tag Extractor â€“ Extract YouTube Video Tags | TubeKit"
+        title="YouTube Tag Extractor | Extract YouTube Video Tags | TubeKit"
         description="Extract available tags from any YouTube video with TubeKit's free YouTube Tag Extractor. Supports videos, Shorts, shortened URLs, embed URLs, live URLs and more."
         keywords="YouTube tag extractor, YouTube tags extractor, extract YouTube tags, YouTube video tag extractor, YouTube tag finder, find YouTube tags, YouTube SEO tags, extract video tags, YouTube Shorts tags"
         canonical="/tools/tag-extractor"
