@@ -258,100 +258,210 @@ function VideoIdExtractor({ query = "" }) {
           description="Extract the unique Video ID from any supported YouTube URL quickly and for free."
         />
 
-        
-        {/* ===================================================
-            TOOL
-            =================================================== */}
+      {/* ===================================================
+    TOOL
+    =================================================== */}
 
-        <div className="w-full min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
-          <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
-                Creator Utility
-              </p>
-              <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
-                Extract Video ID
-              </h2>
-            </div>
+<div className="w-full min-w-0 overflow-hidden rounded-3xl border border-white/10 bg-[#090909] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.25)] sm:p-8">
+  <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p className="text-xs font-bold uppercase tracking-[0.18em] text-blue-400">
+        Creator Utility
+      </p>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
-              <Video size={22} />
-            </div>
-          </div>
+      <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+        Extract Video ID
+      </h2>
+    </div>
 
-          <label
-            htmlFor="youtube-video-url"
-            className="mb-2 block text-sm font-semibold text-slate-300"
-          >
-            YouTube Video URL
-          </label>
+    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-500/10 text-red-400">
+      <Video size={22} />
+    </div>
+  </div>
 
-          <div className="relative w-full min-w-0 overflow-hidden rounded-2xl border-2 border-blue-500/70 bg-[#050816] shadow-[0_0_35px_rgba(59,130,246,0.08)] transition-all duration-300 focus-within:border-blue-400 focus-within:shadow-[0_0_45px_rgba(59,130,246,0.16)]">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex w-14 items-center justify-center bg-blue-500/10 text-blue-400">
-              <Search size={21} strokeWidth={2.5} />
-            </div>
+  <label
+    htmlFor="youtube-video-url"
+    className="mb-2 block text-sm font-semibold text-slate-300"
+  >
+    YouTube Video URL
+  </label>
 
-            <input
-              id="youtube-video-url"
-              type="text"
-              inputMode="url"
-              autoComplete="off"
-              autoCapitalize="none"
-              spellCheck="false"
-              enterKeyHint="search"
-              value={url}
-              onChange={(e) => {
-                setUrl(e.target.value);
-                if (videoId) {
-                  setVideoId("");
-                  setVideoInfo(null);
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !loading && url.trim()) {
-                  e.preventDefault();
-                  extractVideoId(url);
-                }
-              }}
-              placeholder="Paste YouTube video URL..."
-              aria-label="YouTube Video URL"
-              disabled={loading}
-              className="block h-14 w-full min-w-0 max-w-full bg-transparent py-3 pl-16 pr-4 text-sm font-semibold text-white outline-none placeholder:text-slate-500 disabled:cursor-not-allowed disabled:opacity-70 sm:h-16 sm:text-base"
-            />
-          </div>
+  {/* SEARCH INPUT */}
+  <div
+    className="
+      relative w-full min-w-0 overflow-hidden
+      rounded-2xl
+      border-2 border-blue-500/70
+      bg-[#050816]
+      shadow-[0_0_35px_rgba(59,130,246,0.08)]
+      transition-all duration-300
+      focus-within:border-blue-400
+      focus-within:shadow-[0_0_45px_rgba(59,130,246,0.16)]
+    "
+  >
+    {/* SEARCH ICON AREA */}
+    <div
+      className="
+        pointer-events-none
+        absolute inset-y-0 left-0 z-10
+        flex w-14 shrink-0
+        items-center justify-center
+        bg-blue-500/10
+        text-blue-400
+      "
+    >
+      <Search
+        size={21}
+        strokeWidth={2.5}
+      />
+    </div>
 
-          <p className="mt-3 text-xs leading-5 text-slate-500">
-            Paste a YouTube URL and press Enter, or use Extract Video ID. Supports watch, youtu.be, Shorts, embed, and live URLs.
-          </p>
+    <input
+      id="youtube-video-url"
+      type="text"
+      inputMode="url"
+      autoComplete="off"
+      autoCapitalize="none"
+      spellCheck="false"
+      enterKeyHint="search"
+      value={url}
+      onChange={(e) => {
+        setUrl(e.target.value);
 
-          <div className="mt-5 flex flex-col gap-3">
-            <button
-              onClick={() => extractVideoId(url)}
-              disabled={loading || !url.trim()}
-              className="group relative inline-flex min-h-14 w-full items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-red-500 via-red-600 to-red-500 px-6 py-3 font-black text-white shadow-[0_14px_35px_rgba(239,68,68,0.20)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(239,68,68,0.30)] disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {loading ? (
-                <>
-                  <RotateCcw size={18} className="animate-spin" />
-                  Extracting Video ID...
-                </>
-              ) : (
-                <>
-                  <Search size={20} />
-                  Extract Video ID
-                </>
-              )}
-            </button>
+        if (videoId) {
+          setVideoId("");
+          setVideoInfo(null);
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" && !loading && url.trim()) {
+          e.preventDefault();
+          extractVideoId(url);
+        }
+      }}
+      placeholder="Paste YouTube video URL..."
+      aria-label="YouTube Video URL"
+      disabled={loading}
+      style={{
+        paddingLeft: "76px",
+        paddingRight: "16px",
+        boxSizing: "border-box",
+      }}
+      className="
+        block
+        h-14
+        w-full
+        min-w-0
+        max-w-full
+        rounded-xl
+        bg-transparent
+        py-3
+        text-sm
+        font-semibold
+        text-white
+        outline-none
+        placeholder:text-slate-500
+        focus:outline-none
+        disabled:cursor-not-allowed
+        disabled:opacity-70
+        sm:h-16
+        sm:text-base
+      "
+    />
+  </div>
 
-            <button
-              onClick={reset}
-              className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-6 py-3 font-semibold text-slate-300 transition hover:border-blue-500/30 hover:bg-blue-500/[0.05] hover:text-white"
-            >
-              <RotateCcw size={18} />
-              Reset
-            </button>
-          </div>
-        </div>
+  <p className="mt-3 text-xs leading-5 text-slate-500">
+    Paste a YouTube URL and press Enter, or use Extract Video ID.
+    Supports watch, youtu.be, Shorts, embed, and live URLs.
+  </p>
+
+  {/* BUTTONS */}
+  <div className="mt-5 flex flex-col gap-3">
+    {/* RED SEARCH / SUBMIT BUTTON */}
+    <button
+      type="button"
+      onClick={() => {
+        if (!loading && url.trim()) {
+          extractVideoId(url);
+        }
+      }}
+      disabled={loading}
+      className="
+        group
+        relative
+        inline-flex
+        min-h-14
+        w-full
+        items-center
+        justify-center
+        gap-2
+        overflow-hidden
+        rounded-2xl
+        bg-gradient-to-r
+        from-red-500
+        via-red-600
+        to-red-500
+        px-6
+        py-3
+        font-black
+        text-white
+        shadow-[0_14px_35px_rgba(239,68,68,0.20)]
+        transition-all
+        duration-300
+        hover:-translate-y-0.5
+        hover:shadow-[0_18px_45px_rgba(239,68,68,0.30)]
+        disabled:cursor-wait
+        disabled:opacity-100
+      "
+    >
+      {loading ? (
+        <>
+          <RotateCcw
+            size={18}
+            className="animate-spin"
+          />
+          Extracting Video ID...
+        </>
+      ) : (
+        <>
+          <Search size={20} />
+          Extract Video ID
+        </>
+      )}
+    </button>
+
+    {/* RESET BUTTON */}
+    <button
+      type="button"
+      onClick={reset}
+      className="
+        inline-flex
+        min-h-12
+        w-full
+        items-center
+        justify-center
+        gap-2
+        rounded-2xl
+        border
+        border-white/10
+        bg-white/[0.04]
+        px-6
+        py-3
+        font-semibold
+        text-slate-300
+        transition-all
+        duration-300
+        hover:border-blue-500/30
+        hover:bg-blue-500/[0.05]
+        hover:text-white
+      "
+    >
+      <RotateCcw size={18} />
+      Reset
+    </button>
+  </div>
+</div>  
+     
 {/* ===================================================
             RESULT
             =================================================== */}
