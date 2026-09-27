@@ -239,7 +239,7 @@ function VideoIdExtractor({ query = "" }) {
           ===================================================== */}
 
       <SEO
-        title="YouTube Video ID Extractor | Extract Video ID Free | TubeKit"
+        title="YouTube Video ID Extractor â€“ Extract Video ID Free | TubeKit"
         description="Extract a YouTube Video ID from any supported YouTube URL with TubeKit's free Video ID Extractor. Supports YouTube watch, Shorts, embed and youtu.be URLs."
         keywords="YouTube Video ID extractor, YouTube video ID finder, extract YouTube video ID, YouTube ID extractor, video ID finder, YouTube URL ID extractor, YouTube Shorts ID extractor, youtu.be ID extractor"
         canonical="/tools/video-id-extractor"
@@ -285,48 +285,58 @@ function VideoIdExtractor({ query = "" }) {
             YouTube Video URL
           </label>
 
-          <div className="relative w-full min-w-0 overflow-hidden">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 flex w-12 items-center justify-center sm:w-14">
-              <Search
-                size={19}
-                className="text-red-500"
-                strokeWidth={2.5}
-              />
+          <div className="relative w-full min-w-0 overflow-hidden rounded-2xl border border-blue-500/20 bg-blue-500/[0.03] p-1 shadow-[0_0_35px_rgba(59,130,246,0.06)] transition-all duration-300 focus-within:border-blue-500/60 focus-within:bg-blue-500/[0.05] focus-within:shadow-[0_0_45px_rgba(59,130,246,0.12)]">
+            <div className="pointer-events-none absolute inset-y-1 left-1 z-10 flex w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400 sm:w-14">
+              <Search size={20} strokeWidth={2.4} />
             </div>
 
             <input
               id="youtube-video-url"
               type="text"
+              inputMode="url"
+              autoComplete="off"
+              autoCapitalize="none"
+              spellCheck="false"
+              enterKeyHint="search"
               value={url}
               onChange={(e) => {
                 setUrl(e.target.value);
-                if (videoId) setVideoId("");
+                if (videoId) {
+                  setVideoId("");
+                  setVideoInfo(null);
+                }
               }}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && !loading) {
+                if (e.key === "Enter" && !loading && url.trim()) {
+                  e.preventDefault();
                   extractVideoId(url);
                 }
               }}
-              placeholder="https://www.youtube.com/watch?v=VIDEO_ID"
+              placeholder="Paste YouTube video URL..."
+              aria-label="YouTube Video URL"
               disabled={loading}
               style={{
-                paddingLeft: "56px",
-                paddingRight: "16px",
+                paddingLeft: "64px",
+                paddingRight: "18px",
                 boxSizing: "border-box",
               }}
-              className="block w-full min-w-0 max-w-full rounded-3xl border-2 border-blue-500/60 bg-[#050505] py-4 text-sm font-medium text-white outline-none transition placeholder:text-slate-600 focus:border-blue-400 focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-70 sm:py-4"
+              className="block h-14 w-full min-w-0 max-w-full rounded-xl border border-blue-500/40 bg-[#050816] text-sm font-semibold text-white outline-none transition placeholder:text-slate-500 focus:border-blue-400 disabled:cursor-not-allowed disabled:opacity-70 sm:h-16 sm:text-base"
             />
+
+            <div className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 items-center gap-2 rounded-full border border-blue-500/15 bg-blue-500/5 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-blue-300 sm:flex">
+              Enter to search
+            </div>
           </div>
 
           <p className="mt-3 text-xs leading-5 text-slate-500">
-            Supports watch, youtu.be, Shorts, embed, and live YouTube URLs.
+            Paste a YouTube URL and press Enter, or use Extract Video ID. Supports watch, youtu.be, Shorts, embed, and live URLs.
           </p>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <button
               onClick={() => extractVideoId(url)}
               disabled={loading || !url.trim()}
-              className="inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 px-6 py-3 font-black text-white shadow-lg shadow-red-500/10 transition hover:-translate-y-0.5 hover:shadow-red-500/20 disabled:cursor-not-allowed disabled:opacity-50"
+              className="group relative inline-flex min-h-12 flex-1 items-center justify-center gap-2 overflow-hidden rounded-2xl bg-gradient-to-r from-red-500 via-orange-400 to-yellow-400 px-6 py-3 font-black text-white shadow-[0_14px_35px_rgba(239,68,68,0.16)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_45px_rgba(239,68,68,0.24)] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {loading ? (
                 <>
@@ -502,7 +512,7 @@ function VideoIdExtractor({ query = "" }) {
               </div>
             </div>
           </div>
-)}
+        )}
 
         {/* ===================================================
             SEO CONTENT
@@ -625,8 +635,7 @@ function VideoIdExtractor({ query = "" }) {
               </code>
             </div>
           </div>
-
-          {/* =================================================
+{/* =================================================
               URL FORMATS
               ================================================= */}
 
@@ -749,7 +758,6 @@ function VideoIdExtractor({ query = "" }) {
               </Link>
             </div>
           </div>
-
           {/* =================================================
               USE CASES
               ================================================= */}
@@ -790,7 +798,6 @@ function VideoIdExtractor({ query = "" }) {
               </li>
             </ul>
           </div>
-
 
 {/* =================================================
               FEATURES
@@ -942,7 +949,6 @@ function VideoIdExtractor({ query = "" }) {
 
             </div>
           </div>
-
           {/* =================================================
               RELATED BLOG
               ================================================= */}
