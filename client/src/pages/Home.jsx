@@ -447,29 +447,13 @@ function Home() {
         <section
           ref={toolSectionRef}
           aria-label={`${activeTool.name} tool`}
-          className="relative overflow-hidden bg-[#030712] px-4 py-16 sm:px-6 sm:py-20 lg:px-8"
+          className="relative overflow-hidden bg-[#030712] px-4 py-10 sm:px-6 sm:py-14 lg:px-8"
         >
           <div className="mx-auto w-full max-w-6xl">
-            <div className="mx-auto mb-8 max-w-3xl text-center">
-              <span className="text-xs font-bold uppercase tracking-[0.22em] text-red-400">
-                TubeKit AI Tool
-              </span>
-
-              <h2 className="mt-3 text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl">
-                {activeTool.name}
-              </h2>
-
-              {toolQuery && (
-                <p className="mx-auto mt-3 max-w-2xl text-sm text-slate-400 sm:text-base">
-                  Topic:{" "}
-                  <span className="font-semibold text-white">{toolQuery}</span>
-                </p>
-              )}
-            </div>
-
-            <div className="rounded-2xl bg-[#070b18]/80 p-1 sm:p-2">
-              <ActiveTool key={`${activeTool.path}-${toolQuery}`} query={toolQuery} />
-            </div>
+            <ActiveTool
+              key={`${activeTool.path}-${toolQuery}`}
+              query={toolQuery}
+            />
           </div>
         </section>
       )}
@@ -571,8 +555,7 @@ function Home() {
                   </h3>
 
                   <p className="mt-4 max-w-xl text-sm leading-6 text-slate-400 sm:text-base sm:leading-7">
-                    {tool.description}
-                  </p>
+                    {tool.description}</p>
 
                   <span className="mt-6 inline-flex items-center gap-2 text-base font-semibold text-red-500 transition-all duration-300 group-hover:gap-3 sm:text-lg">
                     Learn more
@@ -697,185 +680,128 @@ function Home() {
           </div>
         </div>
       </section>
-
 {/* COMMON USE CASES */}
-<section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-  <div className="mx-auto w-full max-w-6xl">
-    <div className="mx-auto max-w-4xl text-center">
-      <h2 className="mt-5 text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
-        Common <span className="text-red-500">Use Cases</span>
-      </h2>
+      <section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="mt-5 text-[clamp(1.55rem,5vw,3rem)] font-black leading-tight text-white">
+              Common <span className="text-red-500">Use Cases</span>
+            </h2>
 
-      <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
-        Practical ways creators and teams can use TubeKit for everyday
-        YouTube workflows.
-      </p>
-    </div>
-
-    <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
-      {[
-        {
-          icon: "🎬",
-          title: "Content Creators",
-          text: "Plan videos, improve ideas and build stronger content workflows.",
-          color: "red",
-        },
-        {
-          icon: "📣",
-          title: "Digital Marketers",
-          text: "Research topics, organize ideas and support YouTube campaigns.",
-          color: "green",
-        },
-        {
-          icon: "🔎",
-          title: "SEO Specialists",
-          text: "Optimize keywords, titles, descriptions and YouTube metadata.",
-          color: "yellow",
-        },
-        {
-          icon: "⚙️",
-          title: "Developers & Researchers",
-          text: "Use YouTube utilities, analyzers and data-focused workflows.",
-          color: "blue",
-        },
-      ].map((item) => {
-        const s = rgby[item.color];
-
-        return (
-          <div
-            key={item.title}
-            tabIndex={0}
-            className={`group min-h-[145px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[155px] sm:p-6`}
-          >
-            <h3 className="flex items-center gap-3 text-lg font-bold text-white sm:text-xl">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/5 text-xl transition-transform duration-300 group-hover:scale-110">
-                {item.icon}
-              </span>
-              <span>{item.title}</span>
-            </h3>
-
-            <p className="mt-3 pl-[52px] text-sm leading-6 text-slate-500 sm:text-[15px]">
-              {item.text}
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 sm:text-base">
+              Useful workflows for creators, marketers, SEO-focused teams and
+              anyone working with YouTube content.
             </p>
           </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
 
-{/* HOW IT WORKS */}
-<section
-  id="how-it-works"
-  className="w-full overflow-hidden bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
->
-  <div className="mx-auto w-full max-w-6xl">
-    <div className="mx-auto max-w-4xl text-center">
-      <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
-        How It Works
-      </span>
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
+            {[
+              ["Content Creators", "Plan videos, improve metadata and develop stronger content directions.", "red"],
+              ["Digital Marketers", "Research topics, organize content ideas and support campaign planning.", "green"],
+              ["SEO Specialists", "Work with keywords, titles, descriptions and metadata around search intent.", "yellow"],
+              ["Developers & Researchers", "Use practical YouTube utilities and data-focused creator workflows.", "blue"],
+            ].map(([title, text, color]) => {
+              const s = rgby[color];
 
-      <h2 className="mt-5 text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
-        From Idea <span className="text-red-500">To Upload</span>
-      </h2>
-    </div>
-
-    <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {workflow.map((step) => {
-        const s = rgby[step.color];
-
-        return (
-          <div
-            key={step.number}
-            tabIndex={0}
-            className={`group min-h-[165px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[175px] sm:p-6`}
-          >
-            <div className="flex items-center gap-3">
-              <div
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${s.icon} text-sm font-black ${s.text} transition-transform duration-300 group-hover:scale-105`}
-              >
-                {step.number}
-              </div>
-
-              <h3 className="text-base font-extrabold leading-tight text-white sm:text-lg">
-                {step.title}
-              </h3>
-            </div>
-
-            <p className="mt-4 text-sm leading-6 text-slate-500 sm:text-[15px]">
-              {step.text}
-            </p>
-          </div>
-        );
-      })}
-    </div>
-  </div>
-</section>
-
-{/* BEST PRACTICES */}
-<section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
-  <div className="mx-auto max-w-4xl text-center">
-    <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
-      Best Practices
-    </span>
-
-    <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
-      Better YouTube <span className="text-red-500">Content Practices</span>
-    </h2>
-
-    <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
-      Simple practices to create clearer, more useful and audience-focused
-      YouTube content.
-    </p>
-
-    <div className="mx-auto mt-10 grid max-w-5xl gap-4 text-left sm:grid-cols-2">
-      {[
-        {
-          icon: "✓",
-          title: "Clear Titles",
-          text: "Keep titles accurate and easy to understand.",
-        },
-        {
-          icon: "⌕",
-          title: "Relevant Keywords",
-          text: "Match keywords with your actual video topic.",
-        },
-        {
-          icon: "▣",
-          title: "Strong Thumbnails",
-          text: "Communicate one clear idea at a glance.",
-        },
-        {
-          icon: "↗",
-          title: "Review Analytics",
-          text: "Track retention and audience response regularly.",
-        },
-      ].map((item) => (
-        <div
-          key={item.title}
-          tabIndex={0}
-          className="group min-h-[118px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] focus:border-red-500/50 sm:p-6"
-        >
-          <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-lg font-bold text-red-400 transition-transform duration-300 group-hover:scale-105">
-              {item.icon}
-            </div>
-
-            <div className="min-w-0">
-              <h3 className="text-base font-bold text-white sm:text-lg">
-                {item.title}
-              </h3>
-
-              <p className="mt-1.5 text-sm leading-6 text-slate-500">
-                {item.text}
-              </p>
-            </div>
+              return (
+                <div
+                  key={title}
+                  tabIndex={0}
+                  className={`group min-h-[180px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[190px] sm:p-6`}
+                >
+                  <h3 className="text-lg font-bold text-white">{title}</h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-500">{text}</p>
+                </div>
+              );
+            })}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-</section>
+      </section>
+
+{/* HOW IT WORKS */}
+      <section
+        id="how-it-works"
+        className="w-full overflow-hidden bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12"
+      >
+        <div className="mx-auto w-full max-w-6xl">
+          <div className="mx-auto max-w-4xl text-center">
+            <span className="inline-flex rounded-full bg-blue-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-blue-400">
+              How It Works
+            </span>
+
+            <h2 className="mt-5 text-[clamp(1.8rem,6vw,3.75rem)] font-black leading-tight text-white">
+              From Idea <span className="text-red-500">To Upload</span>
+            </h2>
+          </div>
+
+          <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {workflow.map((step) => {
+              const s = rgby[step.color];
+
+              return (
+                <div
+                  key={step.number}
+                  tabIndex={0}
+                  className={`group min-h-[190px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] ${s.active} ${s.glow} sm:min-h-[205px] sm:p-6`}
+                >
+                  <div className={`mx-auto flex h-11 w-11 items-center justify-center rounded-xl ${s.icon} text-sm font-black ${s.text}`}>
+                    {step.number}
+                  </div>
+                  <h3 className="mt-5 text-lg font-extrabold leading-tight text-white sm:text-xl">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-500 sm:text-[15px] sm:leading-7">
+                    {step.text}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+{/* BEST PRACTICES */}
+      <section className="w-full overflow-hidden bg-[#050816] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
+        <div className="mx-auto max-w-4xl text-center">
+          <span className="inline-flex rounded-full bg-red-500/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-red-400">
+            Best Practices
+          </span>
+
+          <h2 className="mt-5 text-[clamp(1.4rem,5vw,3rem)] font-black leading-tight text-white">
+            Better YouTube <span className="text-red-500">Content Practices</span>
+          </h2>
+
+          <p className="mx-auto mt-5 max-w-3xl text-center text-sm leading-7 text-slate-500 sm:text-base sm:leading-8">
+            Use clear topics, accurate titles and thumbnails, useful
+            descriptions, strong openings and audience feedback to improve
+            your content over time.
+          </p>
+
+          <div className="mx-auto mt-10 grid max-w-5xl gap-4 text-left sm:grid-cols-2">
+            {[
+              "Keep titles accurate and easy to understand.",
+              "Match keywords with the actual topic of the video.",
+              "Use thumbnails that communicate one clear idea.",
+              "Review analytics and audience retention regularly.",
+            ].map((item, index) => (
+              <div
+                key={item}
+                className="group min-h-[100px] rounded-2xl border border-white/10 bg-[#0b0b0d] p-5 transition-all duration-300 hover:-translate-y-1 hover:border-red-500/50 hover:bg-[#101014] sm:p-6"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-red-400 transition-transform duration-300 group-hover:scale-105">
+                    <Check className="h-5 w-5" />
+                  </div>
+                  <span className="pt-1 text-sm leading-7 text-slate-400 sm:text-[15px]">
+                    {item}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
 
       {/* FAQ */}
       <section className="w-full overflow-hidden bg-[#030712] px-5 py-24 sm:px-8 sm:py-32 lg:px-12">
@@ -971,8 +897,8 @@ function Home() {
               href="/blog"
               className="inline-flex items-center gap-2 rounded-xl bg-red-500 px-6 py-3.5 text-sm font-bold text-white transition hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/20"
             >
-                View All Blog Posts
-              <ArrowRight className="h-10 w-30" />
+              View All Blog Posts
+              <ArrowRight className="h-8 w-25" />
             </a>
           </div>
         </div>
@@ -999,8 +925,8 @@ function Home() {
             href="#tools"
             className="mt-8 inline-flex items-center gap-2 rounded-xl bg-red-500 px-7 py-3.5 text-sm font-bold text-white transition hover:bg-red-400 hover:shadow-lg hover:shadow-red-500/20"
           >
-              Explore Creator Tools
-            <ArrowRight className="h-10 w-30" />
+            Explore Creator Tools
+            <ArrowRight className="h-8 w-25" />
           </a>
         </div>
       </section>
@@ -1009,3 +935,4 @@ function Home() {
 }
 
 export default Home;
+             
