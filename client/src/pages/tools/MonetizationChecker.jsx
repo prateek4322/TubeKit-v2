@@ -8,6 +8,7 @@ import {
   Clipboard,
   ExternalLink,
   Eye,
+  Search,
   Info,
   RefreshCw,
   ShieldCheck,
