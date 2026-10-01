@@ -1,7 +1,10 @@
+e
 function BackgroundEffects() {
   return (
     <>
-      {/* ================= BACKGROUND IMAGE ================= */}
+      {/* =====================================================
+          BACKGROUND IMAGE
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -9,6 +12,7 @@ function BackgroundEffects() {
           pointer-events-none
           absolute
           inset-0
+          z-0
           hidden
           overflow-hidden
           sm:block
@@ -16,6 +20,7 @@ function BackgroundEffects() {
       >
         <div
           className="
+            pointer-events-none
             absolute
             inset-0
             bg-cover
@@ -29,10 +34,21 @@ function BackgroundEffects() {
           }}
         />
 
-        <div className="absolute inset-0 bg-black/45 lg:bg-black/20" />
+        {/* Image dark overlay */}
+        <div
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            bg-black/45
+            lg:bg-black/20
+          "
+        />
       </div>
 
-      {/* ================= MOBILE BACKGROUND ================= */}
+      {/* =====================================================
+          MOBILE BACKGROUND
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -40,12 +56,15 @@ function BackgroundEffects() {
           pointer-events-none
           absolute
           inset-0
+          z-0
           bg-[#030712]
           sm:hidden
         "
       />
 
-      {/* ================= DARK OVERLAY ================= */}
+      {/* =====================================================
+          GLOBAL DARK OVERLAY
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -53,12 +72,16 @@ function BackgroundEffects() {
           pointer-events-none
           absolute
           inset-0
+          z-0
           bg-black/35
           sm:bg-black/25
+          lg:bg-black/20
         "
       />
 
-      {/* ================= RED GLOW ================= */}
+      {/* =====================================================
+          RED GLOW
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -67,6 +90,7 @@ function BackgroundEffects() {
           absolute
           -left-24
           top-24
+          z-0
           h-56
           w-56
           rounded-full
@@ -79,7 +103,9 @@ function BackgroundEffects() {
         "
       />
 
-      {/* ================= BLUE GLOW ================= */}
+      {/* =====================================================
+          BLUE GLOW
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -88,6 +114,7 @@ function BackgroundEffects() {
           absolute
           -right-24
           top-20
+          z-0
           h-56
           w-56
           rounded-full
@@ -100,7 +127,9 @@ function BackgroundEffects() {
         "
       />
 
-      {/* ================= GREEN GLOW ================= */}
+      {/* =====================================================
+          GREEN GLOW
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -109,6 +138,7 @@ function BackgroundEffects() {
           absolute
           -bottom-24
           left-1/4
+          z-0
           h-48
           w-48
           rounded-full
@@ -121,7 +151,9 @@ function BackgroundEffects() {
         "
       />
 
-      {/* ================= YELLOW GLOW ================= */}
+      {/* =====================================================
+          YELLOW GLOW
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -130,6 +162,7 @@ function BackgroundEffects() {
           absolute
           -bottom-20
           right-1/4
+          z-0
           h-44
           w-44
           rounded-full
@@ -142,7 +175,9 @@ function BackgroundEffects() {
         "
       />
 
-      {/* ================= GRID ================= */}
+      {/* =====================================================
+          GRID
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -150,19 +185,29 @@ function BackgroundEffects() {
           pointer-events-none
           absolute
           inset-0
+          z-0
           opacity-20
           sm:opacity-30
         "
         style={{
           backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
+            linear-gradient(
+              rgba(255,255,255,0.04) 1px,
+              transparent 1px
+            ),
+            linear-gradient(
+              90deg,
+              rgba(255,255,255,0.04) 1px,
+              transparent 1px
+            )
           `,
           backgroundSize: "40px 40px",
         }}
       />
 
-      {/* ================= VIGNETTE ================= */}
+      {/* =====================================================
+          VIGNETTE
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -170,11 +215,14 @@ function BackgroundEffects() {
           pointer-events-none
           absolute
           inset-0
+          z-0
           bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.65)_100%)]
         "
       />
 
-      {/* ================= TOP LINE ================= */}
+      {/* =====================================================
+          TOP RED LIGHT
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -184,6 +232,7 @@ function BackgroundEffects() {
           left-0
           right-0
           top-0
+          z-0
           h-px
           bg-gradient-to-r
           from-transparent
@@ -192,7 +241,9 @@ function BackgroundEffects() {
         "
       />
 
-      {/* ================= BOTTOM FADE ================= */}
+      {/* =====================================================
+          BOTTOM FADE
+      ====================================================== */}
 
       <div
         aria-hidden="true"
@@ -202,6 +253,7 @@ function BackgroundEffects() {
           bottom-0
           left-0
           right-0
+          z-0
           h-32
           bg-gradient-to-t
           from-black
