@@ -1,15 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
   <head>
     <meta charset="UTF-8" />
 
-    <!-- AdSense -->
-    <meta
-      name="google-adsense-account"
-      content="ca-pub-3369785454336338"
-    />
+    <!-- =========================================================
+         BASIC / SECURITY / RESPONSIVE
+    ========================================================== -->
 
-    <!-- Responsive -->
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -18,17 +15,25 @@
     <meta name="theme-color" content="#000000" />
     <meta name="color-scheme" content="dark" />
 
-    <!-- Primary SEO -->
+    <meta
+      name="google-adsense-account"
+      content="ca-pub-3369785454336338"
+    />
+
+    <!-- =========================================================
+         PRIMARY SEO
+    ========================================================== -->
+
     <title>TubeKit | Free AI Tools for YouTube Creators</title>
 
     <meta
       name="description"
-      content="TubeKit is a free AI-powered YouTube creator toolkit for generating titles, descriptions, tags, hashtags, scripts, keywords and thumbnail ideas, plus YouTube SEO and channel analysis tools."
+      content="TubeKit is a free AI-powered YouTube creator toolkit for generating titles, descriptions, tags, hashtags, scripts, keywords and thumbnail ideas, with YouTube SEO and channel analysis tools."
     />
 
     <meta
       name="keywords"
-      content="YouTube AI tools, YouTube title generator, YouTube description generator, YouTube tags generator, YouTube script generator, YouTube SEO tools, YouTube hashtag generator, YouTube creator tools, TubeKit"
+      content="TubeKit, YouTube AI tools, YouTube tools, YouTube title generator, YouTube description generator, YouTube tag generator, YouTube hashtag generator, YouTube script generator, YouTube SEO tools, YouTube keyword generator, YouTube thumbnail ideas, YouTube channel analyzer"
     />
 
     <meta name="author" content="TubeKit" />
@@ -62,7 +67,10 @@
       href="https://www.tubekitapp.in/"
     />
 
-    <!-- Open Graph -->
+    <!-- =========================================================
+         OPEN GRAPH
+    ========================================================== -->
+
     <meta property="og:type" content="website" />
 
     <meta
@@ -72,12 +80,22 @@
 
     <meta
       property="og:description"
-      content="Free AI-powered tools for YouTube creators. Generate titles, descriptions, tags, scripts, hashtags, keywords and thumbnail ideas."
+      content="Create, optimize and grow with free AI-powered YouTube tools for titles, descriptions, tags, scripts, hashtags, keywords, thumbnails and SEO."
     />
 
     <meta
       property="og:url"
       content="https://www.tubekitapp.in/"
+    />
+
+    <meta
+      property="og:site_name"
+      content="TubeKit"
+    />
+
+    <meta
+      property="og:locale"
+      content="en_IN"
     />
 
     <meta
@@ -90,11 +108,14 @@
       content="TubeKit - Free AI YouTube Creator Tools"
     />
 
-    <meta property="og:site_name" content="TubeKit" />
-    <meta property="og:locale" content="en_IN" />
+    <!-- =========================================================
+         TWITTER / X
+    ========================================================== -->
 
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:card"
+      content="summary_large_image"
+    />
 
     <meta
       name="twitter:title"
@@ -103,7 +124,7 @@
 
     <meta
       name="twitter:description"
-      content="Free AI-powered YouTube tools for creators."
+      content="Free AI-powered YouTube creator tools for titles, descriptions, tags, scripts, hashtags, keywords, thumbnails and SEO."
     />
 
     <meta
@@ -111,8 +132,14 @@
       content="https://www.tubekitapp.in/og-image.png"
     />
 
-    <!-- Favicons -->
-    <link rel="icon" href="/favicon.ico" />
+    <!-- =========================================================
+         ICONS / PWA
+    ========================================================== -->
+
+    <link
+      rel="icon"
+      href="/favicon.ico"
+    />
 
     <link
       rel="icon"
@@ -138,13 +165,24 @@
       href="/site.webmanifest"
     />
 
-    <!-- Preconnect -->
+    <!-- =========================================================
+         PERFORMANCE
+    ========================================================== -->
+
+    <link
+      rel="preconnect"
+      href="https://pagead2.googlesyndication.com"
+    />
+
     <link
       rel="preconnect"
       href="https://www.googletagmanager.com"
     />
 
-    <!-- Website + Organization Schema -->
+    <!-- =========================================================
+         STRUCTURED DATA
+    ========================================================== -->
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -169,19 +207,39 @@
               "@type": "ImageObject",
               "url": "https://www.tubekitapp.in/tubekit-logo.png"
             }
+          },
+          {
+            "@type": "WebPage",
+            "@id": "https://www.tubekitapp.in/#webpage",
+            "url": "https://www.tubekitapp.in/",
+            "name": "TubeKit | Free AI Tools for YouTube Creators",
+            "description": "Free AI-powered YouTube creator tools for content creation and optimization.",
+            "isPartOf": {
+              "@id": "https://www.tubekitapp.in/#website"
+            },
+            "about": {
+              "@id": "https://www.tubekitapp.in/#organization"
+            },
+            "inLanguage": "en-IN"
           }
         ]
       }
     </script>
 
-    <!-- Google AdSense -->
+    <!-- =========================================================
+         GOOGLE ADSENSE
+    ========================================================== -->
+
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3369785454336338"
       crossorigin="anonymous"
     ></script>
 
-    <!-- Google Analytics -->
+    <!-- =========================================================
+         GOOGLE ANALYTICS
+    ========================================================== -->
+
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-NNSERM44KB"
@@ -200,33 +258,45 @@
   </head>
 
   <body>
-    <!-- React Application -->
+    <!-- =========================================================
+         REACT APPLICATION
+    ========================================================== -->
+
     <div id="root"></div>
 
-    <!--
-      Static fallback content.
-      This does not affect the normal React application
-      when JavaScript is enabled.
-    -->
+    <!-- =========================================================
+         STATIC FALLBACK
+         Helps environments that do not execute JavaScript.
+    ========================================================== -->
+
     <noscript>
       <main
         style="
           width: 100%;
           max-width: 1200px;
           margin: 0 auto;
-          padding: 40px 20px;
-          font-family: Arial, sans-serif;
+          padding: 48px 20px;
+          box-sizing: border-box;
           background: #000;
           color: #fff;
+          font-family: Arial, Helvetica, sans-serif;
           line-height: 1.7;
         "
       >
         <header>
-          <h1>TubeKit - Free AI Tools for YouTube Creators</h1>
+          <h1>
+            TubeKit - Free AI Tools for YouTube Creators
+          </h1>
 
           <p>
             TubeKit is a free AI-powered YouTube creator toolkit designed
             to help creators create, optimize and grow their YouTube content.
+          </p>
+
+          <p>
+            Use TubeKit to generate and optimize content including
+            YouTube titles, descriptions, tags, hashtags, scripts,
+            keywords and thumbnail ideas.
           </p>
         </header>
 
@@ -234,36 +304,60 @@
           <h2>Free AI YouTube Tools</h2>
 
           <p>
-            Create YouTube titles, descriptions, tags, hashtags, scripts,
-            keywords and thumbnail ideas with TubeKit's AI-powered creator
-            tools.
+            TubeKit provides AI-powered tools for YouTube creators,
+            including content generation, video optimization and
+            YouTube SEO workflows.
           </p>
+
+          <ul>
+            <li>YouTube Title Generator</li>
+            <li>YouTube Description Generator</li>
+            <li>YouTube Tags Generator</li>
+            <li>YouTube Hashtag Generator</li>
+            <li>YouTube Script Generator</li>
+            <li>YouTube Keyword Tools</li>
+            <li>YouTube Thumbnail Ideas</li>
+            <li>YouTube SEO Tools</li>
+            <li>YouTube Channel Analysis Tools</li>
+          </ul>
         </section>
 
         <section>
-          <h2>YouTube SEO Tools</h2>
+          <h2>YouTube SEO and Optimization</h2>
 
           <p>
-            Improve your YouTube content workflow with tools for SEO,
-            keyword research, channel analysis, video analysis and content
-            optimization.
+            TubeKit helps creators research keywords, improve video
+            metadata and organize their YouTube content workflow using
+            practical creator-focused tools.
           </p>
         </section>
 
         <section>
-          <h2>TubeKit Creator Resources</h2>
+          <h2>How TubeKit Works</h2>
+
+          <ol>
+            <li>Select a YouTube creator tool.</li>
+            <li>Enter your topic, keyword, URL or video information.</li>
+            <li>Generate or analyze the requested information.</li>
+            <li>Use the results to improve your content workflow.</li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>TubeKit Resources</h2>
 
           <p>
-            Explore free YouTube creator tools, educational articles,
-            tutorials, FAQs and resources designed to help creators
-            understand and improve their YouTube workflow.
+            Explore TubeKit's creator tools, educational blog articles,
+            FAQs and resources for YouTube content creation and SEO.
           </p>
         </section>
 
         <section>
-          <h2>Useful Links</h2>
+          <h2>Useful TubeKit Pages</h2>
 
-          <nav aria-label="TubeKit navigation">
+          <nav
+            aria-label="TubeKit website navigation"
+          >
             <p>
               <a href="/">Home</a> |
               <a href="/tools">AI Tools</a> |
@@ -274,24 +368,38 @@
             </p>
 
             <p>
-              <a href="/privacy-policy">Privacy Policy</a> |
-              <a href="/terms">Terms of Service</a> |
-              <a href="/disclaimer">Disclaimer</a> |
-              <a href="/cookie-policy">Cookie Policy</a>
+              <a href="/privacy-policy">
+                Privacy Policy
+              </a>
+              |
+              <a href="/terms">
+                Terms of Service
+              </a>
+              |
+              <a href="/disclaimer">
+                Disclaimer
+              </a>
+              |
+              <a href="/cookie-policy">
+                Cookie Policy
+              </a>
             </p>
           </nav>
         </section>
 
         <footer>
           <p>
-            TubeKit provides free AI-powered tools and resources for
-            YouTube creators.
+            TubeKit provides free AI-powered tools and resources
+            for YouTube creators.
           </p>
         </footer>
       </main>
     </noscript>
 
-    <!-- React Entry -->
+    <!-- =========================================================
+         REACT ENTRY
+    ========================================================== -->
+
     <script
       type="module"
       src="/src/main.jsx"
