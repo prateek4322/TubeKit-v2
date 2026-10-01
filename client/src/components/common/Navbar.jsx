@@ -86,7 +86,7 @@ function Navbar() {
           aria-label="TubeKit Home"
         >
           <img
-            src="/logo.png"
+            src="/tubekit-logo.png"
             alt="TubeKit"
             className="h-10 w-auto max-w-[170px] object-contain transition-transform duration-200 group-hover:scale-[1.03]"
             onError={(e) => {
