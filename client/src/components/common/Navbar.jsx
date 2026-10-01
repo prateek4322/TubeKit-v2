@@ -23,8 +23,14 @@ function Navbar() {
   const utilityTools = [
     { name: "YouTube Tag Extractor", path: "/tools/tag-extractor" },
     { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor" },
-    { name: "YouTube Description Extractor", path: "/tools/description-extractor" },
-    { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector" },
+    {
+      name: "YouTube Description Extractor",
+      path: "/tools/description-extractor",
+    },
+    {
+      name: "YouTube Shadowban Detector",
+      path: "/tools/shadowban-detector",
+    },
     { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer" },
     { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer" },
     { name: "YouTube Comment Reader", path: "/tools/comment-reader" },
@@ -37,19 +43,21 @@ function Navbar() {
     { name: "Money Calculator", path: "/tools/money-calculator" },
   ];
 
-  const closeMobileMenu = () => {
+  const closeAllMenus = () => {
     setMenuOpen(false);
     setAiToolsOpen(false);
     setUtilityToolsOpen(false);
   };
 
   const handleHomeClick = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    closeAllMenus();
 
-    closeMobileMenu();
+    setTimeout(() => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 50);
   };
 
   const desktopLinkClass = ({ isActive }) =>
@@ -60,7 +68,7 @@ function Navbar() {
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
-    `rounded-xl px-4 py-3 transition-colors ${
+    `block rounded-xl px-4 py-3 text-sm transition-colors ${
       isActive
         ? "bg-slate-800 font-semibold text-red-400"
         : "text-slate-300 hover:bg-slate-800 hover:text-white"
@@ -68,20 +76,34 @@ function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-slate-800/80 bg-slate-950/95 backdrop-blur-xl">
-      {/* Desktop / Main Navbar */}
-      <div className="mx-auto flex min-h-[72px] w-full max-w-7xl items-center px-5 sm:px-8 lg:px-10">
-        {/* Logo */}
+      {/* NAVBAR */}
+      <div className="mx-auto flex min-h-[72px] w-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+        {/* LOGO */}
         <Link
           to="/"
           onClick={handleHomeClick}
-          className="shrink-0 text-2xl font-extrabold tracking-tight text-white"
+          className="group flex shrink-0 items-center"
+          aria-label="TubeKit Home"
         >
-          Tube<span className="text-red-500">Kit</span>
+          <img
+            src="/logo.png"
+            alt="TubeKit"
+            className="h-10 w-auto max-w-[170px] object-contain transition-transform duration-200 group-hover:scale-[1.03]"
+            onError={(e) => {
+              e.currentTarget.style.display = "none";
+              e.currentTarget.nextElementSibling.style.display = "block";
+            }}
+          />
+
+          {/* Fallback if logo.png is missing */}
+          <span className="hidden text-2xl font-extrabold tracking-tight text-white">
+            Tube<span className="text-red-500">Kit</span>
+          </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-5 pr-5 md:flex lg:gap-7 lg:pr-6">
-          {/* Home */}
+        {/* DESKTOP NAVIGATION */}
+        <nav className="ml-auto hidden items-center gap-5 md:flex lg:gap-7">
+          {/* HOME */}
           <NavLink
             to="/"
             onClick={handleHomeClick}
@@ -90,9 +112,9 @@ function Navbar() {
             Home
           </NavLink>
 
-          {/* AI Tools */}
+          {/* AI TOOLS */}
           <div
-            className="relative shrink-0"
+            className="relative"
             onMouseEnter={() => {
               setAiToolsOpen(true);
               setUtilityToolsOpen(false);
@@ -107,7 +129,7 @@ function Navbar() {
               }}
               className="flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-slate-300 transition-colors hover:text-white"
             >
-              <span>AI Tools</span>
+              AI Tools
 
               <ChevronDown
                 size={16}
@@ -118,32 +140,34 @@ function Navbar() {
             </button>
 
             {aiToolsOpen && (
-              <div className="absolute right-0 top-full w-72 pt-4">
-                <div className="max-h-[70vh] overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl shadow-black/40">
-                  {aiTools.map((tool) => (
-                    <NavLink
-                      key={tool.path}
-                      to={tool.path}
-                      onClick={closeMobileMenu}
-                      className={({ isActive }) =>
-                        `block rounded-xl px-4 py-3 text-sm transition-colors ${
-                          isActive
-                            ? "bg-slate-800 font-semibold text-red-400"
-                            : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                        }`
-                      }
-                    >
-                      {tool.name}
-                    </NavLink>
-                  ))}
+              <div className="absolute right-0 top-full w-72 pt-3">
+                <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl shadow-black/50">
+                  <div className="max-h-[70vh] overflow-y-auto">
+                    {aiTools.map((tool) => (
+                      <NavLink
+                        key={tool.path}
+                        to={tool.path}
+                        onClick={closeAllMenus}
+                        className={({ isActive }) =>
+                          `block rounded-xl px-4 py-3 text-sm transition-colors ${
+                            isActive
+                              ? "bg-slate-800 font-semibold text-red-400"
+                              : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                          }`
+                        }
+                      >
+                        {tool.name}
+                      </NavLink>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Utility Tools */}
+          {/* UTILITY TOOLS */}
           <div
-            className="relative shrink-0"
+            className="relative"
             onMouseEnter={() => {
               setUtilityToolsOpen(true);
               setAiToolsOpen(false);
@@ -158,7 +182,7 @@ function Navbar() {
               }}
               className="flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-slate-300 transition-colors hover:text-white"
             >
-              <span>Utility Tools</span>
+              Utility Tools
 
               <ChevronDown
                 size={16}
@@ -169,54 +193,58 @@ function Navbar() {
             </button>
 
             {utilityToolsOpen && (
-              <div className="absolute right-0 top-full w-80 pt-4">
-                <div className="max-h-[70vh] overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl shadow-black/40">
-                  {utilityTools.map((tool) => (
-                    <NavLink
-                      key={tool.path}
-                      to={tool.path}
-                      onClick={closeMobileMenu}
-                      className={({ isActive }) =>
-                        `block rounded-xl px-4 py-3 text-sm transition-colors ${
-                          isActive
-                            ? "bg-slate-800 font-semibold text-red-400"
-                            : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                        }`
-                      }
-                    >
-                      {tool.name}
-                    </NavLink>
-                  ))}
+              <div className="absolute right-0 top-full w-80 pt-3">
+                <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl shadow-black/50">
+                  <div className="max-h-[70vh] overflow-y-auto">
+                    {utilityTools.map((tool) => (
+                      <NavLink
+                        key={tool.path}
+                        to={tool.path}
+                        onClick={closeAllMenus}
+                        className={({ isActive }) =>
+                          `block rounded-xl px-4 py-3 text-sm transition-colors ${
+                            isActive
+                              ? "bg-slate-800 font-semibold text-red-400"
+                              : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                          }`
+                        }
+                      >
+                        {tool.name}
+                      </NavLink>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Blog */}
+          {/* BLOG */}
           <NavLink to="/blog" className={desktopLinkClass}>
             Blog
           </NavLink>
         </nav>
 
-        {/* Mobile Toggle */}
+        {/* MOBILE BUTTON */}
         <button
           type="button"
-          aria-label={
-            menuOpen ? "Close navigation menu" : "Open navigation menu"
-          }
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={menuOpen}
-          className="ml-auto shrink-0 text-white md:hidden"
-          onClick={() => setMenuOpen((prev) => !prev)}
+          onClick={() => {
+            setMenuOpen((prev) => !prev);
+            setAiToolsOpen(false);
+            setUtilityToolsOpen(false);
+          }}
+          className="ml-auto rounded-lg p-2 text-white transition-colors hover:bg-slate-800 md:hidden"
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          {menuOpen ? <X size={27} /> : <Menu size={27} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* MOBILE MENU */}
       {menuOpen && (
         <div className="border-t border-slate-800 bg-slate-950 md:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 sm:px-8">
-            {/* Home */}
+          <div className="mx-auto flex max-h-[calc(100vh-72px)] max-w-7xl flex-col gap-2 overflow-y-auto px-4 py-4 sm:px-6">
+            {/* HOME */}
             <NavLink
               to="/"
               onClick={handleHomeClick}
@@ -225,14 +253,14 @@ function Navbar() {
               Home
             </NavLink>
 
-            {/* AI Tools */}
+            {/* AI TOOLS */}
             <button
               type="button"
               onClick={() => {
                 setAiToolsOpen((prev) => !prev);
                 setUtilityToolsOpen(false);
               }}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-left text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+              className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
             >
               <span>AI Tools</span>
 
@@ -245,12 +273,12 @@ function Navbar() {
             </button>
 
             {aiToolsOpen && (
-              <div className="ml-4 space-y-1 border-l border-slate-800 pl-3">
+              <div className="ml-3 space-y-1 border-l border-slate-800 pl-3">
                 {aiTools.map((tool) => (
                   <NavLink
                     key={tool.path}
                     to={tool.path}
-                    onClick={closeMobileMenu}
+                    onClick={closeAllMenus}
                     className={({ isActive }) =>
                       `block rounded-lg px-4 py-2.5 text-sm transition-colors ${
                         isActive
@@ -265,14 +293,14 @@ function Navbar() {
               </div>
             )}
 
-            {/* Utility Tools */}
+            {/* UTILITY TOOLS */}
             <button
               type="button"
               onClick={() => {
                 setUtilityToolsOpen((prev) => !prev);
                 setAiToolsOpen(false);
               }}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-left text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+              className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-left text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
             >
               <span>Utility Tools</span>
 
@@ -285,12 +313,12 @@ function Navbar() {
             </button>
 
             {utilityToolsOpen && (
-              <div className="ml-4 space-y-1 border-l border-slate-800 pl-3">
+              <div className="ml-3 space-y-1 border-l border-slate-800 pl-3">
                 {utilityTools.map((tool) => (
                   <NavLink
                     key={tool.path}
                     to={tool.path}
-                    onClick={closeMobileMenu}
+                    onClick={closeAllMenus}
                     className={({ isActive }) =>
                       `block rounded-lg px-4 py-2.5 text-sm transition-colors ${
                         isActive
@@ -305,10 +333,10 @@ function Navbar() {
               </div>
             )}
 
-            {/* Blog */}
+            {/* BLOG */}
             <NavLink
               to="/blog"
-              onClick={closeMobileMenu}
+              onClick={closeAllMenus}
               className={mobileLinkClass}
             >
               Blog
