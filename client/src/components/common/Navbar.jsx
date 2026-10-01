@@ -23,57 +23,21 @@ function Navbar() {
   const utilityTools = [
     { name: "YouTube Tag Extractor", path: "/tools/tag-extractor" },
     { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor" },
-    {
-      name: "YouTube Description Extractor",
-      path: "/tools/description-extractor",
-    },
-    {
-      name: "YouTube Shadowban Detector",
-      path: "/tools/shadowban-detector",
-    },
-    {
-      name: "YouTube Channel Analyzer",
-      path: "/tools/channel-analyzer",
-    },
-    {
-      name: "YouTube SEO Analyzer",
-      path: "/tools/seo-analyzer",
-    },
-    {
-      name: "YouTube Comment Reader",
-      path: "/tools/comment-reader",
-    },
-    {
-      name: "Video ID Extractor",
-      path: "/tools/video-id-extractor",
-    },
-    {
-      name: "Thumbnail Downloader",
-      path: "/tools/thumbnail-downloader",
-    },
-    {
-      name: "Channel ID Finder",
-      path: "/tools/channel-id-finder",
-    },
-    {
-      name: "Monetization Checker",
-      path: "/tools/monetization-checker",
-    },
-    {
-      name: "CPM Calculator",
-      path: "/tools/cpm-calculator",
-    },
-    {
-      name: "RPM Calculator",
-      path: "/tools/rpm-calculator",
-    },
-    {
-      name: "Money Calculator",
-      path: "/tools/money-calculator",
-    },
+    { name: "YouTube Description Extractor", path: "/tools/description-extractor" },
+    { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector" },
+    { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer" },
+    { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer" },
+    { name: "YouTube Comment Reader", path: "/tools/comment-reader" },
+    { name: "Video ID Extractor", path: "/tools/video-id-extractor" },
+    { name: "Thumbnail Downloader", path: "/tools/thumbnail-downloader" },
+    { name: "Channel ID Finder", path: "/tools/channel-id-finder" },
+    { name: "Monetization Checker", path: "/tools/monetization-checker" },
+    { name: "CPM Calculator", path: "/tools/cpm-calculator" },
+    { name: "RPM Calculator", path: "/tools/rpm-calculator" },
+    { name: "Money Calculator", path: "/tools/money-calculator" },
   ];
 
-  const closeMobileMenu = () => {
+  const closeMenu = () => {
     setMenuOpen(false);
     setAiToolsOpen(false);
     setUtilityToolsOpen(false);
@@ -85,44 +49,31 @@ function Navbar() {
       behavior: "smooth",
     });
 
-    closeMobileMenu();
+    closeMenu();
   };
 
   const desktopLinkClass = ({ isActive }) =>
-    `whitespace-nowrap text-sm font-medium transition-colors duration-200 ${
+    `whitespace-nowrap text-sm font-medium transition-colors ${
       isActive
-        ? "font-semibold text-blue-400"
+        ? "text-blue-400"
         : "text-slate-300 hover:text-white"
     }`;
 
   const mobileLinkClass = ({ isActive }) =>
-    `rounded-xl px-4 py-3 transition-colors ${
+    `block rounded-xl px-4 py-3 text-sm transition-colors ${
       isActive
-        ? "bg-slate-800 font-semibold text-blue-400"
-        : "text-slate-300 hover:bg-slate-800 hover:text-white"
+        ? "bg-white/10 font-semibold text-blue-400"
+        : "text-slate-300 hover:bg-white/5 hover:text-white"
     }`;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/95 backdrop-blur-xl">
-      {/* =====================================================
-          NAVBAR
-      ====================================================== */}
+    <header className="sticky top-0 z-[100] w-full border-b border-white/10 bg-black/95 backdrop-blur-xl">
 
-      <div
-        className="
-          mx-auto flex h-16 w-full max-w-7xl
-          items-center justify-between
-          gap-4
-          px-4
-          sm:px-6
-          lg:h-20
-          lg:px-8
-          xl:px-10
-        "
-      >
-        {/* ===================================================
-            LOGO
-        ==================================================== */}
+      {/* ================= NAVBAR BAR ================= */}
+
+      <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8">
+
+        {/* LOGO */}
 
         <Link
           to="/"
@@ -136,37 +87,31 @@ function Navbar() {
             className="
               h-9
               w-auto
-              max-w-[130px]
+              max-w-[135px]
               object-contain
-              transition-transform
-              duration-200
-              hover:scale-105
               sm:h-10
-              sm:max-w-[145px]
-              lg:h-12
+              sm:max-w-[150px]
+              lg:h-11
               lg:max-w-[165px]
             "
           />
         </Link>
 
-        {/* ===================================================
-            DESKTOP NAVIGATION
-            Visible only on large screens
-        ==================================================== */}
+        {/* ================= DESKTOP NAV ================= */}
 
         <nav
           className="
             hidden
-            min-w-0
-            flex-1
             items-center
             justify-end
             gap-5
             lg:flex
-            lg:gap-6
+            xl:gap-7
           "
         >
-          {/* Home */}
+
+          {/* HOME */}
+
           <NavLink
             to="/"
             onClick={handleHomeClick}
@@ -175,17 +120,17 @@ function Navbar() {
             Home
           </NavLink>
 
-          {/* =================================================
-              AI TOOLS
-          ================================================== */}
+          {/* ================= AI TOOLS ================= */}
 
           <div
-            className="relative shrink-0"
+            className="relative"
             onMouseEnter={() => {
               setAiToolsOpen(true);
               setUtilityToolsOpen(false);
             }}
-            onMouseLeave={() => setAiToolsOpen(false)}
+            onMouseLeave={() => {
+              setAiToolsOpen(false);
+            }}
           >
             <button
               type="button"
@@ -194,19 +139,22 @@ function Navbar() {
                 setUtilityToolsOpen(false);
               }}
               className="
-                flex items-center gap-1.5
+                flex
+                items-center
+                gap-1.5
                 whitespace-nowrap
-                text-sm font-medium
+                text-sm
+                font-medium
                 text-slate-300
                 transition-colors
                 hover:text-white
               "
             >
-              <span>AI Tools</span>
+              AI Tools
 
               <ChevronDown
                 size={15}
-                className={`transition-transform duration-200 ${
+                className={`transition-transform ${
                   aiToolsOpen ? "rotate-180" : ""
                 }`}
               />
@@ -219,23 +167,23 @@ function Navbar() {
                     max-h-[70vh]
                     overflow-y-auto
                     rounded-2xl
-                    border border-white/10
+                    border
+                    border-white/10
                     bg-black
                     p-2
                     shadow-2xl
-                    shadow-black/60
                   "
                 >
                   {aiTools.map((tool) => (
                     <NavLink
                       key={tool.path}
                       to={tool.path}
-                      onClick={closeMobileMenu}
+                      onClick={closeMenu}
                       className={({ isActive }) =>
                         `block rounded-xl px-4 py-3 text-sm transition-colors ${
                           isActive
-                            ? "bg-slate-800 font-semibold text-blue-400"
-                            : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                            ? "bg-white/10 text-blue-400"
+                            : "text-slate-300 hover:bg-white/5 hover:text-white"
                         }`
                       }
                     >
@@ -247,17 +195,17 @@ function Navbar() {
             )}
           </div>
 
-          {/* =================================================
-              UTILITY TOOLS
-          ================================================== */}
+          {/* ================= UTILITY TOOLS ================= */}
 
           <div
-            className="relative shrink-0"
+            className="relative"
             onMouseEnter={() => {
               setUtilityToolsOpen(true);
               setAiToolsOpen(false);
             }}
-            onMouseLeave={() => setUtilityToolsOpen(false)}
+            onMouseLeave={() => {
+              setUtilityToolsOpen(false);
+            }}
           >
             <button
               type="button"
@@ -266,19 +214,22 @@ function Navbar() {
                 setAiToolsOpen(false);
               }}
               className="
-                flex items-center gap-1.5
+                flex
+                items-center
+                gap-1.5
                 whitespace-nowrap
-                text-sm font-medium
+                text-sm
+                font-medium
                 text-slate-300
                 transition-colors
                 hover:text-white
               "
             >
-              <span>Utility Tools</span>
+              Utility Tools
 
               <ChevronDown
                 size={15}
-                className={`transition-transform duration-200 ${
+                className={`transition-transform ${
                   utilityToolsOpen ? "rotate-180" : ""
                 }`}
               />
@@ -291,23 +242,23 @@ function Navbar() {
                     max-h-[70vh]
                     overflow-y-auto
                     rounded-2xl
-                    border border-white/10
+                    border
+                    border-white/10
                     bg-black
                     p-2
                     shadow-2xl
-                    shadow-black/60
                   "
                 >
                   {utilityTools.map((tool) => (
                     <NavLink
                       key={tool.path}
                       to={tool.path}
-                      onClick={closeMobileMenu}
+                      onClick={closeMenu}
                       className={({ isActive }) =>
                         `block rounded-xl px-4 py-3 text-sm transition-colors ${
                           isActive
-                            ? "bg-slate-800 font-semibold text-blue-400"
-                            : "text-slate-300 hover:bg-slate-800 hover:text-white"
+                            ? "bg-white/10 text-blue-400"
+                            : "text-slate-300 hover:bg-white/5 hover:text-white"
                         }`
                       }
                     >
@@ -319,23 +270,31 @@ function Navbar() {
             )}
           </div>
 
-          {/* Blog */}
-          <NavLink to="/blog" className={desktopLinkClass}>
+          {/* BLOG */}
+
+          <NavLink
+            to="/blog"
+            className={desktopLinkClass}
+          >
             Blog
           </NavLink>
         </nav>
 
-        {/* ===================================================
-            MOBILE MENU BUTTON
-            Visible below lg breakpoint
-        ==================================================== */}
+        {/* ================= MOBILE BUTTON ================= */}
 
         <button
           type="button"
           aria-label={
-            menuOpen ? "Close navigation menu" : "Open navigation menu"
+            menuOpen
+              ? "Close navigation menu"
+              : "Open navigation menu"
           }
           aria-expanded={menuOpen}
+          onClick={() => {
+            setMenuOpen((prev) => !prev);
+            setAiToolsOpen(false);
+            setUtilityToolsOpen(false);
+          }}
           className="
             flex
             h-10
@@ -344,34 +303,30 @@ function Navbar() {
             items-center
             justify-center
             rounded-xl
-            border border-white/10
-            bg-white/[0.04]
+            border
+            border-white/10
+            bg-white/5
             text-white
-            transition-all
-            hover:bg-white/[0.08]
+            transition
+            hover:bg-white/10
             lg:hidden
           "
-          onClick={() => {
-            setMenuOpen((prev) => !prev);
-
-            if (menuOpen) {
-              setAiToolsOpen(false);
-              setUtilityToolsOpen(false);
-            }
-          }}
         >
-          {menuOpen ? <X size={23} /> : <Menu size={23} />}
+          {menuOpen ? (
+            <X size={23} />
+          ) : (
+            <Menu size={23} />
+          )}
         </button>
       </div>
 
-      {/* =====================================================
-          MOBILE MENU
-      ====================================================== */}
+      {/* ================= MOBILE MENU ================= */}
 
       {menuOpen && (
         <div
           className="
-            border-t border-white/10
+            border-t
+            border-white/10
             bg-black
             lg:hidden
           "
@@ -379,18 +334,18 @@ function Navbar() {
           <div
             className="
               mx-auto
-              flex
               max-h-[calc(100vh-64px)]
+              w-full
               max-w-7xl
-              flex-col
-              gap-2
               overflow-y-auto
               px-4
               py-4
               sm:px-6
             "
           >
-            {/* Home */}
+
+            {/* HOME */}
+
             <NavLink
               to="/"
               onClick={handleHomeClick}
@@ -399,7 +354,8 @@ function Navbar() {
               Home
             </NavLink>
 
-            {/* AI Tools */}
+            {/* AI TOOLS */}
+
             <button
               type="button"
               onClick={() => {
@@ -407,16 +363,19 @@ function Navbar() {
                 setUtilityToolsOpen(false);
               }}
               className="
+                mt-2
                 flex
+                w-full
                 items-center
                 justify-between
                 rounded-xl
                 px-4
                 py-3
                 text-left
+                text-sm
                 text-slate-300
-                transition-colors
-                hover:bg-slate-800
+                transition
+                hover:bg-white/5
                 hover:text-white
               "
             >
@@ -424,24 +383,24 @@ function Navbar() {
 
               <ChevronDown
                 size={18}
-                className={`transition-transform duration-200 ${
+                className={`transition-transform ${
                   aiToolsOpen ? "rotate-180" : ""
                 }`}
               />
             </button>
 
             {aiToolsOpen && (
-              <div className="ml-3 space-y-1 border-l border-slate-800 pl-3">
+              <div className="ml-3 mt-1 border-l border-white/10 pl-3">
                 {aiTools.map((tool) => (
                   <NavLink
                     key={tool.path}
                     to={tool.path}
-                    onClick={closeMobileMenu}
+                    onClick={closeMenu}
                     className={({ isActive }) =>
-                      `block rounded-lg px-4 py-2.5 text-sm transition-colors ${
+                      `block rounded-lg px-4 py-2.5 text-sm ${
                         isActive
-                          ? "bg-slate-800 text-blue-400"
-                          : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                          ? "bg-white/10 text-blue-400"
+                          : "text-slate-400 hover:bg-white/5 hover:text-white"
                       }`
                     }
                   >
@@ -451,7 +410,8 @@ function Navbar() {
               </div>
             )}
 
-            {/* Utility Tools */}
+            {/* UTILITY TOOLS */}
+
             <button
               type="button"
               onClick={() => {
@@ -459,16 +419,19 @@ function Navbar() {
                 setAiToolsOpen(false);
               }}
               className="
+                mt-2
                 flex
+                w-full
                 items-center
                 justify-between
                 rounded-xl
                 px-4
                 py-3
                 text-left
+                text-sm
                 text-slate-300
-                transition-colors
-                hover:bg-slate-800
+                transition
+                hover:bg-white/5
                 hover:text-white
               "
             >
@@ -476,24 +439,24 @@ function Navbar() {
 
               <ChevronDown
                 size={18}
-                className={`transition-transform duration-200 ${
+                className={`transition-transform ${
                   utilityToolsOpen ? "rotate-180" : ""
                 }`}
               />
             </button>
 
             {utilityToolsOpen && (
-              <div className="ml-3 space-y-1 border-l border-slate-800 pl-3">
+              <div className="ml-3 mt-1 border-l border-white/10 pl-3">
                 {utilityTools.map((tool) => (
                   <NavLink
                     key={tool.path}
                     to={tool.path}
-                    onClick={closeMobileMenu}
+                    onClick={closeMenu}
                     className={({ isActive }) =>
-                      `block rounded-lg px-4 py-2.5 text-sm transition-colors ${
+                      `block rounded-lg px-4 py-2.5 text-sm ${
                         isActive
-                          ? "bg-slate-800 text-blue-400"
-                          : "text-slate-400 hover:bg-slate-800 hover:text-white"
+                          ? "bg-white/10 text-blue-400"
+                          : "text-slate-400 hover:bg-white/5 hover:text-white"
                       }`
                     }
                   >
@@ -503,11 +466,14 @@ function Navbar() {
               </div>
             )}
 
-            {/* Blog */}
+            {/* BLOG */}
+
             <NavLink
               to="/blog"
-              onClick={closeMobileMenu}
-              className={mobileLinkClass}
+              onClick={closeMenu}
+              className={`${mobileLinkClass({
+                isActive: false,
+              })} mt-2`}
             >
               Blog
             </NavLink>
