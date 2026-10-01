@@ -3,42 +3,58 @@
   <head>
     <meta charset="UTF-8" />
 
-    <meta name="google-adsense-account" content="ca-pub-3369785454336338">
-    
+    <!-- AdSense -->
+    <meta
+      name="google-adsense-account"
+      content="ca-pub-3369785454336338"
+    />
+
+    <!-- Responsive -->
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
+
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
 
     <!-- Primary SEO -->
     <title>TubeKit | Free AI Tools for YouTube Creators</title>
 
     <meta
       name="description"
-      content="TubeKit provides free AI-powered YouTube tools for creators, including title generator, description generator, tags generator, script writer, thumbnail tools, hashtags and more."
+      content="TubeKit is a free AI-powered YouTube creator toolkit for generating titles, descriptions, tags, hashtags, scripts, keywords and thumbnail ideas, plus YouTube SEO and channel analysis tools."
     />
 
     <meta
+      name="keywords"
+      content="YouTube AI tools, YouTube title generator, YouTube description generator, YouTube tags generator, YouTube script generator, YouTube SEO tools, YouTube hashtag generator, YouTube creator tools, TubeKit"
+    />
+
+    <meta name="author" content="TubeKit" />
+
+    <meta
       name="robots"
-      content="index, follow"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
 
     <meta
       name="googlebot"
-      content="index, follow"
+      content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
     />
 
-    <!-- Canonical for homepage -->
+    <!-- Canonical -->
     <link
       rel="canonical"
       href="https://www.tubekitapp.in/"
     />
 
+    <!-- Language -->
+    <link rel="alternate" hreflang="en-IN" href="https://www.tubekitapp.in/" />
+    <link rel="alternate" hreflang="x-default" href="https://www.tubekitapp.in/" />
+
     <!-- Open Graph -->
-    <meta
-      property="og:type"
-      content="website"
-    />
+    <meta property="og:type" content="website" />
 
     <meta
       property="og:title"
@@ -47,7 +63,7 @@
 
     <meta
       property="og:description"
-      content="Free AI-powered YouTube tools for creators. Generate titles, descriptions, tags, scripts, hashtags, keywords and thumbnail ideas."
+      content="Free AI-powered tools for YouTube creators. Generate titles, descriptions, tags, scripts, hashtags, keywords and thumbnail ideas."
     />
 
     <meta
@@ -62,24 +78,14 @@
 
     <meta
       property="og:image:alt"
-      content="TubeKit - Free AI YouTube Tools"
+      content="TubeKit - Free AI YouTube Creator Tools"
     />
 
-    <meta
-      property="og:site_name"
-      content="TubeKit"
-    />
-
-    <meta
-      property="og:locale"
-      content="en_IN"
-    />
+    <meta property="og:site_name" content="TubeKit" />
+    <meta property="og:locale" content="en_IN" />
 
     <!-- Twitter / X -->
-    <meta
-      name="twitter:card"
-      content="summary_large_image"
-    />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <meta
       name="twitter:title"
@@ -96,11 +102,8 @@
       content="https://www.tubekitapp.in/og-image.png"
     />
 
-    <!-- Favicons -->
-    <link
-      rel="icon"
-      href="/favicon.ico"
-    />
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
 
     <link
       rel="icon"
@@ -126,6 +129,40 @@
       href="/site.webmanifest"
     />
 
+    <!-- Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+    <!-- Website / Organization Schema -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://www.tubekitapp.in/#website",
+            "url": "https://www.tubekitapp.in/",
+            "name": "TubeKit",
+            "description": "Free AI-powered YouTube tools for creators.",
+            "inLanguage": "en-IN",
+            "publisher": {
+              "@id": "https://www.tubekitapp.in/#organization"
+            }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://www.tubekitapp.in/#organization",
+            "name": "TubeKit",
+            "url": "https://www.tubekitapp.in/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://www.tubekitapp.in/tubekit-logo.png"
+            }
+          }
+        ]
+      }
+    </script>
+
     <!-- Google AdSense -->
     <script
       async
@@ -147,13 +184,38 @@
       }
 
       gtag("js", new Date());
-
       gtag("config", "G-NNSERM44KB");
     </script>
   </head>
 
   <body>
     <div id="root"></div>
+
+    <noscript>
+      <div style="padding: 40px; font-family: Arial, sans-serif;">
+        <h1>TubeKit - Free AI Tools for YouTube Creators</h1>
+
+        <p>
+          TubeKit provides free AI-powered tools for YouTube creators,
+          including title generation, description generation, tags,
+          hashtags, scripts, keywords, thumbnails and YouTube SEO tools.
+        </p>
+
+        <p>
+          JavaScript is required to use the interactive TubeKit creator tools.
+        </p>
+
+        <nav>
+          <a href="/">Home</a> |
+          <a href="/tools">AI Tools</a> |
+          <a href="/blog">Blog</a> |
+          <a href="/about">About</a> |
+          <a href="/contact">Contact</a> |
+          <a href="/privacy-policy">Privacy Policy</a> |
+          <a href="/terms">Terms of Service</a>
+        </nav>
+      </div>
+    </noscript>
 
     <script
       type="module"
