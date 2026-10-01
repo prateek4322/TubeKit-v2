@@ -23,18 +23,54 @@ function Navbar() {
   const utilityTools = [
     { name: "YouTube Tag Extractor", path: "/tools/tag-extractor" },
     { name: "YouTube Hashtag Extractor", path: "/tools/hashtag-extractor" },
-    { name: "YouTube Description Extractor", path: "/tools/description-extractor" },
-    { name: "YouTube Shadowban Detector", path: "/tools/shadowban-detector" },
-    { name: "YouTube Channel Analyzer", path: "/tools/channel-analyzer" },
-    { name: "YouTube SEO Analyzer", path: "/tools/seo-analyzer" },
-    { name: "YouTube Comment Reader", path: "/tools/comment-reader" },
-    { name: "Video ID Extractor", path: "/tools/video-id-extractor" },
-    { name: "Thumbnail Downloader", path: "/tools/thumbnail-downloader" },
-    { name: "Channel ID Finder", path: "/tools/channel-id-finder" },
-    { name: "Monetization Checker", path: "/tools/monetization-checker" },
-    { name: "CPM Calculator", path: "/tools/cpm-calculator" },
-    { name: "RPM Calculator", path: "/tools/rpm-calculator" },
-    { name: "Money Calculator", path: "/tools/money-calculator" },
+    {
+      name: "YouTube Description Extractor",
+      path: "/tools/description-extractor",
+    },
+    {
+      name: "YouTube Shadowban Detector",
+      path: "/tools/shadowban-detector",
+    },
+    {
+      name: "YouTube Channel Analyzer",
+      path: "/tools/channel-analyzer",
+    },
+    {
+      name: "YouTube SEO Analyzer",
+      path: "/tools/seo-analyzer",
+    },
+    {
+      name: "YouTube Comment Reader",
+      path: "/tools/comment-reader",
+    },
+    {
+      name: "Video ID Extractor",
+      path: "/tools/video-id-extractor",
+    },
+    {
+      name: "Thumbnail Downloader",
+      path: "/tools/thumbnail-downloader",
+    },
+    {
+      name: "Channel ID Finder",
+      path: "/tools/channel-id-finder",
+    },
+    {
+      name: "Monetization Checker",
+      path: "/tools/monetization-checker",
+    },
+    {
+      name: "CPM Calculator",
+      path: "/tools/cpm-calculator",
+    },
+    {
+      name: "RPM Calculator",
+      path: "/tools/rpm-calculator",
+    },
+    {
+      name: "Money Calculator",
+      path: "/tools/money-calculator",
+    },
   ];
 
   const closeMobileMenu = () => {
@@ -44,7 +80,11 @@ function Navbar() {
   };
 
   const handleHomeClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
     closeMobileMenu();
   };
 
@@ -63,10 +103,27 @@ function Navbar() {
     }`;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/95 backdrop-blur-xl">
-      {/* Wider horizontal breathing room keeps the navbar from feeling cut off */}
-      <div className="mx-auto flex h-20 w-full max-w-6xl items-center justify-between gap-5 px-5 sm:px-8 lg:px-10 xl:px-12">
-        {/* Logo */}
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-black/95 backdrop-blur-xl">
+      {/* =====================================================
+          NAVBAR
+      ====================================================== */}
+
+      <div
+        className="
+          mx-auto flex h-16 w-full max-w-7xl
+          items-center justify-between
+          gap-4
+          px-4
+          sm:px-6
+          lg:h-20
+          lg:px-8
+          xl:px-10
+        "
+      >
+        {/* ===================================================
+            LOGO
+        ==================================================== */}
+
         <Link
           to="/"
           onClick={handleHomeClick}
@@ -76,18 +133,52 @@ function Navbar() {
           <img
             src="/tubekit-logo.png"
             alt="TubeKit"
-            className="h-16 w-auto object-contain transition-transform duration-200 hover:scale-105 sm:h-18"
+            className="
+              h-9
+              w-auto
+              max-w-[130px]
+              object-contain
+              transition-transform
+              duration-200
+              hover:scale-105
+              sm:h-10
+              sm:max-w-[145px]
+              lg:h-12
+              lg:max-w-[165px]
+            "
           />
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-5 pr-5 lg:gap-6 lg:pr-6 md:flex">
+        {/* ===================================================
+            DESKTOP NAVIGATION
+            Visible only on large screens
+        ==================================================== */}
+
+        <nav
+          className="
+            hidden
+            min-w-0
+            flex-1
+            items-center
+            justify-end
+            gap-5
+            lg:flex
+            lg:gap-6
+          "
+        >
           {/* Home */}
-          <NavLink to="/" onClick={handleHomeClick} className={desktopLinkClass}>
+          <NavLink
+            to="/"
+            onClick={handleHomeClick}
+            className={desktopLinkClass}
+          >
             Home
           </NavLink>
 
-          {/* AI Tools */}
+          {/* =================================================
+              AI TOOLS
+          ================================================== */}
+
           <div
             className="relative shrink-0"
             onMouseEnter={() => {
@@ -102,11 +193,19 @@ function Navbar() {
                 setAiToolsOpen((prev) => !prev);
                 setUtilityToolsOpen(false);
               }}
-              className="flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-slate-300 transition-colors hover:text-white"
+              className="
+                flex items-center gap-1.5
+                whitespace-nowrap
+                text-sm font-medium
+                text-slate-300
+                transition-colors
+                hover:text-white
+              "
             >
               <span>AI Tools</span>
+
               <ChevronDown
-                size={16}
+                size={15}
                 className={`transition-transform duration-200 ${
                   aiToolsOpen ? "rotate-180" : ""
                 }`}
@@ -114,8 +213,19 @@ function Navbar() {
             </button>
 
             {aiToolsOpen && (
-              <div className="absolute right-0 top-full w-72 pt-4">
-                <div className="max-h-[70vh] overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl shadow-black/40">
+              <div className="absolute right-0 top-full w-72 pt-3">
+                <div
+                  className="
+                    max-h-[70vh]
+                    overflow-y-auto
+                    rounded-2xl
+                    border border-white/10
+                    bg-black
+                    p-2
+                    shadow-2xl
+                    shadow-black/60
+                  "
+                >
                   {aiTools.map((tool) => (
                     <NavLink
                       key={tool.path}
@@ -137,7 +247,10 @@ function Navbar() {
             )}
           </div>
 
-          {/* Utility Tools */}
+          {/* =================================================
+              UTILITY TOOLS
+          ================================================== */}
+
           <div
             className="relative shrink-0"
             onMouseEnter={() => {
@@ -152,11 +265,19 @@ function Navbar() {
                 setUtilityToolsOpen((prev) => !prev);
                 setAiToolsOpen(false);
               }}
-              className="flex items-center gap-1.5 whitespace-nowrap text-sm font-medium text-slate-300 transition-colors hover:text-white"
+              className="
+                flex items-center gap-1.5
+                whitespace-nowrap
+                text-sm font-medium
+                text-slate-300
+                transition-colors
+                hover:text-white
+              "
             >
               <span>Utility Tools</span>
+
               <ChevronDown
-                size={16}
+                size={15}
                 className={`transition-transform duration-200 ${
                   utilityToolsOpen ? "rotate-180" : ""
                 }`}
@@ -164,8 +285,19 @@ function Navbar() {
             </button>
 
             {utilityToolsOpen && (
-              <div className="absolute right-0 top-full w-80 pt-4">
-                <div className="max-h-[70vh] overflow-y-auto rounded-2xl border border-slate-800 bg-slate-950 p-2 shadow-2xl shadow-black/40">
+              <div className="absolute right-0 top-full w-80 pt-3">
+                <div
+                  className="
+                    max-h-[70vh]
+                    overflow-y-auto
+                    rounded-2xl
+                    border border-white/10
+                    bg-black
+                    p-2
+                    shadow-2xl
+                    shadow-black/60
+                  "
+                >
                   {utilityTools.map((tool) => (
                     <NavLink
                       key={tool.path}
@@ -189,27 +321,81 @@ function Navbar() {
 
           {/* Blog */}
           <NavLink to="/blog" className={desktopLinkClass}>
-            Blog   
+            Blog
           </NavLink>
         </nav>
 
-        {/* Mobile Toggle */}
+        {/* ===================================================
+            MOBILE MENU BUTTON
+            Visible below lg breakpoint
+        ==================================================== */}
+
         <button
           type="button"
-          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
-          className="shrink-0 text-white md:hidden"
-          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label={
+            menuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
+          aria-expanded={menuOpen}
+          className="
+            flex
+            h-10
+            w-10
+            shrink-0
+            items-center
+            justify-center
+            rounded-xl
+            border border-white/10
+            bg-white/[0.04]
+            text-white
+            transition-all
+            hover:bg-white/[0.08]
+            lg:hidden
+          "
+          onClick={() => {
+            setMenuOpen((prev) => !prev);
+
+            if (menuOpen) {
+              setAiToolsOpen(false);
+              setUtilityToolsOpen(false);
+            }
+          }}
         >
-          {menuOpen ? <X size={28} /> : <Menu size={28} />}
+          {menuOpen ? <X size={23} /> : <Menu size={23} />}
         </button>
       </div>
 
-      {/* Mobile Menu */}
+      {/* =====================================================
+          MOBILE MENU
+      ====================================================== */}
+
       {menuOpen && (
-        <div className="border-t border-slate-800 bg-slate-950 md:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-5 sm:px-8">
+        <div
+          className="
+            border-t border-white/10
+            bg-black
+            lg:hidden
+          "
+        >
+          <div
+            className="
+              mx-auto
+              flex
+              max-h-[calc(100vh-64px)]
+              max-w-7xl
+              flex-col
+              gap-2
+              overflow-y-auto
+              px-4
+              py-4
+              sm:px-6
+            "
+          >
             {/* Home */}
-            <NavLink to="/" onClick={handleHomeClick} className={mobileLinkClass}>
+            <NavLink
+              to="/"
+              onClick={handleHomeClick}
+              className={mobileLinkClass}
+            >
               Home
             </NavLink>
 
@@ -220,9 +406,22 @@ function Navbar() {
                 setAiToolsOpen((prev) => !prev);
                 setUtilityToolsOpen(false);
               }}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-left text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+              className="
+                flex
+                items-center
+                justify-between
+                rounded-xl
+                px-4
+                py-3
+                text-left
+                text-slate-300
+                transition-colors
+                hover:bg-slate-800
+                hover:text-white
+              "
             >
               <span>AI Tools</span>
+
               <ChevronDown
                 size={18}
                 className={`transition-transform duration-200 ${
@@ -232,7 +431,7 @@ function Navbar() {
             </button>
 
             {aiToolsOpen && (
-              <div className="ml-4 space-y-1 border-l border-slate-800 pl-3">
+              <div className="ml-3 space-y-1 border-l border-slate-800 pl-3">
                 {aiTools.map((tool) => (
                   <NavLink
                     key={tool.path}
@@ -259,9 +458,22 @@ function Navbar() {
                 setUtilityToolsOpen((prev) => !prev);
                 setAiToolsOpen(false);
               }}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-left text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+              className="
+                flex
+                items-center
+                justify-between
+                rounded-xl
+                px-4
+                py-3
+                text-left
+                text-slate-300
+                transition-colors
+                hover:bg-slate-800
+                hover:text-white
+              "
             >
               <span>Utility Tools</span>
+
               <ChevronDown
                 size={18}
                 className={`transition-transform duration-200 ${
@@ -271,7 +483,7 @@ function Navbar() {
             </button>
 
             {utilityToolsOpen && (
-              <div className="ml-4 space-y-1 border-l border-slate-800 pl-3">
+              <div className="ml-3 space-y-1 border-l border-slate-800 pl-3">
                 {utilityTools.map((tool) => (
                   <NavLink
                     key={tool.path}
@@ -297,7 +509,7 @@ function Navbar() {
               onClick={closeMobileMenu}
               className={mobileLinkClass}
             >
-              Blog    
+              Blog
             </NavLink>
           </div>
         </div>
