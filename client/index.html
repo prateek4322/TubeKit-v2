@@ -50,8 +50,17 @@
     />
 
     <!-- Language -->
-    <link rel="alternate" hreflang="en-IN" href="https://www.tubekitapp.in/" />
-    <link rel="alternate" hreflang="x-default" href="https://www.tubekitapp.in/" />
+    <link
+      rel="alternate"
+      hreflang="en-IN"
+      href="https://www.tubekitapp.in/"
+    />
+
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://www.tubekitapp.in/"
+    />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -102,7 +111,7 @@
       content="https://www.tubekitapp.in/og-image.png"
     />
 
-    <!-- Favicon -->
+    <!-- Favicons -->
     <link rel="icon" href="/favicon.ico" />
 
     <link
@@ -130,10 +139,12 @@
     />
 
     <!-- Preconnect -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link
+      rel="preconnect"
+      href="https://www.googletagmanager.com"
+    />
 
-    <!-- Website / Organization Schema -->
+    <!-- Website + Organization Schema -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -189,34 +200,98 @@
   </head>
 
   <body>
+    <!-- React Application -->
     <div id="root"></div>
 
+    <!--
+      Static fallback content.
+      This does not affect the normal React application
+      when JavaScript is enabled.
+    -->
     <noscript>
-      <div style="padding: 40px; font-family: Arial, sans-serif;">
-        <h1>TubeKit - Free AI Tools for YouTube Creators</h1>
+      <main
+        style="
+          width: 100%;
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px 20px;
+          font-family: Arial, sans-serif;
+          background: #000;
+          color: #fff;
+          line-height: 1.7;
+        "
+      >
+        <header>
+          <h1>TubeKit - Free AI Tools for YouTube Creators</h1>
 
-        <p>
-          TubeKit provides free AI-powered tools for YouTube creators,
-          including title generation, description generation, tags,
-          hashtags, scripts, keywords, thumbnails and YouTube SEO tools.
-        </p>
+          <p>
+            TubeKit is a free AI-powered YouTube creator toolkit designed
+            to help creators create, optimize and grow their YouTube content.
+          </p>
+        </header>
 
-        <p>
-          JavaScript is required to use the interactive TubeKit creator tools.
-        </p>
+        <section>
+          <h2>Free AI YouTube Tools</h2>
 
-        <nav>
-          <a href="/">Home</a> |
-          <a href="/tools">AI Tools</a> |
-          <a href="/blog">Blog</a> |
-          <a href="/about">About</a> |
-          <a href="/contact">Contact</a> |
-          <a href="/privacy-policy">Privacy Policy</a> |
-          <a href="/terms">Terms of Service</a>
-        </nav>
-      </div>
+          <p>
+            Create YouTube titles, descriptions, tags, hashtags, scripts,
+            keywords and thumbnail ideas with TubeKit's AI-powered creator
+            tools.
+          </p>
+        </section>
+
+        <section>
+          <h2>YouTube SEO Tools</h2>
+
+          <p>
+            Improve your YouTube content workflow with tools for SEO,
+            keyword research, channel analysis, video analysis and content
+            optimization.
+          </p>
+        </section>
+
+        <section>
+          <h2>TubeKit Creator Resources</h2>
+
+          <p>
+            Explore free YouTube creator tools, educational articles,
+            tutorials, FAQs and resources designed to help creators
+            understand and improve their YouTube workflow.
+          </p>
+        </section>
+
+        <section>
+          <h2>Useful Links</h2>
+
+          <nav aria-label="TubeKit navigation">
+            <p>
+              <a href="/">Home</a> |
+              <a href="/tools">AI Tools</a> |
+              <a href="/blog">Blog</a> |
+              <a href="/about">About</a> |
+              <a href="/faq">FAQ</a> |
+              <a href="/contact">Contact</a>
+            </p>
+
+            <p>
+              <a href="/privacy-policy">Privacy Policy</a> |
+              <a href="/terms">Terms of Service</a> |
+              <a href="/disclaimer">Disclaimer</a> |
+              <a href="/cookie-policy">Cookie Policy</a>
+            </p>
+          </nav>
+        </section>
+
+        <footer>
+          <p>
+            TubeKit provides free AI-powered tools and resources for
+            YouTube creators.
+          </p>
+        </footer>
+      </main>
     </noscript>
 
+    <!-- React Entry -->
     <script
       type="module"
       src="/src/main.jsx"
