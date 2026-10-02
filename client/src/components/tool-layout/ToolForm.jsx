@@ -73,9 +73,34 @@ function ToolForm({
     });
   };
 
+  const scrollToResult = () => {
+    // Give React one frame to render/update the result or loader area.
+    requestAnimationFrame(() => {
+      const target =
+        document.getElementById("tool-result-section") ||
+        document.getElementById("tool-output") ||
+        document.querySelector("[data-tool-result]");
+
+      if (target) {
+        target.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    const value = topic.trim();
+    if (!value || loading) {
+      generate();
+      return;
+    }
+
     generate();
+    scrollToResult();
   };
 
   const handleKeyDown = (e) => {
@@ -83,7 +108,15 @@ function ToolForm({
     // Shift + Enter = New line
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
+
+      const value = topic.trim();
+      if (!value || loading) {
+        generate();
+        return;
+      }
+
       generate();
+      scrollToResult();
     }
   };
 
@@ -91,8 +124,10 @@ function ToolForm({
 
   return (
     <form
+      id="tool-result-section"
+      data-tool-result
       onSubmit={handleSubmit}
-      className="mx-auto w-full max-w-5xl"
+      className="mx-auto w-full max-w-5xl scroll-mt-24"
     >
       {/* =====================================================
           PREMIUM CREATOR INPUT
