@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function ToolForm({
   onGenerate,
@@ -14,6 +14,9 @@ function ToolForm({
 
   const [topic, setTopic] = useState(initialTopic);
   const [statusIndex, setStatusIndex] = useState(0);
+
+  const formRef = useRef(null);
+  const shouldScrollToResult = useRef(false);
 
   const statuses = [
     {
@@ -73,22 +76,75 @@ function ToolForm({
     });
   };
 
-  const scrollToResult = () => {
-    // Give React one frame to render/update the result or loader area.
+  const scrollToGenerate = () => {
     requestAnimationFrame(() => {
       const target =
-        document.getElementById("tool-result-section") ||
-        document.getElementById("tool-output") ||
-        document.querySelector("[data-tool-result]");
+        document.getElementById("tool-generate-section") ||
+        formRef.current;
 
-      if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+      if (!target) return;
+
+      const top =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        80;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
     });
   };
+
+  const scrollToResult = () => {
+    requestAnimationFrame(() => {
+      const target =
+        document.getElementById("tool-output") ||
+        document.getElementById("tool-result-section") ||
+        document.querySelector("[data-tool-result]");
+
+      if (!target) {
+        scrollToGenerate();
+        return;
+      }
+
+      const top =
+        target.getBoundingClientRect().top +
+        window.pageYOffset -
+        80;
+
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: "smooth",
+      });
+    });
+  };
+
+  // Hero -> Tool page / automatic generation.
+  // When the Hero passes an initial topic, move the user to the Generate area.
+  useEffect(() => {
+    if (!String(initialTopic || "").trim()) return;
+
+    const timer = setTimeout(() => {
+      scrollToGenerate();
+    }, 120);
+
+    return () => clearTimeout(timer);
+  }, [initialTopic]);
+
+  // After generation finishes, move to the actual result when the tool
+  // provides #tool-output / #tool-result-section.
+  useEffect(() => {
+    if (loading || !shouldScrollToResult.current) return;
+
+    shouldScrollToResult.current = false;
+
+    const timer = setTimeout(() => {
+      scrollToResult();
+    }, 180);
+
+    return () => clearTimeout(timer);
+  }, [loading]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -99,8 +155,9 @@ function ToolForm({
       return;
     }
 
+    shouldScrollToResult.current = true;
     generate();
-    scrollToResult();
+    scrollToGenerate();
   };
 
   const handleKeyDown = (e) => {
@@ -115,8 +172,9 @@ function ToolForm({
         return;
       }
 
+      shouldScrollToResult.current = true;
       generate();
-      scrollToResult();
+      scrollToGenerate();
     }
   };
 
@@ -124,8 +182,7 @@ function ToolForm({
 
   return (
     <form
-      id="tool-result-section"
-      data-tool-result
+      ref={formRef}
       onSubmit={handleSubmit}
       className="mx-auto w-full max-w-5xl scroll-mt-24"
     >
@@ -240,7 +297,10 @@ function ToolForm({
       {/* =====================================================
           PREMIUM GENERATE BUTTON
       ====================================================== */}
-      <div className="mt-6">
+      <div
+        id="tool-generate-section"
+        className="mt-6 scroll-mt-24"
+      >
         <button
           type="submit"
           disabled={loading}
