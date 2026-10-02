@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 function ToolForm({
   onGenerate,
@@ -14,9 +14,6 @@ function ToolForm({
 
   const [topic, setTopic] = useState(initialTopic);
   const [statusIndex, setStatusIndex] = useState(0);
-
-  const formRef = useRef(null);
-  const shouldScrollToResult = useRef(false);
 
   const statuses = [
     {
@@ -76,88 +73,9 @@ function ToolForm({
     });
   };
 
-  const scrollToGenerate = () => {
-    requestAnimationFrame(() => {
-      const target =
-        document.getElementById("tool-generate-section") ||
-        formRef.current;
-
-      if (!target) return;
-
-      const top =
-        target.getBoundingClientRect().top +
-        window.pageYOffset -
-        80;
-
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: "smooth",
-      });
-    });
-  };
-
-  const scrollToResult = () => {
-    requestAnimationFrame(() => {
-      const target =
-        document.getElementById("tool-output") ||
-        document.getElementById("tool-result-section") ||
-        document.querySelector("[data-tool-result]");
-
-      if (!target) {
-        scrollToGenerate();
-        return;
-      }
-
-      const top =
-        target.getBoundingClientRect().top +
-        window.pageYOffset -
-        80;
-
-      window.scrollTo({
-        top: Math.max(0, top),
-        behavior: "smooth",
-      });
-    });
-  };
-
-  // Hero -> Tool page / automatic generation.
-  // When the Hero passes an initial topic, move the user to the Generate area.
-  useEffect(() => {
-    if (!String(initialTopic || "").trim()) return;
-
-    const timer = setTimeout(() => {
-      scrollToGenerate();
-    }, 120);
-
-    return () => clearTimeout(timer);
-  }, [initialTopic]);
-
-  // After generation finishes, move to the actual result when the tool
-  // provides #tool-output / #tool-result-section.
-  useEffect(() => {
-    if (loading || !shouldScrollToResult.current) return;
-
-    shouldScrollToResult.current = false;
-
-    const timer = setTimeout(() => {
-      scrollToResult();
-    }, 180);
-
-    return () => clearTimeout(timer);
-  }, [loading]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const value = topic.trim();
-    if (!value || loading) {
-      generate();
-      return;
-    }
-
-    shouldScrollToResult.current = true;
     generate();
-    scrollToGenerate();
   };
 
   const handleKeyDown = (e) => {
@@ -165,16 +83,7 @@ function ToolForm({
     // Shift + Enter = New line
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-
-      const value = topic.trim();
-      if (!value || loading) {
-        generate();
-        return;
-      }
-
-      shouldScrollToResult.current = true;
       generate();
-      scrollToGenerate();
     }
   };
 
@@ -182,9 +91,8 @@ function ToolForm({
 
   return (
     <form
-      ref={formRef}
       onSubmit={handleSubmit}
-      className="mx-auto w-full max-w-5xl scroll-mt-24"
+      className="mx-auto w-full max-w-5xl"
     >
       {/* =====================================================
           PREMIUM CREATOR INPUT
@@ -297,10 +205,7 @@ function ToolForm({
       {/* =====================================================
           PREMIUM GENERATE BUTTON
       ====================================================== */}
-      <div
-        id="tool-generate-section"
-        className="mt-6 scroll-mt-24"
-      >
+      <div className="mt-6">
         <button
           type="submit"
           disabled={loading}
